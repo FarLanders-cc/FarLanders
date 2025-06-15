@@ -1,0 +1,6 @@
+name: FarLanders
+version: 1.0.0
+main: cc.farlanders.plugin.FarLanders
+author: MJ Anglin
+api-version: 1.21
+api: 1.21.5
