@@ -1,0 +1,22 @@
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: "21"
+          distribution: "temurin"
+          architecture: x64
+      - name: Build with Gradle
+        run: ./gradlew build --no-daemon --stacktrace --info
+      - name: Run tests with Gradle
+        run: ./gradlew test --no-daemon --stacktrace --info
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: FarLanders
+          path: build/libs
