@@ -4,3 +4,16 @@ main: cc.farlanders.plugin.FarLanders
 author: MJ Anglin
 api-version: 1.21
 api: 1.21.5
+
+commands:
+  farlanders:
+    description: "FarLanders plugin command"
+    usage: "/farlanders <subcommand>"
+    aliases: [fl]
+    permission: farlanders.admin
+permissions:
+  farlanders.generate:
+    description: Allows world generation
+    default: op
+  farlanders.admin:
+    default: op
