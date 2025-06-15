@@ -53,9 +53,10 @@ dependencies {
     testImplementation 'org.bukkit:bukkit:1.15.1-R0.1-SNAPSHOT'
 }
 
-// tasks.test {
-//     useJUnitPlatform()
-// }
+tasks.test {
+    // If you use JUnit 5, uncomment the following line
+    // useJUnitPlatform()
+}
 
 java {
     toolchain {
