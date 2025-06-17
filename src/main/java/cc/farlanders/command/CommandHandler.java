@@ -4,10 +4,11 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.bukkit.Color;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+
+import net.md_5.bungee.api.ChatColor;
 
 public class CommandHandler implements CommandExecutor {
     private final Map<String, BaseCommand> commands = new HashMap<>();
@@ -22,11 +23,11 @@ public class CommandHandler implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (args.length == 0) {
-            sender.sendMessage(Color.GREEN + "Available commands:");
+            sender.sendMessage(ChatColor.GREEN + "Available commands:");
             for (BaseCommand command : commands.values()) {
                 if (sender.hasPermission(command.permission())) {
-                    sender.sendMessage(Color.GRAY + "/" + label + " " + command.name() + Color.SILVER + " - "
-                            + Color.GRAY + command.description());
+                    sender.sendMessage(ChatColor.GRAY + "/" + label + " " + command.name() + ChatColor.DARK_GRAY + " - "
+                            + ChatColor.GRAY + command.description());
                 }
             }
             return true;
@@ -35,13 +36,13 @@ public class CommandHandler implements CommandExecutor {
         BaseCommand command = commands.get(args[0].toLowerCase());
 
         if (command == null) {
-            sender.sendMessage(Color.MAROON + "Unknown subcommand: " + Color.GRAY + args[0] + "\n" + Color.GRAY
+            sender.sendMessage(ChatColor.RED + "Unknown subcommand: " + ChatColor.GRAY + args[0] + "\n" + ChatColor.GRAY
                     + "Use /" + label + " for help.");
             return true;
         }
 
         if (!sender.hasPermission(command.permission())) {
-            sender.sendMessage(Color.MAROON + "You do not have permission to use this command.");
+            sender.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
             return true;
         }
 
@@ -51,9 +52,10 @@ public class CommandHandler implements CommandExecutor {
 
         if (!success) {
             sender.sendMessage(
-                    Color.MAROON + "Usage: " + Color.GRAY + "/" + label + " " + command.name() + " " + command.usage());
+                    ChatColor.RED + "Usage: " + ChatColor.GRAY + "/" + label + " " + command.name() + " "
+                            + command.usage());
             if (command.description() != null && !command.description().isEmpty()) {
-                sender.sendMessage(Color.GRAY + command.description());
+                sender.sendMessage(ChatColor.GRAY + command.description());
             }
         }
         return success;

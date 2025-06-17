@@ -6,7 +6,7 @@ package cc.farlanders.noise;
 
 public class OpenSimplex2S {
 
-    public OpenSimplex2S(long SEED) {
+    public OpenSimplex2S(long seed) {
     }
 
     private static final long PRIME_X = 0x5205402B9270C86FL;

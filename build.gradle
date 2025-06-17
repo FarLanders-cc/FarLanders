@@ -8,8 +8,8 @@ plugins {
     id 'java'
 }
 
-group 'cc.farlanders'
-version '1.0-SNAPSHOT'
+group = 'cc.farlanders'
+version = '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
@@ -19,6 +19,15 @@ repositories {
         url = 'https://hub.spigotmc.org/nexus/content/repositories/public/'
         content {
             includeGroup 'org.bukkit'
+            includeGroup 'org.spigotmc'
+        }
+    }
+    // PaperMC repository for Paper API dependencies
+    maven {
+        url = 'https://repo.papermc.io/repository/maven-public/'
+        content {
+            includeGroup 'io.papermc.paper'
+            includeGroup 'org.purpurmc.purpur'
             includeGroup 'org.spigotmc'
         }
     }
@@ -46,22 +55,33 @@ repositories {
 
 dependencies {
     // Spigot API dependency
-    compileOnly 'org.spigotmc:spigot-api:1.21.1-R0.1-SNAPSHOT'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.1'
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
+    compileOnly 'org.spigotmc:spigot-api:1.21.4-R0.1-SNAPSHOT'
+    // Paper API dependency peer
+    // runtimeOnly('io.papermc.paper:paper-api:1.21.5-R0.1-SNAPSHOT')
+    // Uncomment the following line if you want to use Purpur API instead of Paper
+    // If using JUnit Jupiter
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    // testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
+    // testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     testImplementation 'org.mockito:mockito-core:5.12.0'
     testImplementation 'org.mockito:mockito-junit-jupiter:5.12.0'
     testImplementation 'org.mockito:mockito-inline:5.2.0'
-    testImplementation 'org.bukkit:bukkit:1.15.1-R0.1-SNAPSHOT'
+    testImplementation 'org.bukkit:bukkit:1.15.2-R0.1-SNAPSHOT'
 }
 
-tasks.test {
-    // If you use JUnit 5, uncomment the following line
-    // useJUnitPlatform()
+tasks.named('test', Test) {
+    useJUnitPlatform()
 }
 
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
     }
+}
+
+processResources {
+    // Replace placeholders in plugin.yml with project properties
+    include "plugin.yml"
+    include "config.yml"
 }

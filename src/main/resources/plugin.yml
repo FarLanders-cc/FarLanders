@@ -8,15 +8,10 @@ website: https://farlanders.cc
 commands:
   farlanders:
     description: Main command for FarLanders plugin
-    usage: /farlanders <subcommand>
+    usage: /<command> generate [worldName]
     aliases: [fl]
     permission: farlanders.command
-    subcommands:
-      generate:
-        description: Generates a new FarLands world
-        usage: /farlanders generate
-        permission: farlanders.admin
-        aliases: [gen, create]
+
 permissions:
   farlanders.command:
     description: Allows the use of the main FarLanders command
