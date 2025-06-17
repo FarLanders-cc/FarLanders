@@ -1,0 +1,35 @@
+name: FarLanders
+author: MJ Anglin
+main: cc.farlanders.plugin.FarLanders
+version: 1.0.0
+api-version: 1.21
+website: https://farlanders.cc
+
+commands:
+  farlanders:
+    description: Main command for FarLanders plugin
+    usage: /farlanders <subcommand>
+    aliases: [fl]
+    permission: farlanders.command
+    subcommands:
+      generate:
+        description: Generates a new FarLands world
+        usage: /farlanders generate
+        permission: farlanders.admin
+        aliases: [gen, create]
+permissions:
+  farlanders.command:
+    description: Allows the use of the main FarLanders command
+    default: op
+
+  farlanders.admin:
+    description: Grants access to administrative commands
+    default: op
+
+  farlanders.user:
+    description: Grants access to user commands
+    default: true
+
+  farlanders.bypass:
+    description: Allows users to bypass certain restrictions
+    default: false

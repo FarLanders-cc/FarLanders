@@ -50,15 +50,13 @@ The world generation is based on the Far Lands concept, which is a phenomenon in
 
 ---
 
-## Progress
+## World Generation Tests
 
-#### World Generation Tests
+##### 1st [`e533f58`](https://github.com/clxrityy/FarLanders/commit/e533f58ad06857d2eb4e057cd8fad8febbd44cc7)
 
-##### 1st
+[<img alt="1st world generation test" src="/assets/generation_tests/test_1.gif" />](./assets/generation_tests/test_1.gif)
 
-<img alt="1st world generation test" src="/assets/generation_tests/test_1.gif" />
-
-##### 2nd
+##### 2nd [`346f7e6`](https://github.com/clxrityy/FarLanders/commit/346f7e6603b9edea8309055130ec3f208b908ef7)
 
 > **More chaotic:**
 >
@@ -67,4 +65,16 @@ The world generation is based on the Far Lands concept, which is a phenomenon in
 > - Coordinate wrapping and irrational offsets (classic Far Lands chaos).
 > - Directional distortions (X vs Z behave differently at range).
 
-<img alt="2nd world generation test" src="/assets/generation_tests/test_2.gif" />
+[<img alt="2nd world generation test" src="/assets/generation_tests/test_2.gif" />](./assets/generation_tests/test_2.gif)
+
+##### 3rd
+
+> **_More_ what I'm going for:**
+>
+> - No water here just void land.
+> - Tunnelistic structures.
+> - Not enough resources
+>   - Vast diamond ore veins rather than scattered and sparse.
+>   - No trees, grass, or other surface features.
+
+[<img alt="3rd world generation test" src="/assets/generation_tests/test_3.gif" />](./assets/generation_tests/test_3.gif)
