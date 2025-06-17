@@ -6,7 +6,9 @@ package cc.farlanders.noise;
 
 public class OpenSimplex2S {
 
-    public OpenSimplex2S(long seed) {
+    // Private constructor to prevent instantiation
+    public OpenSimplex2S() {
+        // No initialization needed
     }
 
     private static final long PRIME_X = 0x5205402B9270C86FL;

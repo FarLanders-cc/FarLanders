@@ -48,7 +48,7 @@ public class GenerateFarLandsCommand implements BaseCommand {
         }
 
         WorldCreator creator = new WorldCreator(worldName);
-        creator.generator(new FarLandsGenerator(creator.seed()));
+        creator.generator(new FarLandsGenerator());
 
         World world = Bukkit.createWorld(creator);
 

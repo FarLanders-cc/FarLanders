@@ -52,6 +52,19 @@ The world generation is based on the Far Lands concept, which is a phenomenon in
 
 ## Progress
 
-#### 1st world generation test:
+#### World Generation Tests
 
-![img](https://i.gyazo.com/6fc67db5640cca804cd6e46540c270cb.gif)
+##### 1st
+
+<img alt="1st world generation test" src="/assets/generation_tests/test_1.gif" />
+
+##### 2nd
+
+> **More chaotic:**
+>
+> - Layered noise for multi-frequency distortion.
+> - Sharp amplitude spikes in specific ranges (simulate glitching).
+> - Coordinate wrapping and irrational offsets (classic Far Lands chaos).
+> - Directional distortions (X vs Z behave differently at range).
+
+<img alt="2nd world generation test" src="/assets/generation_tests/test_2.gif" />
