@@ -30,19 +30,67 @@ public class FarLandsGenerator extends ChunkGenerator {
         }
     }
 
+    private boolean shouldGenerateWaterPocket(int x, int z, Random random) {
+        double noise = OpenSimplex2.noise3ImproveXZ(4242, x * 0.01, 0, z * 0.01);
+        return noise > 0.65 && random.nextDouble() < 0.03; // very rare
+    }
+
     private void generateColumn(ChunkData chunk, int cx, int cz, int worldX, int worldZ) {
         boolean farlands = Math.abs(worldX) > FARLANDS_THRESHOLD || Math.abs(worldZ) > FARLANDS_THRESHOLD;
 
         for (int y = 0; y < MAX_HEIGHT; y++) {
             double density = getCombinedDensity(worldX, y, worldZ, farlands);
 
-            if (density > 0.55) {
+            if (density > 0.3) { // More terrain, less void
                 Material blockMat = getBlockMaterial(worldX, y, worldZ, density, farlands);
                 chunk.setBlock(cx, y, cz, blockMat);
             } else {
-                chunk.setBlock(cx, y, cz, Material.AIR);
+                // Scarce, bedrock-contained water pockets
+                double waterChance = OpenSimplex2.noise3ImproveXZ(555, worldX * 0.03, y * 0.03, worldZ * 0.03);
+                if (y < SEA_LEVEL - 5 && y > 5 && waterChance > 0.78) {
+                    chunk.setBlock(cx, y, cz, Material.WATER);
+                    chunk.setBlock(cx, y - 1, cz, Material.BEDROCK); // Bedrock base
+                } else {
+                    chunk.setBlock(cx, y, cz, Material.AIR);
+                }
             }
         }
+
+        // Tree generation on grass at sea level and above
+        int topY = SEA_LEVEL;
+        while (topY < MAX_HEIGHT && chunk.getBlockData(cx, topY, cz).getMaterial() == Material.AIR) {
+            topY++;
+        }
+
+        if (chunk.getBlockData(cx, topY - 1, cz).getMaterial() == Material.GRASS_BLOCK) {
+            double treeChance = OpenSimplex2.noise3ImproveXZ(888, worldX * 0.05, 0, worldZ * 0.05);
+            if (treeChance > 0.5) {
+                chunk.setBlock(cx, topY, cz, Material.OAK_SAPLING); // Bukkit replaces saplings with trees after chunk
+                                                                    // generation
+            }
+        }
+
+        // Rare water pocket generation
+        if (shouldGenerateWaterPocket(worldX, worldZ, new Random(worldX * 31 + worldZ * 57))) {
+            int centerY = 20 + new Random(worldX * 11 + worldZ * 13).nextInt(20); // Y = 20–40
+            for (int y = centerY - 1; y <= centerY + 1; y++) {
+                for (int dx = -1; dx <= 1; dx++) {
+                    for (int dz = -1; dz <= 1; dz++) {
+                        int bx = cx + dx;
+                        int bz = cz + dz;
+                        if (bx < 0 || bx >= 16 || bz < 0 || bz >= 16)
+                            continue;
+
+                        if (Math.abs(dx) == 1 || Math.abs(dz) == 1 || y == centerY - 1 || y == centerY + 1) {
+                            chunk.setBlock(bx, y, bz, Material.BEDROCK);
+                        } else {
+                            chunk.setBlock(bx, y, bz, Material.WATER);
+                        }
+                    }
+                }
+            }
+        }
+
     }
 
     private double getCombinedDensity(int x, int y, int z, boolean farlands) {
@@ -122,7 +170,7 @@ public class FarLandsGenerator extends ChunkGenerator {
         double band = Math.sin((x + z) * 0.02 + noise * Math.PI * 2);
         double verticalBand = Math.sin(y * 0.04 + noise * Math.PI);
         double density = 1.0 - Math.abs(band * verticalBand);
-        return Math.clamp(density, 0, 1) * 0.4; // Moderate influence
+        return Math.clamp(density, 0, 1) * 0.4;
     }
 
     private Material getBlockMaterial(int x, int y, int z, double density, boolean farlands) {
@@ -133,30 +181,39 @@ public class FarLandsGenerator extends ChunkGenerator {
         if (y == SEA_LEVEL)
             return Material.GRASS_BLOCK;
 
-        Material result;
-        if (density > 0.75) {
-            result = Material.GRASS_BLOCK;
-        } else if (density > 0.6) {
-            result = Material.DIRT;
-        } else {
-            result = Material.AIR;
-        }
-        return result;
+        if (density > 0.75)
+            return Material.GRASS_BLOCK;
+        if (density > 0.6)
+            return Material.DIRT;
+        return Material.AIR;
     }
 
     private Material getOreOrStone(int x, int y, int z) {
-        if (isOreVein(x, y, z, 0.14))
+        if (!isOreVein(x, y, z, 0.5))
+            return Material.STONE;
+
+        double rarityNoise = OpenSimplex2.noise3ImproveXZ(777, x * 0.01, y * 0.01, z * 0.01);
+        double value = rarityNoise + OpenSimplex2.noise3ImproveXZ(998, x * 0.05, y * 0.05, z * 0.05);
+
+        if (value > 1.2)
             return Material.DIAMOND_ORE;
-        if (isOreVein(x, y, z, 0.20))
+        if (value > 1.0)
+            return Material.EMERALD_ORE;
+        if (value > 0.85)
+            return Material.REDSTONE_ORE;
+        if (value > 0.7)
+            return Material.LAPIS_ORE;
+        if (value > 0.55)
             return Material.GOLD_ORE;
-        if (isOreVein(x, y, z, 0.3))
+        if (value > 0.4)
             return Material.IRON_ORE;
-        if (isOreVein(x, y, z, 0.45))
+        if (value > 0.25)
             return Material.COAL_ORE;
+
         return Material.STONE;
     }
 
-    private boolean isOreVein(int x, int y, int z, double threshold) {
+    boolean isOreVein(int x, int y, int z, double threshold) {
         double scale = 0.08;
         double n = OpenSimplex2.noise3ImproveXZ(999, x * scale, y * scale, z * scale);
         return n > threshold;

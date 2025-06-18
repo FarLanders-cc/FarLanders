@@ -8,13 +8,21 @@ website: https://farlanders.cc
 commands:
   farlanders:
     description: Main command for FarLanders plugin
-    usage: /<command> generate [worldName]
+    usage: /<command> <subcommand> [args...]
     aliases: [fl]
     permission: farlanders.command
 
 permissions:
   farlanders.command:
-    description: Allows the use of the main FarLanders command
+    description: Grants access to the main FarLanders command
+    default: true
+
+  farlanders.generate:
+    description: Allows the use of the main FarLanders generate command
+    default: op
+
+  farlanders.tp:
+    description: Allows the use of the teleport command
     default: op
 
   farlanders.admin:

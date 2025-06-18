@@ -28,7 +28,7 @@ public class GenerateFarLandsCommand implements BaseCommand {
 
     @Override
     public String permission() {
-        return "farlanders.command";
+        return "farlanders.generate";
     }
 
     @Override
