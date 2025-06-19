@@ -52,7 +52,9 @@ public class TeleportFarLandsCommand implements BaseCommand {
         Player player = (Player) sender;
         String worldName = args[0];
 
-        double x = 0, y = 64, z = 0;
+        double x = 0;
+        double y = 64;
+        double z = 0;
 
         if (args.length >= 4) {
             try {
