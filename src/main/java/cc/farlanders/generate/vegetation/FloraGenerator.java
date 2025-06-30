@@ -14,6 +14,10 @@ public class FloraGenerator {
     private static final String BIOME_JUNGLE = "jungle";
     private static final String BIOME_TAIGA = "taiga";
 
+    long hashCoords(int x, int z) {
+        return x * 341873128712L + z * 132897987541L;
+    }
+
     public void generatePlantsAndGrass(ChunkData chunk, int cx, int cz, int worldX, int worldZ, int topY,
             String biome) {
         Random random = new Random(hashCoords(worldX, worldZ) ^ 0xDEADBEEF);
@@ -386,9 +390,5 @@ public class FloraGenerator {
                 }
             }
         }
-    }
-
-    private long hashCoords(int x, int z) {
-        return x * 341873128712L + z * 132897987541L;
     }
 }

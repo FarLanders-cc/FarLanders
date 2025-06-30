@@ -9,13 +9,10 @@ import cc.farlanders.noise.OpenSimplex2;
 
 public class BiomeProvider {
 
-    private static final List<String> BIOMES = List.of(
-            "PLAINS", "FOREST", "DARK_FOREST", "CHERRY_GROVE",
-            "SWAMP", "MANGROVE_SWAMP", "JUNGLE", "TAIGA",
-            "SNOWY_PLAINS", "ICE_SPIKES", "DESERT", "BADLANDS",
-            "SAVANNA", "MUSHROOM_FIELDS", "MOUNTAINS", "OCEAN",
-            "DEEP_DARK", "DRIPSTONE_CAVES", "LUSH_CAVES",
-            "CRIMSON_FOREST", "NETHER_WASTES", "SOUL_SAND_VALLEY", "BASALT_DELTAS");
+    private static final String ICE_SPIKES = "ICE_SPIKES";
+    private static final List<String> FARLANDS_BIOMES = List.of(
+            "CRIMSON_FOREST", "WARPED_FOREST", "SOUL_SAND_VALLEY", "BASALT_DELTAS",
+            "MUSHROOM_FIELDS", "DEEP_DARK", ICE_SPIKES);
 
     private final double seaLevel;
     private final double farlandsThreshold;
@@ -28,11 +25,78 @@ public class BiomeProvider {
     }
 
     public String getBiomeAt(int x, int z) {
-        double scale = 0.005;
-        double value = OpenSimplex2.noise2(x * scale, z * scale, 0.0);
-        int index = (int) ((value + 1) / 2 * BIOMES.size()); // map noise [-1, 1] -> [0, size)
-        index = Math.clamp(index, 0, BIOMES.size() - 1);
-        return BIOMES.get(index);
+        double distanceFromOrigin = Math.sqrt((double) x * x + (double) z * z);
+
+        // FarLands regions get chaotic biomes
+        if (distanceFromOrigin > farlandsThreshold) {
+            return getFarLandsBiome(x, z);
+        }
+
+        // Use multi-octave noise for realistic biome distribution
+        double temperatureNoise = OpenSimplex2.noise2(x * 0.003, z * 0.003, 0.0);
+        double humidityNoise = OpenSimplex2.noise2(x * 0.003, z * 0.003, 1000.0);
+        double weirdnessNoise = OpenSimplex2.noise2(x * 0.002, z * 0.002, 2000.0);
+
+        return selectBiomeByClimate(temperatureNoise, humidityNoise, weirdnessNoise, x, z);
+    }
+
+    private String getFarLandsBiome(int x, int z) {
+        // Create chaotic biome patterns in FarLands
+        int selector = Math.abs((x * 31 + z * 17) % FARLANDS_BIOMES.size());
+        return FARLANDS_BIOMES.get(selector);
+    }
+
+    private String selectBiomeByClimate(double temperature, double humidity, double weirdness, int x, int z) {
+        // Simplified biome selection to reduce complexity
+        double chaos = Math.abs(weirdness) * 0.3;
+
+        if (chaos > 0.4) {
+            return getWeirdBiome(temperature, humidity);
+        }
+
+        if (temperature < -0.2) {
+            return getColdBiome(humidity);
+        }
+
+        if (temperature > 0.4) {
+            return getHotBiome(humidity);
+        }
+
+        return getTemperateBiome(humidity, x, z);
+    }
+
+    private String getWeirdBiome(double temperature, double humidity) {
+        if (temperature < -0.3)
+            return ICE_SPIKES;
+        if (humidity > 0.5)
+            return "MUSHROOM_FIELDS";
+        return "DARK_FOREST";
+    }
+
+    private String getColdBiome(double humidity) {
+        return humidity > 0.3 ? "SNOWY_TAIGA" : "SNOWY_PLAINS";
+    }
+
+    private String getHotBiome(double humidity) {
+        if (humidity < -0.2)
+            return "DESERT";
+        if (humidity > 0.3)
+            return "JUNGLE";
+        return "SAVANNA";
+    }
+
+    private String getTemperateBiome(double humidity, int x, int z) {
+        if (humidity > 0.3) {
+            if (Math.abs((x + z) % 7) < 2)
+                return "BIRCH_FOREST";
+            return "FOREST";
+        }
+
+        if (humidity < -0.2) {
+            return "BADLANDS";
+        }
+
+        return Math.abs((x * z) % 3) == 0 ? "SUNFLOWER_PLAINS" : "PLAINS";
     }
 
     public Biome getBiome(int x, int y, int z) {
