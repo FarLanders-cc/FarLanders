@@ -60,11 +60,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Modified mock verification strategies to handle sparse generation patterns
   - Updated test expectations to account for spacing improvements in world generation
 
+### Added
+
+- **Documentation System**: Implemented comprehensive documentation and deployment pipeline
+
+  - Created automated GitHub Actions workflow for documentation generation and deployment
+  - Added local documentation preview scripts (`preview-docs.sh`, `quick-preview.sh`)
+  - Configured GitHub Pages deployment with custom domain support
+  - Added JaCoCo code coverage reporting to build pipeline
+  - Created beautiful documentation homepage with navigation to API docs, test results, and coverage reports
+
+- **Deployment Infrastructure**: Set up automated CI/CD and hosting
+  - Configured GitHub Actions workflow for automated testing, building, and deployment
+  - Added support for custom domain hosting via GitHub Pages and Cloudflare
+  - Implemented CNAME configuration for `www.farlanders.cc`
+  - Added automated JAR artifact publishing for downloads
+
 ### Technical Details
 
 - **Compatibility**: Main codebase now supports all Minecraft versions while maintaining 1.15.2 compatibility in tests
 - **Test Success Rate**: Improved from ~60% to ~95% pass rate (reduced failures from 120+ to <10)
 - **Version Strategy**: All version-specific workarounds are properly isolated in test code only, not in main codebase
+- **Documentation**: Professional documentation site with API reference, test results, coverage reports, and downloads
+- **Automation**: Full CI/CD pipeline with automated testing, building, and deployment to GitHub Pages
 
 ## [1.0.0] - Initial Release
 
