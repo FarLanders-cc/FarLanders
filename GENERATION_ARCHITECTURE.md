@@ -38,6 +38,35 @@ This enhanced FarLands generation system creates a beautiful yet chaotic world t
 - **Reduced Water Coverage**: Significantly reduced underwater terrain generation
 - **Balanced Cave Systems**: Maintained proper cave generation while keeping surface terrain elevated
 
+## 🌟 Enhanced Features
+
+### Sky Islands System
+
+- **Location**: Y 200-280 altitude range
+- **Generation**: Rare floating landmasses using 3D noise
+- **Materials**: Contain rare ores including Netherite, Ancient Debris, Diamonds
+- **Rarity**: Approximately 1 per 512x512 block area
+
+### Agriculture System
+
+- **Biome Integration**: Farms generated based on local climate and terrain
+- **Infrastructure**: Includes irrigation, fencing, storage, and pathways
+- **Crop Variety**: Different crops for different biomes (wheat, vegetables, fruits, etc.)
+- **Sustainability**: Features like composters and water management
+
+### Enhanced Mob Spawning
+
+- **Habitat Creation**: Generates suitable environments for passive mobs
+- **Biome-Specific**: Each biome gets appropriate animal habitats
+- **Infrastructure**: Includes water sources, shelter, and feeding areas
+- **Variety**: Supports horses, cows, sheep, wolves, foxes, parrots, and more
+
+### Advanced Biome Architecture
+
+- **Agricultural Biomes**: Flower Forest, Meadow for enhanced farming
+- **Smooth Transitions**: Better blending between biome boundaries
+- **Specialized Structures**: Biome-appropriate buildings and formations
+
 ## Key Features
 
 ### Beautiful Terrain

@@ -89,6 +89,8 @@ public class BiomeProvider {
         if (humidity > 0.3) {
             if (Math.abs((x + z) % 7) < 2)
                 return "BIRCH_FOREST";
+            if (Math.abs((x * z) % 11) < 2)
+                return "FLOWER_FOREST"; // More flowers for agriculture
             return "FOREST";
         }
 
@@ -96,7 +98,14 @@ public class BiomeProvider {
             return "BADLANDS";
         }
 
-        return Math.abs((x * z) % 3) == 0 ? "SUNFLOWER_PLAINS" : "PLAINS";
+        // Enhanced plains variants for better agriculture
+        int selector = Math.abs((x * z) % 5);
+        return switch (selector) {
+            case 0 -> "SUNFLOWER_PLAINS";
+            case 1 -> "MEADOW"; // Great for livestock
+            case 2 -> "PLAINS";
+            default -> "PLAINS";
+        };
     }
 
     public Biome getBiome(int x, int y, int z) {

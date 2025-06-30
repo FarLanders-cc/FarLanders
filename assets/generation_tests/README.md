@@ -66,8 +66,14 @@
 
 ![10](imgs/test_10.png)
 
-##### 11th (CURRENT)
+##### 11th
 
 |                                                                                         |                                                                                         |                                                                                         |
 | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
 | [<img alt="11th world generation test" src="imgs/test_11_1.png" />](imgs/test_11_1.png) | [<img alt="11th world generation test" src="imgs/test_11_2.png" />](imgs/test_11_2.png) | [<img alt="11th world generation test" src="imgs/test_11_3.png" />](imgs/test_11_3.png) |
+
+##### 12th
+
+|                                                                                         |                                                                                         |
+| --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| [<img alt="12th world generation test" src="imgs/test_12_1.png" />](imgs/test_12_1.png) | [<img alt="12th world generation test" src="imgs/test_12_2.png" />](imgs/test_12_2.png) |

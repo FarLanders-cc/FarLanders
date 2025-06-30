@@ -6,6 +6,8 @@ import org.bukkit.Material;
 import org.bukkit.TreeType;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
+import cc.farlanders.generate.config.GenerationConfig;
+
 public class FloraGenerator {
 
     private static final String BIOME_CHERRY_GROVE = "cherry grove";
@@ -41,44 +43,44 @@ public class FloraGenerator {
     }
 
     private void handlePlainsAndCherryGrove(ChunkData chunk, int cx, int cz, int topY, double chance) {
-        if (chance < 0.15)
+        if (chance < GenerationConfig.getPlainsTallGrassChance())
             chunk.setBlock(cx, topY + 1, cz, Material.TALL_GRASS);
-        else if (chance < 0.2)
+        else if (chance < GenerationConfig.getPlainsPoppyChance())
             chunk.setBlock(cx, topY + 1, cz, Material.POPPY);
-        else if (chance < 0.22)
+        else if (chance < GenerationConfig.getPlainsDandelionChance())
             chunk.setBlock(cx, topY + 1, cz, Material.DANDELION);
     }
 
     private void handleSwamp(ChunkData chunk, int cx, int cz, int topY, double chance) {
-        if (chance < 0.15)
+        if (chance < GenerationConfig.getSwampFernChance())
             chunk.setBlock(cx, topY + 1, cz, Material.FERN);
-        else if (chance < 0.18)
+        else if (chance < GenerationConfig.getSwampBlueOrchidChance())
             chunk.setBlock(cx, topY + 1, cz, Material.BLUE_ORCHID);
     }
 
     private void handleDesertAndBadlands(ChunkData chunk, int cx, int cz, int topY, double chance) {
-        if (chance < 0.05)
+        if (chance < GenerationConfig.getDesertDeadBushChance())
             chunk.setBlock(cx, topY + 1, cz, Material.DEAD_BUSH);
-        else if (chance < 0.07)
+        else if (chance < GenerationConfig.getDesertCactusChance())
             chunk.setBlock(cx, topY + 1, cz, Material.CACTUS);
     }
 
     private void handleJungle(ChunkData chunk, int cx, int cz, int topY, double chance) {
-        if (chance < 0.1)
+        if (chance < GenerationConfig.getJungleMelonChance())
             chunk.setBlock(cx, topY + 1, cz, Material.MELON);
-        else if (chance < 0.15)
+        else if (chance < GenerationConfig.getJungleBambooChance())
             chunk.setBlock(cx, topY + 1, cz, Material.BAMBOO);
     }
 
     private void handleTaiga(ChunkData chunk, int cx, int cz, int topY, double chance) {
-        if (chance < 0.1)
+        if (chance < GenerationConfig.getTaigaFernChance())
             chunk.setBlock(cx, topY + 1, cz, Material.FERN);
     }
 
     private void handleMushroomFields(ChunkData chunk, int cx, int cz, int topY, double chance) {
-        if (chance < 0.1)
+        if (chance < GenerationConfig.getMushroomFieldsBrownChance())
             chunk.setBlock(cx, topY + 1, cz, Material.BROWN_MUSHROOM);
-        else if (chance < 0.2)
+        else if (chance < GenerationConfig.getMushroomFieldsRedChance())
             chunk.setBlock(cx, topY + 1, cz, Material.RED_MUSHROOM);
     }
 

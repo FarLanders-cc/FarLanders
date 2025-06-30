@@ -105,14 +105,48 @@ public class TerrainHandler {
     }
 
     private Material getSkyIslandMaterial(int x, int y, int z, String biome) {
-        // Use biome-appropriate materials for sky islands
-        String biomeLower = biome.toLowerCase();
-        if (y < SEA_LEVEL - 10) {
-            return getOreOrStone(x, y, z);
-        } else if (y < SEA_LEVEL) {
-            return getBiomeTopBlock(biomeLower);
-        } else {
+        // Sky islands have rare and valuable materials
+        double noise = noise3D(x, y, z);
+        double rareOreNoise = OpenSimplex2.noise3_ImproveXY(NOISE_SEED + 1000, x * 0.03, y * 0.03, z * 0.03);
+
+        // Sky islands contain much rarer and more valuable ores
+        if (rareOreNoise > 0.9) {
+            return Material.NETHERITE_BLOCK; // Extremely rare
+        }
+        if (rareOreNoise > 0.85) {
+            return Material.ANCIENT_DEBRIS; // Very rare
+        }
+        if (rareOreNoise > 0.8) {
+            return Material.DIAMOND_ORE; // Rare
+        }
+        if (rareOreNoise > 0.75) {
+            return Material.EMERALD_ORE; // Rare
+        }
+        if (rareOreNoise > 0.7) {
+            return Material.LAPIS_ORE; // Uncommon
+        }
+        if (rareOreNoise > 0.65) {
+            return Material.GOLD_ORE; // Uncommon
+        }
+
+        // Regular sky island materials based on height
+        if (y > 260) {
+            // Top of sky islands - more ethereal materials
+            if (noise > 0.6)
+                return Material.END_STONE;
+            if (noise > 0.4)
+                return Material.CALCITE;
+            return Material.DRIPSTONE_BLOCK;
+        } else if (y > 240) {
+            // Middle of sky islands - mixed materials
+            if (noise > 0.5)
+                return Material.DEEPSLATE;
             return Material.STONE;
+        } else {
+            // Base of sky islands - solid foundation
+            if (noise > 0.7)
+                return Material.OBSIDIAN;
+            return Material.BLACKSTONE;
         }
     }
 

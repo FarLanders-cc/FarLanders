@@ -11,6 +11,7 @@ commands:
     usage: /<command> <subcommand> [args...]
     aliases: [fl]
     permission: farlanders.command
+    tab-complete: true
 
 permissions:
   farlanders.command:
@@ -35,4 +36,4 @@ permissions:
 
   farlanders.bypass:
     description: Allows users to bypass certain restrictions
-    default: false
+    default: op

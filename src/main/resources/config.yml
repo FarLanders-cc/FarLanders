@@ -6,9 +6,300 @@
 #       farlanders.cc
 #       https://github.com/clxrityy/FarLanders
 
+# Plugin Configuration
 version: 1.0.0
 
-sea-level: 64
-base-scale: 0.005
-farlands-threshold: 10000
-max-height: 256
+# =================================
+# WORLD GENERATION SETTINGS
+# =================================
+
+# Core World Settings
+world:
+  sea-level: 64 # Y level for ocean surface
+  max-height: 320 # Maximum world height
+  farlands-threshold: 12550820 # Distance where FarLands effects begin
+
+  # Chunk generation settings
+  chunk-size: 16 # Size of chunks (don't change unless you know what you're doing)
+
+  # Generation thresholds
+  terrain-density-threshold: 0.5 # Density threshold for terrain generation
+  farlands-intensity-divisor: 1000000.0 # Divisor for FarLands intensity calculation
+
+# Terrain Generation
+terrain:
+  base-scale: 0.005 # Base noise scale for terrain
+  cave-scale: 0.015 # Noise scale for cave generation
+  biome-scale: 0.003 # Noise scale for biome distribution
+  height-boost: 0.3 # Extra density to keep land above sea level
+  surface-variation: 1.2 # Amplifies hills and valleys
+
+  # Surface variation factors
+  surface-factor-high: 1.2 # Surface variation for high areas (y > 30 && y < 120)
+  surface-factor-low: 0.4 # Surface variation for other areas
+
+  # Terrain noise scale multipliers
+  y-scale-primary: 0.3 # Y-scale multiplier for primary terrain noise
+  y-scale-secondary: 0.5 # Y-scale multiplier for secondary terrain noise
+  secondary-scale-multiplier: 2.0 # Scale multiplier for secondary noise
+  secondary-strength: 0.5 # Strength of secondary noise layer
+  detail-scale-multiplier: 4.0 # Scale multiplier for detail noise
+  detail-strength: 0.25 # Strength of detail noise layer
+
+  # Height thresholds and factors
+  bedrock-threshold: 5 # Y level below which terrain is solid
+  deep-stone-threshold: 15 # Y level for deep stone layer
+  deep-stone-density: 0.95 # Density for deep stone layer
+  surface-transition: 45 # Y level where surface transition begins
+  surface-level: 80 # Y level considered "surface"
+  hills-threshold: 140 # Y level where hills/mountains begin
+  high-altitude-min: 0.1 # Minimum density at high altitude
+
+# FarLands Settings
+farlands:
+  distortion-intensity: 0.6 # How chaotic FarLands terrain becomes
+  spike-intensity: 0.6 # Intensity of FarLands spikes
+  wall-intensity: 0.4 # Intensity of FarLands walls
+
+  # FarLands coordinate scaling
+  coord-scale-base: 0.00001 # Base coordinate scale for FarLands distortion
+  terrain-scale-multiplier: 3.0 # How much FarLands affects terrain scale
+
+  # FarLands distortion factors
+  distortion-x-strength: 0.4 # X-axis distortion strength
+  distortion-z-strength: 0.4 # Z-axis distortion strength
+  distortion-y-strength: 0.3 # Y-axis distortion strength
+
+  # FarLands spikes and walls
+  spike-coord-scale: 200.0 # Coordinate scale for spike noise
+  spike-y-scale: 100.0 # Y coordinate scale for spikes
+  wall-coord-scale: 500.0 # Coordinate scale for wall noise
+  wall-z-scale: 300.0 # Z coordinate scale for walls
+  wall-threshold: 0.8 # Threshold for wall generation
+  wall-height: 1.5 # Height multiplier for walls
+
+  # FarLands glitch effects
+  glitch-coord-scale: 1000.0 # Coordinate scale for glitch noise
+  glitch-y-scale: 500.0 # Y coordinate scale for glitches
+  glitch-threshold: 0.9 # Threshold for glitch effects
+  glitch-intensity: 0.8 # Intensity of glitch effects
+
+# Cave Generation
+caves:
+  density-multiplier: 0.4 # Overall cave density
+  large-cave-scale: 0.7 # Scale for large cave systems
+  medium-cave-scale: 1.2 # Scale for medium caves
+  small-cave-scale: 2.0 # Scale for small caves
+
+  # Cave depth factors
+  no-cave-threshold: 10 # Y level below which no caves generate
+  few-cave-threshold: 20 # Y level with reduced cave generation
+  few-cave-factor: 0.3 # Cave density factor for few-cave areas
+  peak-cave-threshold: 50 # Y level with maximum cave generation
+  peak-cave-factor: 1.5 # Cave density factor for peak areas
+  moderate-cave-threshold: 64 # Sea level - moderate caves
+  moderate-cave-factor: 1.0 # Cave density factor for moderate areas
+  surface-cave-factor: 0.5 # Cave density factor above sea level
+
+  # Cavern settings
+  cavern-threshold: 0.7 # Noise threshold for large caverns
+  cavern-density: 0.8 # Density value for caverns
+
+  # Small cave settings
+  small-cave-strength: 0.3 # Strength multiplier for small caves
+
+# =================================
+# ORE GENERATION SETTINGS
+# =================================
+
+# Standard Ore Thresholds (0.0-1.0, lower = more rare)
+ores:
+  diamond-threshold: 0.85 # Diamond ore rarity
+  gold-threshold: 0.8 # Gold ore rarity
+  iron-threshold: 0.75 # Iron ore rarity
+  copper-threshold: 0.7 # Copper ore rarity
+  coal-threshold: 0.6 # Coal ore rarity
+  redstone-threshold: 0.5 # Redstone ore rarity
+  emerald-threshold: 0.87 # Emerald ore rarity
+  lapis-threshold: 0.78 # Lapis Lazuli ore rarity
+
+# Sky Island Rare Ores (extremely rare)
+sky-island-ores:
+  netherite-threshold: 0.9 # Netherite block rarity
+  ancient-debris-threshold: 0.85 # Ancient debris rarity
+  sky-diamond-threshold: 0.8 # Diamond ore in sky islands
+  sky-emerald-threshold: 0.75 # Emerald ore in sky islands
+
+# =================================
+# SKY ISLANDS SETTINGS
+# =================================
+
+sky-islands:
+  enabled: true # Enable floating sky islands
+  min-height: 200 # Minimum Y level for sky islands
+  max-height: 280 # Maximum Y level for sky islands
+  rarity-threshold: 0.85 # Higher = more rare (0.0-1.0)
+  island-scale: 0.02 # Size scale of islands
+  distance-falloff: 24.0 # Distance falloff for island edges
+
+  # Sky island generation settings
+  location-scale: 0.001 # Scale for island location noise
+  center-grid-size: 32.0 # Grid size for island centers
+  shape-y-scale: 2.0 # Y-scale multiplier for island shape
+  variation-scale: 1.5 # Scale for island shape variation
+  variation-strength: 0.3 # Strength of shape variation
+  center-altitude: 240.0 # Center altitude for island falloff
+  altitude-falloff: 40.0 # Altitude falloff distance
+  farlands-bonus: 0.2 # FarLands bonus for sky islands
+
+# =================================
+# VEGETATION SETTINGS
+# =================================
+
+vegetation:
+  tree-chance: 0.1 # Chance of tree generation (0.0-1.0)
+  grass-chance: 0.3 # Chance of grass generation
+  flower-chance: 0.15 # Chance of flower generation
+  mushroom-chance: 0.05 # Chance of mushroom generation
+  berry-bush-chance: 0.08 # Chance of berry bush generation
+
+  # Biome-specific vegetation chances
+  plains:
+    tall-grass-chance: 0.15 # Chance of tall grass in plains
+    poppy-chance: 0.2 # Chance of poppy flowers
+    dandelion-chance: 0.22 # Chance of dandelion flowers
+
+  swamp:
+    fern-chance: 0.15 # Chance of ferns in swamp
+    blue-orchid-chance: 0.18 # Chance of blue orchids
+
+  desert:
+    dead-bush-chance: 0.05 # Chance of dead bushes
+    cactus-chance: 0.07 # Chance of cactus plants
+
+  jungle:
+    melon-chance: 0.1 # Chance of wild melons
+    bamboo-chance: 0.15 # Chance of bamboo shoots
+
+  taiga:
+    fern-chance: 0.1 # Chance of ferns in taiga
+
+  mushroom-fields:
+    brown-mushroom-chance: 0.1 # Chance of brown mushrooms
+    red-mushroom-chance: 0.08 # Chance of red mushrooms
+
+  # Tree generation chances by biome
+  tree-chances:
+    plains: 0.05 # Lower tree chance in plains
+    forest: 0.2 # High tree chance in forests
+    jungle: 0.25 # Very high in jungle
+    taiga: 0.15 # Moderate in taiga
+    desert: 0.001 # Very rare in desert
+    swamp: 0.08 # Some trees in swamp
+    savanna: 0.05 # Sparse trees in savanna
+    default: 0.1 # Default tree chance
+
+# Biome-specific vegetation multipliers
+biome-vegetation:
+  forest-tree-multiplier: 2.5 # Trees in forest biomes
+  jungle-vegetation-multiplier: 3.0 # Vegetation density in jungle
+  desert-vegetation-multiplier: 0.1 # Very sparse vegetation in desert
+  plains-grass-multiplier: 1.5 # More grass in plains
+
+# =================================
+# AGRICULTURE SETTINGS
+# =================================
+
+agriculture:
+  enabled: true # Enable agriculture generation
+  farm-chance: 0.05 # Chance of farm generation per chunk (0.0-1.0)
+  crop-variety: true # Enable variety in crop types
+  irrigation-systems: true # Generate irrigation for farms
+  farm-infrastructure: true # Generate fences, paths, storage
+  greenhouse-chance: 0.02 # Chance of greenhouse in cold biomes
+
+  # Random generation settings for agriculture
+  agriculture-random-x: 31 # X coordinate multiplier for agriculture random
+  agriculture-random-z: 17 # Z coordinate multiplier for agriculture random
+  agriculture-frequency: 20 # 1 in N chance for agriculture features
+
+# Biome-specific agriculture
+biome-agriculture:
+  plains-farm-multiplier: 2.0 # More farms in plains
+  forest-orchard-chance: 0.15 # Fruit orchards in forests
+  desert-oasis-chance: 0.008 # Very rare oasis farms
+  jungle-plantation-chance: 0.12 # Cocoa/bamboo plantations
+  swamp-rice-chance: 0.1 # Rice paddies in swamps
+
+# =================================
+# MOB SPAWNING SETTINGS
+# =================================
+
+mob-spawning:
+  enabled: true # Enable enhanced mob spawning areas
+  habitat-chance: 0.067 # Chance of habitat generation per chunk
+  water-source-chance: 0.1 # Chance of water sources for animals
+  shelter-generation: true # Generate animal shelters
+  feeding-areas: true # Generate feeding/grazing areas
+
+  # Random generation settings for mob spawning
+  spawning-random-x: 13 # X coordinate multiplier for mob spawning random
+  spawning-random-z: 29 # Z coordinate multiplier for mob spawning random
+  spawning-frequency: 15 # 1 in N chance for mob spawning features
+
+# Biome-specific mob spawning
+biome-spawning:
+  plains-grazing-multiplier: 2.0 # More grazing areas in plains
+  forest-clearing-chance: 0.12 # Forest clearings for animals
+  desert-oasis-animal-chance: 0.15 # Animal areas at desert oases
+  taiga-den-chance: 0.08 # Wolf dens in taiga
+  jungle-perch-chance: 0.2 # Parrot perches in jungle
+
+# =================================
+# STRUCTURE SETTINGS
+# =================================
+
+structures:
+  enabled: true # Enable structure generation
+  basic-structure-chance: 0.01 # Chance of basic structures (1%)
+  legendary-structure-chance: 0.001 # Chance of legendary structures (0.1%)
+  biome-specific-structures: true # Generate biome-appropriate structures
+
+# =================================
+# NOISE SEEDS (for consistent generation)
+# =================================
+
+seeds:
+  terrain: 42 # Terrain noise seed
+  caves: 1337 # Cave noise seed
+  biomes: 2021 # Biome noise seed
+  ores: 404 # Ore generation seed
+  sky-islands: 9000 # Sky island noise seed
+  agriculture: 7777 # Agriculture placement seed
+  spawning: 5555 # Mob spawning seed
+
+  # Additional noise seed offsets for different noise layers
+  secondary-terrain: 1000 # Secondary terrain noise offset
+  detail-terrain: 2000 # Detail terrain noise offset
+  hills: 3000 # Hill noise offset
+  valleys: 4000 # Valley noise offset
+  elevation: 5000 # Elevation noise offset
+  large-caves: 2000 # Large cave noise offset
+  medium-caves: 3000 # Medium cave noise offset
+  small-caves: 4000 # Small cave noise offset
+  caverns: 5000 # Cavern noise offset
+  farlands-spikes: 6000 # FarLands spike noise offset
+  farlands-walls: 7000 # FarLands wall noise offset
+  farlands-glitch: 8000 # FarLands glitch noise offset
+  sky-location: 9000 # Sky island location noise offset
+  sky-shape: 10000 # Sky island shape noise offset
+  sky-variation: 11000 # Sky island variation noise offset
+
+# =================================
+# DEBUG SETTINGS
+# =================================
+
+debug:
+  verbose-logging: false # Enable detailed generation logging
+  generation-stats: false # Log generation statistics
+  performance-monitoring: false # Monitor generation performance

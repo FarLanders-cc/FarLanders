@@ -5,10 +5,9 @@ import java.util.Random;
 import org.bukkit.Material;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
-public class StructureGenerator {
+import cc.farlanders.generate.config.GenerationConfig;
 
-    private static final double STRUCTURE_CHANCE = 0.01; // 1% common structure
-    private static final double LEGENDARY_STRUCTURE_CHANCE = 0.001; // 0.1% rare structure
+public class StructureGenerator {
 
     public enum BiomeStyle {
         PLAINS, DESERT, JUNGLE, SWAMP, TAIGA;
@@ -29,12 +28,12 @@ public class StructureGenerator {
             BiomeStyle biome) {
         Random random = new Random(hashCoords(worldX, worldZ) ^ 0xC0FFEE);
 
-        if (random.nextDouble() < LEGENDARY_STRUCTURE_CHANCE) {
+        if (random.nextDouble() < GenerationConfig.getLegendaryStructureChance()) {
             placeLegendaryStructure(chunk, cx, topY + 1, cz, random);
             return;
         }
 
-        if (random.nextDouble() > STRUCTURE_CHANCE)
+        if (random.nextDouble() > GenerationConfig.getBasicStructureChance())
             return;
 
         switch (biome) {
