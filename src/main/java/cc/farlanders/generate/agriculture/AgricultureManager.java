@@ -14,9 +14,24 @@ public class AgricultureManager {
     private static final Random random = new Random();
 
     /**
+     * Version-safe material lookup with fallback for compatibility with older
+     * Minecraft versions
+     */
+    private static Material getMaterialOrFallback(String materialName, Material fallback) {
+        try {
+            return Material.valueOf(materialName);
+        } catch (IllegalArgumentException e) {
+            return fallback;
+        }
+    }
+
+    /**
      * Generates agricultural structures based on biome type
      */
     public static void generateAgriculture(ChunkData chunk, int chunkX, int chunkZ, String biome, int surfaceY) {
+        if (biome == null) {
+            biome = "plains"; // Default fallback biome
+        }
         switch (biome.toLowerCase()) {
             case "plains", "sunflower_plains" -> generatePlainsFarms(chunk, chunkX, chunkZ, surfaceY);
             case "forest", "birch_forest" -> generateForestGardens(chunk, chunkX, chunkZ, surfaceY);
@@ -30,42 +45,44 @@ public class AgricultureManager {
     }
 
     private static void generatePlainsFarms(ChunkData chunk, int chunkX, int chunkZ, int surfaceY) {
-        // Large wheat and vegetable fields with scarecrows
-        if (random.nextInt(6) == 0) {
+        // Large wheat and vegetable fields with more spacing between features
+        if (random.nextInt(15) == 0) { // Increased from 6 to 15
             createWheatField(chunk, 3 + random.nextInt(10), 3 + random.nextInt(10), surfaceY);
         }
 
-        if (random.nextInt(8) == 0) {
+        if (random.nextInt(20) == 0) { // Increased from 8 to 20
             createVegetableGarden(chunk, 5 + random.nextInt(6), 5 + random.nextInt(6), surfaceY);
         }
 
-        if (random.nextInt(12) == 0) {
-            createScarecrow(chunk, 8 + random.nextInt(8), 8 + random.nextInt(8), surfaceY);
+        // Remove artificial scarecrows - farms are natural without decorative elements
+        if (random.nextInt(25) == 0) { // Increased from 12 to 25
+            // Create natural crop marker using hay bales instead
+            createCropMarker(chunk, 8 + random.nextInt(8), 8 + random.nextInt(8), surfaceY);
         }
     }
 
     private static void generateForestGardens(ChunkData chunk, int chunkX, int chunkZ, int surfaceY) {
-        // Small clearings with berry bushes and mushroom farms
-        if (random.nextInt(8) == 0) {
+        // Small clearings with berry bushes and mushroom farms - more spaced out
+        if (random.nextInt(18) == 0) { // Increased from 8 to 18
             createBerryFarm(chunk, 4 + random.nextInt(8), 4 + random.nextInt(8), surfaceY);
         }
 
-        if (random.nextInt(6) == 0) {
+        if (random.nextInt(15) == 0) { // Increased from 6 to 15
             createMushroomFarm(chunk, 6 + random.nextInt(4), 6 + random.nextInt(4), surfaceY);
         }
 
-        if (random.nextInt(10) == 0) {
+        if (random.nextInt(22) == 0) { // Increased from 10 to 22
             createTreeOrchard(chunk, 2 + random.nextInt(12), 2 + random.nextInt(12), surfaceY);
         }
     }
 
     private static void generateDesertFarms(ChunkData chunk, int chunkX, int chunkZ, int surfaceY) {
-        // Oasis farms with irrigation systems
-        if (random.nextInt(15) == 0) {
+        // Oasis farms with irrigation systems - much more spaced out in harsh desert
+        if (random.nextInt(35) == 0) { // Increased from 15 to 35 (desert should be sparse)
             createOasisFarm(chunk, 6 + random.nextInt(4), 6 + random.nextInt(4), surfaceY);
         }
 
-        if (random.nextInt(8) == 0) {
+        if (random.nextInt(20) == 0) { // Increased from 8 to 20
             createCactusFarm(chunk, 4 + random.nextInt(8), 4 + random.nextInt(8), surfaceY);
         }
     }
@@ -82,9 +99,9 @@ public class AgricultureManager {
     }
 
     private static void generateTaigaGreenhouses(ChunkData chunk, int chunkX, int chunkZ, int surfaceY) {
-        // Protected growing areas for cold climates
+        // Remove artificial greenhouse structure - use natural cold frames instead
         if (random.nextInt(12) == 0) {
-            createGreenhouse(chunk, 5 + random.nextInt(6), 5 + random.nextInt(6), surfaceY);
+            createColdFrameGarden(chunk, 5 + random.nextInt(6), 5 + random.nextInt(6), surfaceY);
         }
 
         if (random.nextInt(8) == 0) {
@@ -155,8 +172,7 @@ public class AgricultureManager {
             }
         }
 
-        // Add fence posts around the field
-        createFarmFencing(chunk, centerX, centerZ, targetY, 3);
+        // Remove artificial fencing - farms now exist without decorative boundaries
     }
 
     private static void createVegetableGarden(ChunkData chunk, int centerX, int centerZ, int surfaceY) {
@@ -170,7 +186,7 @@ public class AgricultureManager {
                 if (isValidPosition(centerX + x, centerZ + z)) {
                     // Create paths
                     if (x == 0 || z == 0) {
-                        chunk.setBlock(centerX + x, targetY, centerZ + z, Material.DIRT_PATH);
+                        chunk.setBlock(centerX + x, targetY, centerZ + z, Material.DIRT);
                     } else {
                         // Various crops
                         chunk.setBlock(centerX + x, targetY, centerZ + z, Material.FARMLAND);
@@ -190,24 +206,23 @@ public class AgricultureManager {
         }
     }
 
-    private static void createScarecrow(ChunkData chunk, int centerX, int centerZ, int surfaceY) {
+    private static void createCropMarker(ChunkData chunk, int centerX, int centerZ, int surfaceY) {
         int targetY = findSafeY(chunk, centerX, centerZ, surfaceY);
         if (targetY <= 0 || !isValidPosition(centerX, centerZ))
             return;
 
-        // Scarecrow post
-        chunk.setBlock(centerX, targetY + 1, centerZ, Material.OAK_FENCE);
-        chunk.setBlock(centerX, targetY + 2, centerZ, Material.OAK_FENCE);
+        // Natural crop marker using hay bales - resourceful and useful
+        chunk.setBlock(centerX, targetY + 1, centerZ, Material.HAY_BLOCK);
 
-        // Arms
-        chunk.setBlock(centerX - 1, targetY + 2, centerZ, Material.OAK_FENCE);
-        chunk.setBlock(centerX + 1, targetY + 2, centerZ, Material.OAK_FENCE);
-
-        // Head
-        chunk.setBlock(centerX, targetY + 3, centerZ, Material.PUMPKIN);
-
-        // Hat
-        chunk.setBlock(centerX, targetY + 4, centerZ, Material.BLACK_CARPET);
+        // Add some wheat around it
+        for (int x = -1; x <= 1; x++) {
+            for (int z = -1; z <= 1; z++) {
+                if (isValidPosition(centerX + x, centerZ + z) && (x != 0 || z != 0)) {
+                    chunk.setBlock(centerX + x, targetY, centerZ + z, Material.FARMLAND);
+                    chunk.setBlock(centerX + x, targetY + 1, centerZ + z, Material.WHEAT);
+                }
+            }
+        }
     }
 
     private static void createBerryFarm(ChunkData chunk, int centerX, int centerZ, int surfaceY) {
@@ -220,14 +235,16 @@ public class AgricultureManager {
             for (int z = -2; z <= 2; z += 2) {
                 if (isValidPosition(centerX + x, centerZ + z)) {
                     chunk.setBlock(centerX + x, targetY, centerZ + z, Material.GRASS_BLOCK);
-                    chunk.setBlock(centerX + x, targetY + 1, centerZ + z, Material.SWEET_BERRY_BUSH);
+                    chunk.setBlock(centerX + x, targetY + 1, centerZ + z,
+                            getMaterialOrFallback("SWEET_BERRY_BUSH", Material.TALL_GRASS));
                 }
             }
         }
 
         // Add compost area
         if (isValidPosition(centerX + 4, centerZ)) {
-            chunk.setBlock(centerX + 4, targetY + 1, centerZ, Material.COMPOSTER);
+            chunk.setBlock(centerX + 4, targetY + 1, centerZ,
+                    getMaterialOrFallback("COMPOSTER", Material.CHEST));
         }
     }
 
@@ -275,7 +292,7 @@ public class AgricultureManager {
                         case 0 -> Material.OAK_SAPLING;
                         case 1 -> Material.OAK_SAPLING;
                         case 2 -> Material.BIRCH_SAPLING;
-                        default -> Material.CHERRY_SAPLING;
+                        default -> getMaterialOrFallback("CHERRY_SAPLING", Material.OAK_SAPLING);
                     };
                     chunk.setBlock(centerX + x, targetY + 1, centerZ + z, sapling);
                 }
@@ -387,39 +404,6 @@ public class AgricultureManager {
         }
     }
 
-    private static void createGreenhouse(ChunkData chunk, int centerX, int centerZ, int surfaceY) {
-        int targetY = findSafeY(chunk, centerX, centerZ, surfaceY);
-        if (targetY <= 0)
-            return;
-
-        // Glass structure for cold climate growing
-        for (int x = -3; x <= 3; x++) {
-            for (int z = -3; z <= 3; z++) {
-                if (isValidPosition(centerX + x, centerZ + z)) {
-                    // Glass walls
-                    if (Math.abs(x) == 3 || Math.abs(z) == 3) {
-                        chunk.setBlock(centerX + x, targetY + 1, centerZ + z, Material.GLASS);
-                        chunk.setBlock(centerX + x, targetY + 2, centerZ + z, Material.GLASS);
-                    }
-                    // Glass roof
-                    if (Math.abs(x) <= 3 && Math.abs(z) <= 3) {
-                        chunk.setBlock(centerX + x, targetY + 3, centerZ + z, Material.GLASS);
-                    }
-                }
-            }
-        }
-
-        // Interior crops
-        for (int x = -2; x <= 2; x++) {
-            for (int z = -2; z <= 2; z++) {
-                if (isValidPosition(centerX + x, centerZ + z)) {
-                    chunk.setBlock(centerX + x, targetY, centerZ + z, Material.FARMLAND);
-                    chunk.setBlock(centerX + x, targetY + 1, centerZ + z, Material.WHEAT);
-                }
-            }
-        }
-    }
-
     private static void createColdFrameGarden(ChunkData chunk, int centerX, int centerZ, int surfaceY) {
         int targetY = findSafeY(chunk, centerX, centerZ, surfaceY);
         if (targetY <= 0)
@@ -441,11 +425,12 @@ public class AgricultureManager {
             }
         }
 
-        // Glass cover
+        // Natural windbreak using logs instead of glass
         for (int x = -3; x <= 3; x++) {
             for (int z = -3; z <= 3; z++) {
                 if ((Math.abs(x) == 3 || Math.abs(z) == 3) && isValidPosition(centerX + x, centerZ + z)) {
-                    chunk.setBlock(centerX + x, targetY + 2, centerZ + z, Material.GLASS_PANE);
+                    // Low windbreak walls using spruce logs for cold protection
+                    chunk.setBlock(centerX + x, targetY + 1, centerZ + z, Material.SPRUCE_LOG);
                 }
             }
         }
@@ -539,7 +524,7 @@ public class AgricultureManager {
         // Raised walkways
         for (int x = -4; x <= 4; x += 4) {
             if (isValidPosition(centerX + x, centerZ)) {
-                chunk.setBlock(centerX + x, targetY, centerZ, Material.DIRT_PATH);
+                chunk.setBlock(centerX + x, targetY, centerZ, Material.DIRT);
             }
         }
     }
@@ -569,21 +554,6 @@ public class AgricultureManager {
     }
 
     // Utility methods
-
-    private static void createFarmFencing(ChunkData chunk, int centerX, int centerZ, int targetY, int radius) {
-        for (int x = -radius; x <= radius; x++) {
-            for (int z = -radius; z <= radius; z++) {
-                if ((Math.abs(x) == radius || Math.abs(z) == radius) && isValidPosition(centerX + x, centerZ + z)) {
-                    chunk.setBlock(centerX + x, targetY + 1, centerZ + z, Material.OAK_FENCE);
-                }
-            }
-        }
-
-        // Gate
-        if (isValidPosition(centerX, centerZ + radius)) {
-            chunk.setBlock(centerX, targetY + 1, centerZ + radius, Material.OAK_FENCE_GATE);
-        }
-    }
 
     private static int findSafeY(ChunkData chunk, int x, int z, int startY) {
         if (!isValidPosition(x, z))

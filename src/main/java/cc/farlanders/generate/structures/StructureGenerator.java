@@ -9,6 +9,18 @@ import cc.farlanders.generate.config.GenerationConfig;
 
 public class StructureGenerator {
 
+    /**
+     * Safely gets a material if it exists in the current Minecraft version,
+     * otherwise returns a fallback material
+     */
+    private static Material getMaterialOrFallback(String materialName, Material fallback) {
+        try {
+            return Material.valueOf(materialName);
+        } catch (IllegalArgumentException e) {
+            return fallback;
+        }
+    }
+
     public enum BiomeStyle {
         PLAINS, DESERT, JUNGLE, SWAMP, TAIGA;
 
@@ -58,12 +70,14 @@ public class StructureGenerator {
     }
 
     private void buildTaigaStructure(ChunkData chunk, int x, int y, int z, Random random) {
-        layOutFoundation(chunk, x, y, z, 3, Material.SPRUCE_PLANKS);
+        // Natural stone foundation instead of artificial planks
+        layOutFoundation(chunk, x, y, z, 3, Material.COBBLESTONE);
         chunk.setBlock(x + 1, y + 1, z + 1, Material.BARREL);
     }
 
     private void buildSwampStructure(ChunkData chunk, int x, int y, int z, Random random) {
-        layOutFoundation(chunk, x - 1, y, z - 1, 3, Material.MANGROVE_PLANKS);
+        // Natural mud/stone foundation instead of artificial planks
+        layOutFoundation(chunk, x - 1, y, z - 1, 3, Material.MUD);
         chunk.setBlock(x, y + 1, z, Material.CAULDRON);
         if (random.nextBoolean())
             chunk.setBlock(x, y + 2, z, Material.BROWN_MUSHROOM_BLOCK);
@@ -78,7 +92,7 @@ public class StructureGenerator {
 
     private void placeLegendaryStructure(ChunkData chunk, int x, int y, int z, Random random) {
         int height = 4 + random.nextInt(4);
-        buildPillar(chunk, x, y, z, height, Material.CRYING_OBSIDIAN);
+        buildPillar(chunk, x, y, z, height, Material.OBSIDIAN); // Use regular obsidian
         chunk.setBlock(x, y + height, z, Material.ENCHANTING_TABLE);
 
         if (random.nextDouble() < 0.25) {
@@ -89,7 +103,7 @@ public class StructureGenerator {
         for (int dx = -radius; dx <= radius; dx++) {
             for (int dz = -radius; dz <= radius; dz++) {
                 if (dx * dx + dz * dz <= radius * radius && random.nextDouble() < 0.2) {
-                    chunk.setBlock(x + dx, y - 1, z + dz, Material.SHROOMLIGHT);
+                    chunk.setBlock(x + dx, y - 1, z + dz, getMaterialOrFallback("SHROOMLIGHT", Material.GLOWSTONE));
                 }
             }
         }

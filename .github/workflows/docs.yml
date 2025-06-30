@@ -1,0 +1,159 @@
+name: Documentation and Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: "21"
+          distribution: "temurin"
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Cache Gradle packages
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Run tests with coverage
+        run: ./gradlew test jacocoTestReport
+
+      - name: Generate Javadoc
+        run: ./gradlew javadoc
+
+      - name: Build JAR
+        run: ./gradlew build
+
+      - name: Create documentation structure
+        run: |
+          mkdir -p public
+          mkdir -p public/api
+          mkdir -p public/coverage  
+          mkdir -p public/tests
+          mkdir -p public/download
+
+          # Copy generated documentation
+          cp -r build/docs/javadoc/* public/api/
+          cp -r build/reports/jacoco/test/html/* public/coverage/
+          cp -r build/reports/tests/test/* public/tests/
+          cp build/libs/*.jar public/download/
+          cp CHANGELOG.md public/
+          cp README.md public/ 2>/dev/null || echo "README.md not found"
+
+          # Create index.html
+          cat > public/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>FarLanders Documentation</title>
+              <style>
+                  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; margin: 40px; line-height: 1.6; }
+                  .container { max-width: 800px; margin: 0 auto; }
+                  .nav-card { background: #f8f9fa; padding: 20px; margin: 15px 0; border-radius: 8px; border: 1px solid #e9ecef; }
+                  .nav-card h3 { margin-top: 0; color: #495057; }
+                  .nav-card a { color: #007bff; text-decoration: none; font-weight: 500; }
+                  .nav-card a:hover { text-decoration: underline; }
+                  .badge { background: #28a745; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; }
+                  .header { text-align: center; margin-bottom: 40px; }
+                  .version { color: #6c757d; }
+              </style>
+          </head>
+          <body>
+              <div class="container">
+                  <div class="header">
+                      <h1>🏔️ FarLanders Documentation</h1>
+                      <p class="version">Version <span class="badge">1.0.1</span></p>
+                      <p>Minecraft plugin for enhanced world generation</p>
+                  </div>
+                  
+                  <div class="nav-card">
+                      <h3>📚 API Documentation</h3>
+                      <p>Complete Javadoc API reference for developers</p>
+                      <a href="./api/">Browse API Documentation →</a>
+                  </div>
+                  
+                  <div class="nav-card">
+                      <h3>🧪 Test Results</h3>
+                      <p>Latest test execution results and reports</p>
+                      <a href="./tests/">View Test Results →</a>
+                  </div>
+                  
+                  <div class="nav-card">
+                      <h3>📊 Code Coverage</h3>
+                      <p>Test coverage analysis and metrics</p>
+                      <a href="./coverage/">View Coverage Report →</a>
+                  </div>
+                  
+                  <div class="nav-card">
+                      <h3>📥 Downloads</h3>
+                      <p>Latest plugin JAR file for server installation</p>
+                      <a href="./download/">Download Plugin →</a>
+                  </div>
+                  
+                  <div class="nav-card">
+                      <h3>📝 Changelog</h3>
+                      <p>Version history and release notes</p>
+                      <a href="./CHANGELOG.md">View Changelog →</a>
+                  </div>
+                  
+                  <div class="nav-card">
+                      <h3>🔗 Links</h3>
+                      <p>
+                          <a href="https://github.com/YourOrganization/FarLanders">GitHub Repository</a> •
+                          <a href="https://farlanders.cc">Main Website</a>
+                      </p>
+                  </div>
+              </div>
+          </body>
+          </html>
+          EOF
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "./public"
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: test-and-build
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,9 +1,10 @@
 name: FarLanders
 author: MJ Anglin
 main: cc.farlanders.plugin.FarLanders
-version: 1.0.0
+version: 1.0.1
 api-version: 1.21
 website: https://farlanders.cc
+api: 1.0.1
 
 commands:
   farlanders:
@@ -16,7 +17,7 @@ commands:
 permissions:
   farlanders.command:
     description: Grants access to the main FarLanders command
-    default: true
+    default: op
 
   farlanders.generate:
     description: Allows the use of the main FarLanders generate command
@@ -29,10 +30,6 @@ permissions:
   farlanders.admin:
     description: Grants access to administrative commands
     default: op
-
-  farlanders.user:
-    description: Grants access to user commands
-    default: true
 
   farlanders.bypass:
     description: Allows users to bypass certain restrictions

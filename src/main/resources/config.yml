@@ -261,8 +261,8 @@ biome-spawning:
 
 structures:
   enabled: true # Enable structure generation
-  basic-structure-chance: 0.01 # Chance of basic structures (1%)
-  legendary-structure-chance: 0.001 # Chance of legendary structures (0.1%)
+  basic-structure-chance: 0.005 # Chance of basic structures (0.5%) - Reduced from 1%
+  legendary-structure-chance: 0.0005 # Chance of legendary structures (0.05%) - Reduced from 0.1%
   biome-specific-structures: true # Generate biome-appropriate structures
 
 # =================================

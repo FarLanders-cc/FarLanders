@@ -15,6 +15,18 @@ public class TerrainHandler {
     private static final String MUSHROOM_FIELDS = "mushroom_fields";
     private static final String SNOWY_PLAINS = "snowy_plains";
 
+    /**
+     * Safely gets a material if it exists in the current Minecraft version,
+     * otherwise returns a fallback material
+     */
+    private static Material getMaterialOrFallback(String materialName, Material fallback) {
+        try {
+            return Material.valueOf(materialName);
+        } catch (IllegalArgumentException e) {
+            return fallback;
+        }
+    }
+
     public static class BlockContext {
         public final int cx;
         public final int cz;
@@ -111,10 +123,10 @@ public class TerrainHandler {
 
         // Sky islands contain much rarer and more valuable ores
         if (rareOreNoise > 0.9) {
-            return Material.NETHERITE_BLOCK; // Extremely rare
+            return getMaterialOrFallback("NETHERITE_BLOCK", Material.DIAMOND_BLOCK);
         }
         if (rareOreNoise > 0.85) {
-            return Material.ANCIENT_DEBRIS; // Very rare
+            return getMaterialOrFallback("ANCIENT_DEBRIS", Material.DIAMOND_ORE);
         }
         if (rareOreNoise > 0.8) {
             return Material.DIAMOND_ORE; // Rare
@@ -135,18 +147,18 @@ public class TerrainHandler {
             if (noise > 0.6)
                 return Material.END_STONE;
             if (noise > 0.4)
-                return Material.CALCITE;
-            return Material.DRIPSTONE_BLOCK;
+                return getMaterialOrFallback("CALCITE", Material.STONE);
+            return getMaterialOrFallback("DRIPSTONE_BLOCK", Material.COBBLESTONE);
         } else if (y > 240) {
             // Middle of sky islands - mixed materials
             if (noise > 0.5)
-                return Material.DEEPSLATE;
+                return getMaterialOrFallback("DEEPSLATE", Material.ANDESITE);
             return Material.STONE;
         } else {
             // Base of sky islands - solid foundation
             if (noise > 0.7)
                 return Material.OBSIDIAN;
-            return Material.BLACKSTONE;
+            return getMaterialOrFallback("BLACKSTONE", Material.COBBLESTONE);
         }
     }
 
@@ -169,18 +181,25 @@ public class TerrainHandler {
     private Material getDeepMaterial(int x, int y, int z) {
         double noise = noise3D(x, y, z);
         if (noise > 0.85)
-            return Material.DEEPSLATE_DIAMOND_ORE;
+            return getMaterialOrFallback("DEEPSLATE_DIAMOND_ORE", Material.DIAMOND_ORE);
         if (noise > 0.8)
-            return Material.DEEPSLATE_GOLD_ORE;
+            return getMaterialOrFallback("DEEPSLATE_GOLD_ORE", Material.GOLD_ORE);
         if (noise > 0.75)
-            return Material.DEEPSLATE_IRON_ORE;
+            return getMaterialOrFallback("DEEPSLATE_IRON_ORE", Material.IRON_ORE);
         if (noise > 0.7)
-            return Material.DEEPSLATE_COPPER_ORE;
+            return getMaterialOrFallback("DEEPSLATE_COPPER_ORE", Material.STONE);
         if (noise > 0.6)
-            return Material.DEEPSLATE_COAL_ORE;
+            return getMaterialOrFallback("DEEPSLATE_COAL_ORE", Material.COAL_ORE);
         if (noise > 0.5)
-            return Material.DEEPSLATE_REDSTONE_ORE;
-        return Material.DEEPSLATE;
+            return getMaterialOrFallback("DEEPSLATE_REDSTONE_ORE", Material.REDSTONE_ORE);
+
+        // Add deep stone variety in clumps
+        Material deepStoneVariant = getDeepStoneVariantClump(x, y, z);
+        if (deepStoneVariant != null) {
+            return deepStoneVariant;
+        }
+
+        return getMaterialOrFallback("DEEPSLATE", Material.STONE);
     }
 
     private Material getTransitionMaterial(int x, int y, int z, String biome) {
@@ -188,15 +207,21 @@ public class TerrainHandler {
         if (noise > 0.8)
             return Material.IRON_ORE;
         if (noise > 0.75)
-            return Material.COPPER_ORE;
+            return getMaterialOrFallback("COPPER_ORE", Material.STONE);
         if (noise > 0.7)
             return Material.COAL_ORE;
+
+        // Generate stone variety in clumps
+        Material stoneVariant = getStoneVariantClump(x, y, z, biome);
+        if (stoneVariant != null) {
+            return stoneVariant;
+        }
 
         // Biome-specific stone variants
         return switch (biome.toLowerCase()) {
             case DESERT, BADLANDS -> Material.SANDSTONE;
             case "mountains", "stony_peaks" -> Material.ANDESITE;
-            case "dripstone_caves" -> Material.DRIPSTONE_BLOCK;
+            case "dripstone_caves" -> Material.COBBLESTONE; // Use cobblestone instead
             default -> Material.STONE;
         };
     }
@@ -248,21 +273,21 @@ public class TerrainHandler {
 
     private Material getDeepslateOre(double noise) {
         if (noise > 0.8)
-            return Material.DEEPSLATE_IRON_ORE;
+            return getMaterialOrFallback("DEEPSLATE_IRON_ORE", Material.IRON_ORE);
         if (noise > 0.7)
-            return Material.DEEPSLATE_GOLD_ORE;
+            return getMaterialOrFallback("DEEPSLATE_GOLD_ORE", Material.GOLD_ORE);
         if (noise > 0.6)
-            return Material.DEEPSLATE_COPPER_ORE;
+            return getMaterialOrFallback("DEEPSLATE_COPPER_ORE", Material.STONE);
         if (noise > 0.5)
-            return Material.DEEPSLATE_COAL_ORE;
-        return Material.DEEPSLATE;
+            return getMaterialOrFallback("DEEPSLATE_COAL_ORE", Material.COAL_ORE);
+        return getMaterialOrFallback("DEEPSLATE", Material.STONE);
     }
 
     private Material getStoneOre(double noise) {
         if (noise > 0.8)
             return Material.IRON_ORE;
         if (noise > 0.7)
-            return Material.COPPER_ORE;
+            return getMaterialOrFallback("COPPER_ORE", Material.STONE);
         if (noise > 0.6)
             return Material.COAL_ORE;
         return Material.STONE;
@@ -270,5 +295,91 @@ public class TerrainHandler {
 
     private double noise3D(int x, int y, int z) {
         return OpenSimplex2.noise3_ImproveXY(NOISE_SEED, x * 0.05, y * 0.05, z * 0.05);
+    }
+
+    /**
+     * Generates stone variants in clumps for more geological variety
+     */
+    private Material getStoneVariantClump(int x, int y, int z, String biome) {
+        // Use larger scale noise to create clumps rather than scattered variants
+        double clumpNoise = OpenSimplex2.noise3_ImproveXY(NOISE_SEED + 2000, x * 0.008, y * 0.008, z * 0.008);
+        double varietyNoise = OpenSimplex2.noise3_ImproveXY(NOISE_SEED + 3000, x * 0.012, y * 0.012, z * 0.012);
+
+        // Define stone variant zones based on noise values
+        if (clumpNoise > 0.4) {
+            // Granite clumps
+            if (varietyNoise > 0.3)
+                return Material.GRANITE;
+            if (varietyNoise > 0.0)
+                return Material.POLISHED_GRANITE;
+            return Material.GRANITE;
+        } else if (clumpNoise > 0.1) {
+            // Diorite clumps
+            if (varietyNoise > 0.3)
+                return Material.DIORITE;
+            if (varietyNoise > 0.0)
+                return Material.POLISHED_DIORITE;
+            return Material.DIORITE;
+        } else if (clumpNoise > -0.2) {
+            // Andesite clumps
+            if (varietyNoise > 0.3)
+                return Material.ANDESITE;
+            if (varietyNoise > 0.0)
+                return Material.POLISHED_ANDESITE;
+            return Material.ANDESITE;
+        } else if (clumpNoise > -0.5) {
+            // Stone variant clumps (calcite and tuff)
+            if (varietyNoise > 0.2)
+                return getMaterialOrFallback("CALCITE", Material.STONE);
+            if (varietyNoise > -0.2)
+                return getMaterialOrFallback("TUFF", Material.COBBLESTONE);
+            return getMaterialOrFallback("CALCITE", Material.STONE);
+        } else if (clumpNoise > -0.7) {
+            // Stone variant clumps (deepslate variants)
+            if (varietyNoise > 0.1)
+                return getMaterialOrFallback("DEEPSLATE", Material.COBBLESTONE);
+            if (varietyNoise > -0.3)
+                return getMaterialOrFallback("COBBLED_DEEPSLATE", Material.ANDESITE);
+            return getMaterialOrFallback("DEEPSLATE", Material.COBBLESTONE);
+        }
+
+        // Biome-specific rare stone clumps
+        if (clumpNoise < -0.7) {
+            return switch (biome.toLowerCase()) {
+                case "desert", "badlands" -> varietyNoise > 0.0 ? Material.RED_SANDSTONE : Material.SANDSTONE;
+                case "swamp", "mangrove_swamp" ->
+                    varietyNoise > 0.0 ? getMaterialOrFallback("MUD", Material.DIRT) : Material.COARSE_DIRT;
+                case "jungle" -> varietyNoise > 0.0 ? Material.MOSSY_COBBLESTONE : Material.MOSSY_STONE_BRICKS;
+                case "taiga", "snowy_taiga" ->
+                    varietyNoise > 0.0 ? Material.PACKED_ICE : getMaterialOrFallback("BLUE_ICE", Material.ICE);
+                case "mountains", "stony_peaks" ->
+                    varietyNoise > 0.0 ? getMaterialOrFallback("DEEPSLATE", Material.COBBLESTONE) : Material.STONE;
+                default -> Material.COBBLESTONE;
+            };
+        }
+
+        return null; // Return null to use default stone
+    }
+
+    /**
+     * Generates deep stone variants in clumps for underground variety
+     */
+    private Material getDeepStoneVariantClump(int x, int y, int z) {
+        // Use different noise for deep stone variants (use 1.15.2 compatible materials)
+        double deepClumpNoise = OpenSimplex2.noise3_ImproveXY(NOISE_SEED + 4000, x * 0.01, y * 0.01, z * 0.01);
+
+        if (deepClumpNoise > 0.6) {
+            return Material.COBBLESTONE;
+        } else if (deepClumpNoise > 0.3) {
+            return Material.STONE_BRICKS;
+        } else if (deepClumpNoise > 0.0) {
+            return Material.POLISHED_ANDESITE;
+        } else if (deepClumpNoise > -0.3) {
+            return Material.ANDESITE;
+        } else if (deepClumpNoise > -0.6) {
+            return Material.CHISELED_STONE_BRICKS;
+        }
+
+        return null; // Use default stone
     }
 }

@@ -40,25 +40,26 @@ public class MobSpawningManager {
     }
 
     private static void generatePlainsSpawning(ChunkData chunk, int chunkX, int chunkZ) {
-        // Create small farm-like areas and grazing spots for cows, sheep, horses
-        if (random.nextInt(4) == 0) {
+        // Create small farm-like areas and grazing spots - more spaced out
+        if (random.nextInt(12) == 0) { // Increased from 4 to 12
             createGrazingArea(chunk, 5 + random.nextInt(6), 5 + random.nextInt(6), Material.GRASS_BLOCK);
         }
 
         // Occasional small ponds for animals to drink
-        if (random.nextInt(8) == 0) {
+        if (random.nextInt(18) == 0) { // Increased from 8 to 18
             createSmallPond(chunk, 3 + random.nextInt(10), 3 + random.nextInt(10));
         }
     }
 
     private static void generateForestSpawning(ChunkData chunk, int chunkX, int chunkZ) {
-        // Create forest clearings for wolves, foxes, and occasional farm animals
-        if (random.nextInt(6) == 0) {
+        // Create forest clearings for wolves, foxes, and occasional farm animals - more
+        // spaced
+        if (random.nextInt(15) == 0) { // Increased from 6 to 15
             createForestClearing(chunk, 4 + random.nextInt(8), 4 + random.nextInt(8));
         }
 
         // Berry bushes and hiding spots
-        if (random.nextInt(3) == 0) {
+        if (random.nextInt(8) == 0) { // Increased from 3 to 8
             createBerryPatch(chunk, 2 + random.nextInt(12), 2 + random.nextInt(12));
         }
     }
@@ -368,11 +369,11 @@ public class MobSpawningManager {
             chunk.setBlock(centerX, surfaceY + y, centerZ, Material.JUNGLE_LOG);
         }
 
-        // Platform on top
+        // Natural platform using jungle logs only (no artificial planks)
         for (int x = -1; x <= 1; x++) {
             for (int z = -1; z <= 1; z++) {
                 if (isValidPosition(centerX + x, centerZ + z)) {
-                    chunk.setBlock(centerX + x, surfaceY + 4, centerZ + z, Material.JUNGLE_PLANKS);
+                    chunk.setBlock(centerX + x, surfaceY + 4, centerZ + z, Material.JUNGLE_LOG);
                 }
             }
         }
@@ -417,7 +418,7 @@ public class MobSpawningManager {
         for (int x = -2; x <= 2; x++) {
             for (int z = -2; z <= 2; z++) {
                 if (isValidPosition(centerX + x, centerZ + z)) {
-                    chunk.setBlock(centerX + x, surfaceY, centerZ + z, Material.MUD);
+                    chunk.setBlock(centerX + x, surfaceY, centerZ + z, getMaterialOrFallback("MUD", Material.DIRT));
                     if (random.nextInt(4) == 0) {
                         chunk.setBlock(centerX + x, surfaceY + 1, centerZ + z, Material.DEAD_BUSH);
                     }
@@ -484,6 +485,31 @@ public class MobSpawningManager {
     }
 
     /**
+     * Safely gets a material if it exists in the current Minecraft version,
+     * otherwise returns a fallback material
+     */
+    private static Material getMaterialOrFallback(String materialName, Material fallback) {
+        try {
+            return Material.valueOf(materialName);
+        } catch (IllegalArgumentException e) {
+            return fallback;
+        }
+    }
+
+    /**
+     * Safely adds an entity type to the list if it exists in the current Minecraft
+     * version
+     */
+    private static void addEntityIfExists(List<EntityType> mobs, String entityName) {
+        try {
+            EntityType entityType = EntityType.valueOf(entityName);
+            mobs.add(entityType);
+        } catch (IllegalArgumentException e) {
+            // Entity not available in this Minecraft version, skip
+        }
+    }
+
+    /**
      * Gets recommended mob types for a given biome
      */
     public static List<EntityType> getRecommendedMobs(String biome) {
@@ -508,7 +534,7 @@ public class MobSpawningManager {
                 mobs.add(EntityType.FOX);
             }
             case "desert" -> {
-                mobs.add(EntityType.CAMEL);
+                addEntityIfExists(mobs, "CAMEL");
                 mobs.add(EntityType.RABBIT);
             }
             case "savanna", "savanna_plateau" -> {
@@ -524,14 +550,18 @@ public class MobSpawningManager {
             case "jungle" -> {
                 mobs.add(EntityType.PARROT);
                 mobs.add(EntityType.OCELOT);
-                mobs.add(EntityType.PANDA);
+                addEntityIfExists(mobs, "PANDA");
             }
             case "swamp" -> {
-                mobs.add(EntityType.FROG);
+                addEntityIfExists(mobs, "FROG");
                 mobs.add(EntityType.SLIME);
             }
             case "mushroom_fields" -> {
-                mobs.add(EntityType.MOOSHROOM);
+                addEntityIfExists(mobs, "MOOSHROOM");
+                // Fallback for older versions
+                if (mobs.isEmpty()) {
+                    addEntityIfExists(mobs, "MUSHROOM_COW");
+                }
             }
             case "ocean", "deep_ocean" -> {
                 mobs.add(EntityType.SQUID);
