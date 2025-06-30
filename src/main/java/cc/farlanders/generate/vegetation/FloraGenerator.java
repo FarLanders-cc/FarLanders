@@ -103,7 +103,7 @@ public class FloraGenerator {
     private void placeRoots(ChunkData chunk, int cx, int y, int cz, String biome, Random random) {
         int rootDepth = 1 + random.nextInt(2);
         Material rootMat = switch (biome.toLowerCase()) {
-            case "swamp", "mangrove swamp" -> Material.MANGROVE_ROOTS;
+            case BIOME_SWAMP, "mangrove swamp" -> Material.MANGROVE_ROOTS;
             case "taiga" -> Material.SPRUCE_LOG;
             case "jungle" -> Material.JUNGLE_LOG;
             default -> Material.DIRT;
