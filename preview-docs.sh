@@ -74,8 +74,10 @@ else
     echo "⚠️  logo.png not found, skipping favicon..."
 fi
 
-# Create index.html (same as GitHub Actions)
+# Create index.html if it doesn't exist from docs/ (same as GitHub Actions)
 echo "🏠 Creating index page..."
+if [ ! -f "public/index.html" ]; then
+    echo "📝 Creating fallback index.html..."
 cat > public/index.html << 'EOF'
 <!DOCTYPE html>
 <html lang="en">
@@ -181,6 +183,9 @@ cat > public/index.html << 'EOF'
 </body>
 </html>
 EOF
+else
+    echo "✅ Using existing index.html from docs/"
+fi
 
 # Copy CNAME for completeness
 cp CNAME public/ 2>/dev/null || echo "📝 CNAME not found, that's okay for local preview"
