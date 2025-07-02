@@ -323,25 +323,49 @@ public class TerrainHandler {
 
     private Material getChaoticDeepMaterial(int x, int y, int z, BlockContext context) {
         double noise = noise3D(x, y, z);
-        double chaosBonus = context.chaosIntensity * GenerationConfig.getChaosDeepOreBonus(); // Chaos dramatically
-                                                                                              // increases ore chances
+        double chaosBonus = context.chaosIntensity * GenerationConfig.getChaosDeepOreBonus() * 0.2; // Reduced chaos ore
+                                                                                                    // bonus
 
-        // Much higher ore concentrations due to chaos
-        if (noise > 0.8 - chaosBonus)
+        // Use separate noise for each ore type to prevent clustering
+        double diamondNoise = OpenSimplex2.noise3_ImproveXY(GenerationConfig.getOreSeed() + 1001, x * 0.08, y * 0.08,
+                z * 0.08);
+        double goldNoise = OpenSimplex2.noise3_ImproveXY(GenerationConfig.getOreSeed() + 2002, x * 0.09, y * 0.09,
+                z * 0.09);
+        double ironNoise = OpenSimplex2.noise3_ImproveXY(GenerationConfig.getOreSeed() + 3003, x * 0.1, y * 0.1,
+                z * 0.1);
+        double copperNoise = OpenSimplex2.noise3_ImproveXY(GenerationConfig.getOreSeed() + 4004, x * 0.11, y * 0.11,
+                z * 0.11);
+        double coalNoise = OpenSimplex2.noise3_ImproveXY(GenerationConfig.getOreSeed() + 5005, x * 0.12, y * 0.12,
+                z * 0.12);
+        double redstoneNoise = OpenSimplex2.noise3_ImproveXY(GenerationConfig.getOreSeed() + 6006, x * 0.13, y * 0.13,
+                z * 0.13);
+
+        // Distributed ore generation - much smaller veins
+        if (diamondNoise > GenerationConfig.getDiamondOreThreshold() - chaosBonus && y < 16)
             return getMaterialOrFallback("DEEPSLATE_DIAMOND_ORE", Material.DIAMOND_ORE);
-        if (noise > 0.75 - chaosBonus)
+        if (goldNoise > GenerationConfig.getGoldOreThreshold() - chaosBonus && y < 32)
             return getMaterialOrFallback("DEEPSLATE_GOLD_ORE", Material.GOLD_ORE);
-        if (noise > 0.7 - chaosBonus)
+        if (ironNoise > GenerationConfig.getIronOreThreshold() - chaosBonus)
             return getMaterialOrFallback("DEEPSLATE_IRON_ORE", Material.IRON_ORE);
-        if (noise > 0.65 - chaosBonus)
+        if (copperNoise > GenerationConfig.getCopperOreThreshold() - chaosBonus)
             return getMaterialOrFallback("DEEPSLATE_COPPER_ORE", Material.STONE);
-        if (noise > 0.6 - chaosBonus)
+        if (coalNoise > GenerationConfig.getCoalOreThreshold() - chaosBonus)
             return getMaterialOrFallback("DEEPSLATE_COAL_ORE", Material.COAL_ORE);
-        if (noise > 0.55 - chaosBonus)
+        if (redstoneNoise > GenerationConfig.getRedstoneOreThreshold() - chaosBonus)
             return getMaterialOrFallback("DEEPSLATE_REDSTONE_ORE", Material.REDSTONE_ORE);
 
+        // Add building materials in deep areas
+        double buildingNoise = OpenSimplex2.noise3_ImproveXY(GenerationConfig.getOreSeed() + 7007, x * 0.06, y * 0.06,
+                z * 0.06);
+        if (buildingNoise > 0.7) {
+            return getMaterialOrFallback("CLAY", Material.DIRT);
+        }
+        if (buildingNoise > 0.65) {
+            return getMaterialOrFallback("GRAVEL", Material.COBBLESTONE);
+        }
+
         // Chaos can create rare deep materials
-        if (context.chaosIntensity > 1.0 && noise > 0.5) {
+        if (context.chaosIntensity > 1.0 && noise > 0.85) {
             return getMaterialOrFallback("SCULK", Material.DEEPSLATE);
         }
 
@@ -353,17 +377,38 @@ public class TerrainHandler {
     }
 
     private Material getChaoticOreOrStone(int x, int y, int z, BlockContext context) {
-        double noise = noise3D(x, y, z);
-        double chaosBonus = context.chaosIntensity * GenerationConfig.getChaosTransitionOreBonus();
+        double chaosBonus = context.chaosIntensity * GenerationConfig.getChaosTransitionOreBonus() * 0.3; // Reduced
+                                                                                                          // chaos bonus
 
-        if (noise > 0.75 - chaosBonus)
+        // Use separate noise for each ore type to prevent clustering
+        double ironNoise = OpenSimplex2.noise3_ImproveXY(GenerationConfig.getOreSeed() + 3003, x * 0.15, y * 0.15,
+                z * 0.15);
+        double copperNoise = OpenSimplex2.noise3_ImproveXY(GenerationConfig.getOreSeed() + 4004, x * 0.16, y * 0.16,
+                z * 0.16);
+        double coalNoise = OpenSimplex2.noise3_ImproveXY(GenerationConfig.getOreSeed() + 5005, x * 0.17, y * 0.17,
+                z * 0.17);
+        double redstoneNoise = OpenSimplex2.noise3_ImproveXY(GenerationConfig.getOreSeed() + 6006, x * 0.18, y * 0.18,
+                z * 0.18);
+
+        // Distributed ore generation - smaller veins
+        if (ironNoise > GenerationConfig.getIronOreThreshold() - chaosBonus)
             return Material.IRON_ORE;
-        if (noise > 0.7 - chaosBonus)
+        if (copperNoise > GenerationConfig.getCopperOreThreshold() - chaosBonus)
             return getMaterialOrFallback("COPPER_ORE", Material.STONE);
-        if (noise > 0.65 - chaosBonus)
+        if (coalNoise > GenerationConfig.getCoalOreThreshold() - chaosBonus)
             return Material.COAL_ORE;
-        if (noise > 0.6 - chaosBonus)
+        if (redstoneNoise > GenerationConfig.getRedstoneOreThreshold() - chaosBonus)
             return Material.REDSTONE_ORE;
+
+        // Add building materials (sand for glass-making)
+        double buildingNoise = OpenSimplex2.noise3_ImproveXY(GenerationConfig.getOreSeed() + 7007, x * 0.12, y * 0.12,
+                z * 0.12);
+        if (buildingNoise > 0.75) {
+            return Material.SAND; // Essential for glass crafting
+        }
+        if (buildingNoise > 0.7) {
+            return getMaterialOrFallback("GRAVEL", Material.COBBLESTONE);
+        }
 
         // Chaos creates material mixing
         if (context.chaosIntensity > GenerationConfig.getMaterialMixingThreshold()) {
@@ -379,15 +424,38 @@ public class TerrainHandler {
     }
 
     private Material getChaoticTransitionMaterial(int x, int y, int z, String biome, BlockContext context) {
-        double noise = noise3D(x, y, z);
-        double chaosBonus = context.chaosIntensity * GenerationConfig.getChaosTransitionOreBonus();
+        double chaosBonus = context.chaosIntensity * GenerationConfig.getChaosTransitionOreBonus() * 0.25; // Reduced
+                                                                                                           // chaos
+                                                                                                           // bonus
 
-        if (noise > 0.7 - chaosBonus)
+        // Use separate noise for transition ores
+        double ironNoise = OpenSimplex2.noise3_ImproveXY(GenerationConfig.getOreSeed() + 3003, x * 0.18, y * 0.18,
+                z * 0.18);
+        double copperNoise = OpenSimplex2.noise3_ImproveXY(GenerationConfig.getOreSeed() + 4004, x * 0.19, y * 0.19,
+                z * 0.19);
+        double coalNoise = OpenSimplex2.noise3_ImproveXY(GenerationConfig.getOreSeed() + 5005, x * 0.2, y * 0.2,
+                z * 0.2);
+
+        // Distributed ore generation
+        if (ironNoise > GenerationConfig.getIronOreThreshold() - chaosBonus)
             return Material.IRON_ORE;
-        if (noise > 0.65 - chaosBonus)
+        if (copperNoise > GenerationConfig.getCopperOreThreshold() - chaosBonus)
             return getMaterialOrFallback("COPPER_ORE", Material.STONE);
-        if (noise > 0.6 - chaosBonus)
+        if (coalNoise > GenerationConfig.getCoalOreThreshold() - chaosBonus)
             return Material.COAL_ORE;
+
+        // Add more building materials
+        double buildingNoise = OpenSimplex2.noise3_ImproveXY(GenerationConfig.getOreSeed() + 8008, x * 0.14, y * 0.14,
+                z * 0.14);
+        if (buildingNoise > 0.8) {
+            return getMaterialOrFallback("CLAY", Material.DIRT);
+        }
+        if (buildingNoise > 0.75) {
+            return Material.SAND;
+        }
+        if (buildingNoise > 0.7) {
+            return getMaterialOrFallback("GRAVEL", Material.COBBLESTONE);
+        }
 
         // Chaos mixes biome materials
         if (context.chaosIntensity > GenerationConfig.getBiomeMixingThreshold()) {

@@ -15,7 +15,6 @@ FarLanders is the primary plugin for a Minecraft server that features **enhanced
 ---
 
 - [World Generation Overview](#-world-generation-overview)
-- [World Generation](#world-generation)
 - [Usage](#usage)
 - [World Generation Tests](#world-generation-tests)
 - [Features](#features)
@@ -43,12 +42,6 @@ Discover advanced world generation including:
 - **Progressive terrain distortion** leading to the Far Lands
 
 ---
-
-## World Generation
-
-The world generation is based on the Far Lands concept, which is a phenomenon in Minecraft where the terrain becomes distorted and chaotic at extreme distances from the center of the world. This plugin implements a custom world generator that creates these unique landscapes.
-
-- The noise generation is based on [OpenSimplex2](https://github.com/KdotJPG/OpenSimplex2).
 
 ## Usage
 
@@ -209,3 +202,13 @@ The FarLanders plugin includes comprehensive tab completion for all commands:
 - **Meadow**: Ideal grazing areas for livestock
 - **Improved Transitions**: Smoother blending between different biomes
 - **Specialized Structures**: Biome-specific buildings and formations
+
+### **Ancient Buried Ruins** ⛪
+
+- **Location**: Deep underground, 10-25 blocks below the surface
+- **Rarity**: Extremely rare - only appears far from spawn (1000+ blocks)
+- **Structures**:
+  - **Temple Ruins**: Religious structures with clerical villagers and ceremonial chambers
+  - **Library Ruins**: Knowledge centers with librarian villagers and enchanted books
+  - **Marketplace Ruins**: Trading posts with merchant villagers and storage areas
+  - **Fortress Ruins**: Military outposts with weaponsmith villagers and armories

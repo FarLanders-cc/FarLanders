@@ -82,7 +82,7 @@ cat > public/index.html << 'EOF'
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FarLanders Documentation - Local Preview</title>
+    <title>FarLanders Documentation</title>
     <link rel="icon" type="image/png" href="./favicon.png">
     <link rel="shortcut icon" type="image/png" href="./favicon.png">
     <style>
@@ -98,7 +98,9 @@ cat > public/index.html << 'EOF'
         .version { color: #6c757d; }
         .alert { background: #fff3cd; border: 1px solid #ffeaa7; color: #856404; padding: 12px; border-radius: 6px; margin-bottom: 20px; }
         .main-docs { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; }
-        .main-docs a { color: white; }
+        .main-docs a { color: white; font-weight: 600; }
+        .main-docs h3 { color: white; }
+        .main-docs p { color: rgba(255, 255, 255, 0.9); }
         .section-divider { border-top: 2px solid #e9ecef; margin: 30px 0; padding-top: 20px; }
     </style>
 </head>
@@ -106,7 +108,7 @@ cat > public/index.html << 'EOF'
     <div class="container">
         <div class="header">
             <h1>FarLanders Documentation</h1>
-            <p class="version">Version <span class="badge">1.0.2</span>
+            <p class="version">Version <span class="badge">1.1.1</span>
             <p>Enhanced Minecraft World Generation & Adventure Plugin</p>
         </div>
         

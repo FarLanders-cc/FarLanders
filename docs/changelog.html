@@ -33,6 +33,8 @@
 
                 <h2>📦 Versions</h2>
                 <ul>
+                    <li><a href="#v111">1.1.1</a> - Resource Distribution
+                        Overhaul (2025-07-02)</li>
                     <li><a href="#v110">1.1.0</a> - Major Update - Story System
                         Removal
                         (2025-07-01)</li>
@@ -43,6 +45,100 @@
                     <li><a href="#v101">1.0.1</a> - Bug Fix Release
                         (2025-06-30)</li>
                     <li><a href="#v100">1.0.0</a> - Initial Release</li>
+                </ul>
+
+                <h2 id="v111">[1.1.1] - 2025-07-02</h2>
+                <div class="status-badge status-enhancement">Resource
+                    Distribution Overhaul</div>
+
+                <h3>🔧 Resource Distribution Overhaul</h3>
+                <div class="feature-box">
+                    <p><strong>Major ore generation rebalance</strong> to
+                        eliminate clustering and improve resource availability
+                        for building and crafting.</p>
+                </div>
+
+                <h4>Major Improvements</h4>
+                <ul>
+                    <li><strong>Distributed Ore Generation:</strong> Each ore
+                        type now uses separate noise functions to prevent
+                        massive clusters</li>
+                    <li><strong>Reduced Chaos Bonuses:</strong> Chaos effects on
+                        ore generation reduced from 40% to 20% for better
+                        balance</li>
+                    <li><strong>Enhanced Building Materials:</strong> Added
+                        strategic placement of clay, sand, and gravel for
+                        crafting needs</li>
+                    <li><strong>Improved Wood Generation:</strong> Doubled tree
+                        generation chance from 10% to 20% for sustainable
+                        building</li>
+                    <li><strong>Balanced Resource Access:</strong> All vanilla
+                        Minecraft crafting recipes now fully supported</li>
+                </ul>
+
+                <h4>Technical Changes</h4>
+                <ul>
+                    <li><strong>Separate Noise Per Ore:</strong> Diamond, gold,
+                        iron, copper, coal, and redstone each use unique noise
+                        seeds</li>
+                    <li><strong>Optimized Thresholds:</strong> Adjusted ore
+                        generation thresholds for realistic distribution</li>
+                    <li><strong>Building Material Integration:</strong> Clay
+                        (30%), sand (25%), and gravel (25%) generation in
+                        appropriate depth layers</li>
+                    <li><strong>Stone Variety Enhancement:</strong> Improved
+                        clumped generation of granite, diorite, andesite, tuff,
+                        and calcite</li>
+                </ul>
+
+                <h4>Added</h4>
+                <ul>
+                    <li><strong>Resource Distribution Documentation:</strong>
+                        Created comprehensive HTML guide
+                        (<code>docs/resource-distribution.html</code>)
+                        <ul>
+                            <li>Complete ore analysis with rarity, depth, and
+                                generation rates</li>
+                            <li>Building materials guide and biome-specific
+                                resources</li>
+                            <li>Mining strategy tips and configuration
+                                options</li>
+                            <li>Interactive web format with color-coded rarity
+                                system</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4>Changed</h4>
+                <ul>
+                    <li><strong>Ore Distribution Algorithm:</strong> Redesigned
+                        from single-noise clustering to distributed multi-noise
+                        system</li>
+                    <li><strong>Material Availability:</strong> Enhanced
+                        availability of essential crafting materials
+                        <ul>
+                            <li>Glass Crafting: Sand now generates in transition
+                                zones (Y 40-60)</li>
+                            <li>Brick Production: Clay deposits available in
+                                deep areas (Y &lt; 40)</li>
+                            <li>Concrete Materials: Gravel generation increased
+                                across multiple depth layers</li>
+                            <li>Stone Variety: Better distribution of building
+                                stone variants</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4>Fixed</h4>
+                <ul>
+                    <li><strong>Ore Clustering Issue:</strong> Eliminated
+                        massive ore clusters that made mining unbalanced</li>
+                    <li><strong>Resource Scarcity:</strong> Addressed shortage
+                        of building materials for construction projects</li>
+                    <li><strong>Chaos Over-Impact:</strong> Reduced excessive
+                        chaos effects disrupting intended game balance</li>
+                    <li><strong>Wood Shortage:</strong> Improved tree generation
+                        for sustainable building and crafting</li>
                 </ul>
 
                 <h2 id="v110">[1.1.0] - 2025-07-01</h2>

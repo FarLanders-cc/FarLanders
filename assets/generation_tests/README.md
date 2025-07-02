@@ -92,3 +92,9 @@
 
 | <img alt="15th world generation test" src="imgs/test_15_1.png" /> | <img alt="15th world generation test" src="imgs/test_15_2.png" /> |
 | ----------------------------------------------------------------- | ----------------------------------------------------------------- |
+
+##### 16th
+
+| <img alt="16th world generation test" src="imgs/test_16_1.png" /> | <img alt="16th world generation test" src="imgs/test_16_2.png" /> |
+| ----------------------------------------------------------------- | ----------------------------------------------------------------- |
+| <img alt="16th world generation test" src="imgs/test_16_3.png" /> | <img alt="16th world generation test" src="imgs/test_16_4.png" /> |

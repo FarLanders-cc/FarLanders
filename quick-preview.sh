@@ -57,7 +57,7 @@ cat > public/index.html << 'EOF'
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FarLanders Documentation - Quick Preview</title>
+    <title>FarLanders Documentation</title>
     <link rel="icon" type="image/png" href="./favicon.png">
     <link rel="shortcut icon" type="image/png" href="./favicon.png">
     <style>

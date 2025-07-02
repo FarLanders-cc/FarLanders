@@ -7,11 +7,81 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Versions
 
+- [1.1.1](#111---2025-07-02) **Resource Distribution Overhaul**
 - [1.1.0](#110---2025-07-01) **MAJOR UPDATE**
 - [1.0.0](#100---initial-release)
   - [1.0.1](#101---2025-06-30)
   - [1.0.2](#102---2025-06-30)
   - [1.0.3](#103---2025-07-01)
+
+## [1.1.1] - 2025-07-02
+
+### 🔧 **Resource Distribution Overhaul**
+
+- **Ore Generation Rebalance**: Completely redesigned ore distribution system to eliminate clustering and improve resource availability
+
+  **Major Improvements**:
+
+  - **Distributed Ore Generation**: Each ore type now uses separate noise functions to prevent massive clusters
+  - **Reduced Chaos Bonuses**: Chaos effects on ore generation reduced from 40% to 20% for better balance
+  - **Enhanced Building Materials**: Added strategic placement of clay, sand, and gravel for crafting needs
+  - **Improved Wood Generation**: Doubled tree generation chance from 10% to 20% for sustainable building
+  - **Balanced Resource Access**: All vanilla Minecraft crafting recipes now fully supported
+
+  **Technical Changes**:
+
+  - **Separate Noise Per Ore**: Diamond, gold, iron, copper, coal, and redstone each use unique noise seeds
+  - **Optimized Thresholds**: Adjusted ore generation thresholds for realistic distribution
+  - **Building Material Integration**: Clay (30%), sand (25%), and gravel (25%) generation in appropriate depth layers
+  - **Stone Variety Enhancement**: Improved clumped generation of granite, diorite, andesite, tuff, and calcite
+
+### Added
+
+- **Resource Distribution Documentation**: Created comprehensive HTML guide (`docs/resource-distribution.html`)
+
+  **Features**:
+
+  - **Complete Ore Analysis**: Detailed breakdown of all ore types with rarity, depth, and generation rates
+  - **Building Materials Guide**: Comprehensive inventory of available construction materials
+  - **Biome-Specific Resources**: Detailed breakdown of materials available in each biome type
+  - **Mining Strategy Tips**: Efficient resource gathering techniques and depth recommendations
+  - **Configuration Guide**: Server administrator options for adjusting resource generation
+  - **Interactive Web Format**: Responsive HTML design with color-coded rarity system
+
+### Changed
+
+- **Ore Distribution Algorithm**: Redesigned from single-noise clustering to distributed multi-noise system
+
+  **Before → After**:
+
+  - Single noise function for all ores → Separate noise per ore type
+  - 40% chaos bonus causing over-saturation → 20% chaos bonus for balance
+  - Massive ore veins (80% density) → Small distributed veins (15-50% based on rarity)
+  - Limited building materials → Strategic clay, sand, gravel placement
+  - 10% tree generation → 20% tree generation for sustainable wood
+
+- **Material Availability**: Enhanced availability of essential crafting materials
+
+  **Improvements**:
+
+  - **Glass Crafting**: Sand now generates in transition zones (Y 40-60)
+  - **Brick Production**: Clay deposits available in deep areas (Y < 40)
+  - **Concrete Materials**: Gravel generation increased across multiple depth layers
+  - **Stone Variety**: Better distribution of building stone variants
+
+### Fixed
+
+- **Ore Clustering Issue**: Eliminated massive ore clusters that made mining unbalanced
+- **Resource Scarcity**: Addressed shortage of building materials for construction projects
+- **Chaos Over-Impact**: Reduced excessive chaos effects that were disrupting intended game balance
+- **Wood Shortage**: Improved tree generation for sustainable building and crafting
+
+### Technical
+
+- **Performance**: Optimized noise calculations with dedicated seeds per resource type
+- **Configuration**: Added new ore threshold getters to GenerationConfig
+- **Testing**: All 202 tests continue to pass with new resource distribution system
+- **Documentation**: Comprehensive web-based resource guide for players and administrators
 
 ## [1.1.0] - 2025-07-01
 
@@ -56,6 +126,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `distortion.spiral-scale`: Spiral distortion scale (default: 0.01)
   - `overgrowth.density-threshold`: Overgrowth generation threshold (default: 0.4)
   - `overgrowth.scale`: Overgrowth noise scale (default: 0.03)
+
+- **Ancient Buried Ruins**: Revolutionary underground exploration system
+
+  **Features**:
+
+  - **Four Ruin Types**: Temples, Libraries, Marketplaces, and Fortresses with unique layouts
+  - **Buried Underground**: Structures generate 10-25 blocks below surface for exploration challenge
+  - **Living Villages**: Each ruin type contains specific villager professions and trading opportunities
+  - **Biome-Adaptive Design**: Ruin types vary based on local biome characteristics
+  - **Distance-Gated Rarity**: Only appear 1000+ blocks from spawn, extremely rare (0.05% chance)
+  - **Ancient Materials**: Built from mossy stone bricks, cracked stone, and weathered blocks
+  - **Treasure Storage**: Loot containers with valuable items and ancient artifacts
+  - **Atmospheric Lighting**: Glowstone and torch lighting creates mysterious underground ambiance
+
+  **Ruin Types**:
+
+  - **Temple Ruins**: Religious structures with cleric villagers, altars, and ceremonial chambers
+  - **Library Ruins**: Knowledge centers with librarian villagers, bookshelves, and enchanting areas
+  - **Marketplace Ruins**: Trading complexes with merchant villagers (farmer, butcher, armorer, toolsmith)
+  - **Fortress Ruins**: Military outposts with weaponsmith/armorer villagers and defensive structures
+
+  **Configuration** (in `config.yml` under `structures`):
+
+  - `ancient-ruins-chance`: Generation probability (default: 0.0005 - extremely rare)
+  - `ancient-ruins-min-distance`: Minimum distance from spawn (default: 1000 blocks)
 
 - **Test Coverage**: Added comprehensive tests for `SpawnAdminCommand` and `FarLandersTabCompleter`
 - **Configuration**: Added version getter method to `GenerationConfig` for better metadata access

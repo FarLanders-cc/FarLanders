@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Ancient Ruins - Underground Exploration Guide</title>
+        <link rel="stylesheet" href="style.css">
+        <link rel="icon" type="image/png" href="logo.png">
+        <style>
+        .ruin-type {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .ruin-type h3 {
+            color: var(--accent-color);
+            margin-top: 0;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .feature-card {
+            background: rgba(0,0,0,0.03);
+            padding: 1rem;
+            border-radius: 6px;
+            border-left: 3px solid var(--secondary-color);
+        }
+        
+        .feature-card h4 {
+            color: var(--secondary-color);
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+        }
+        
+        .rarity-indicator {
+            display: inline-block;
+            background: #e74c3c;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin: 0.5rem 0;
+        }
+        
+        .discovery-tips {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 6px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .discovery-tips h4 {
+            color: #856404;
+            margin-top: 0;
+        }
+        
+        .config-section {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .config-code {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+        
+        .rewards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .reward-card {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+        
+        .reward-card h4 {
+            color: #155724;
+            margin-top: 0;
+        }
+    </style>
+    </head>
+    <body>
+        <div class="container">
+            <header>
+                <div class="nav-header">
+                    <h1>🏛️ Ancient Ruins</h1>
+                    <p>Underground Exploration Guide</p>
+                    <div class="nav-links">
+                        <a href="documentation-hub.html">Home</a>
+                        <a href="plugin-overview.html">Overview</a>
+                        <a href="resource-distribution.html">Resources</a>
+                        <a href="changelog.html">Changelog</a>
+                        <a href="roadmap.html">Roadmap</a>
+                    </div>
+                </div>
+            </header>
+
+            <main>
+                <div class="content">
+                    <div class="success-box">
+                        <p>The FarLanders plugin features an <strong>Ancient
+                                Ruins</strong> system that adds extremely rare
+                            underground structures containing villager NPCs and
+                            treasure. These buried ruins reward dedicated
+                            explorers with unique trading opportunities and
+                            valuable loot.</p>
+                        <div class="rarity-indicator">EXTREMELY RARE - 1 in 2000
+                            chunks</div>
+                    </div>
+
+                    <section id="discovery">
+                        <h2>🗺️ Discovery</h2>
+
+                        <h3>Rarity & Location</h3>
+                        <ul>
+                            <li><strong>Extremely Rare:</strong> Only 0.05%
+                                chance per chunk (approximately 1 in 2000
+                                chunks)</li>
+                            <li><strong>Distance-Gated:</strong> Only generate
+                                1000+ blocks from world spawn</li>
+                            <li><strong>Buried Deep:</strong> Structures are
+                                located 10-25 blocks below surface level</li>
+                            <li><strong>All Biomes:</strong> Can generate in any
+                                biome, with biome influencing ruin type</li>
+                        </ul>
+
+                        <div class="discovery-tips">
+                            <h4>🔍 Finding Ruins</h4>
+                            <ul>
+                                <li><strong>Surface Signs:</strong> Look for
+                                    unusual terrain patterns or slight
+                                    depressions</li>
+                                <li><strong>Cave Systems:</strong> Sometimes
+                                    connect to nearby cave networks</li>
+                                <li><strong>Mining:</strong> Most commonly
+                                    discovered while mining or exploring
+                                    underground</li>
+                                <li><strong>Patience Required:</strong> Due to
+                                    extreme rarity, finding ruins requires
+                                    extensive exploration</li>
+                            </ul>
+                        </div>
+                    </section>
+
+                    <section id="ruin-types">
+                        <h2>🏗️ Ruin Types</h2>
+
+                        <div class="ruin-type">
+                            <h3>🛐 Temple Ruins</h3>
+                            <p><em>Religious and ceremonial structures with
+                                    spiritual themes.</em></p>
+
+                            <div class="features-grid">
+                                <div class="feature-card">
+                                    <h4>Features</h4>
+                                    <ul>
+                                        <li>Central Chamber: Large 7x7
+                                            ceremonial hall with altar</li>
+                                        <li>Side Chambers: Four smaller rooms
+                                            for prayer and storage</li>
+                                        <li>Connecting Corridors: Ancient
+                                            hallways linking all areas</li>
+                                        <li>Ceremonial Altar: Central enchanting
+                                            table with rare block displays</li>
+                                        <li>Atmospheric Lighting: Torch-lit
+                                            ambiance throughout</li>
+                                    </ul>
+                                </div>
+
+                                <div class="feature-card">
+                                    <h4>NPCs & Trading</h4>
+                                    <ul>
+                                        <li><strong>Cleric Villagers:</strong> 2
+                                            clerics for trading healing items
+                                            and experience</li>
+                                        <li><strong>Trading:</strong> Emeralds,
+                                            bottles o' enchanting, healing
+                                            potions</li>
+                                    </ul>
+
+                                    <h4>Loot</h4>
+                                    <ul>
+                                        <li><strong>Sacred Artifacts:</strong>
+                                            Valuable blocks and rare
+                                            materials</li>
+                                        <li><strong>Treasure Chests:</strong>
+                                            Religious items and emeralds</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <p><strong>Common Biomes:</strong> Desert, Badlands,
+                                Forest, Jungle</p>
+                        </div>
+
+                        <div class="ruin-type">
+                            <h3>📚 Library Ruins</h3>
+                            <p><em>Centers of ancient knowledge and magical
+                                    learning.</em></p>
+
+                            <div class="features-grid">
+                                <div class="feature-card">
+                                    <h4>Features</h4>
+                                    <ul>
+                                        <li>Main Hall: 9x5 library with
+                                            extensive bookshelves</li>
+                                        <li>Study Chambers: Private reading and
+                                            research areas</li>
+                                        <li>Enchanting Area: Central enchanting
+                                            table with lecterns</li>
+                                        <li>Book Storage: Damaged but functional
+                                            bookshelf walls</li>
+                                        <li>Reading Spaces: Furnished areas for
+                                            scholarly pursuits</li>
+                                    </ul>
+                                </div>
+
+                                <div class="feature-card">
+                                    <h4>NPCs & Trading</h4>
+                                    <ul>
+                                        <li><strong>Librarian
+                                                Villagers:</strong> 2 librarians
+                                            for book and enchantment
+                                            trading</li>
+                                        <li><strong>Trading:</strong> Enchanted
+                                            books, emeralds, paper, books</li>
+                                    </ul>
+
+                                    <h4>Loot</h4>
+                                    <ul>
+                                        <li><strong>Knowledge Storage:</strong>
+                                            Chests containing books and written
+                                            materials</li>
+                                        <li><strong>Magical Items:</strong>
+                                            Enchanting-related materials and
+                                            rare books</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <p><strong>Common Biomes:</strong> Jungle, Forest,
+                                Plains, Meadow</p>
+                        </div>
+
+                        <div class="ruin-type">
+                            <h3>🏪 Marketplace Ruins</h3>
+                            <p><em>Ancient trading posts and commercial
+                                    centers.</em></p>
+
+                            <div class="features-grid">
+                                <div class="feature-card">
+                                    <h4>Features</h4>
+                                    <ul>
+                                        <li>Central Plaza: Large 11x11
+                                            marketplace with multiple
+                                            stalls</li>
+                                        <li>Market Stalls: Four trading posts
+                                            around the perimeter</li>
+                                        <li>Storage Rooms: Connected warehouses
+                                            and storage chambers</li>
+                                        <li>Trading Infrastructure: Barrels,
+                                            item frames, and merchant
+                                            displays</li>
+                                        <li>Commercial Layout: Designed for
+                                            efficient trading and commerce</li>
+                                    </ul>
+                                </div>
+
+                                <div class="feature-card">
+                                    <h4>NPCs & Trading</h4>
+                                    <ul>
+                                        <li><strong>Farmer Villager:</strong>
+                                            Agricultural goods and food
+                                            trading</li>
+                                        <li><strong>Butcher Villager:</strong>
+                                            Meat products and cooking
+                                            ingredients</li>
+                                        <li><strong>Armorer Villager:</strong>
+                                            Armor pieces and protection
+                                            equipment</li>
+                                        <li><strong>Toolsmith Villager:</strong>
+                                            Tools, weapons, and utility
+                                            items</li>
+                                    </ul>
+
+                                    <h4>Loot</h4>
+                                    <ul>
+                                        <li><strong>Trade Goods:</strong>
+                                            Multiple storage chests with diverse
+                                            materials</li>
+                                        <li><strong>Commercial
+                                                Inventory:</strong> Items
+                                            representing ancient trade
+                                            networks</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <p><strong>Common Biomes:</strong> Plains,
+                                Meadow</p>
+                        </div>
+
+                        <div class="ruin-type">
+                            <h3>⚔️ Fortress Ruins</h3>
+                            <p><em>Military outposts and defensive
+                                    structures.</em></p>
+
+                            <div class="features-grid">
+                                <div class="feature-card">
+                                    <h4>Features</h4>
+                                    <ul>
+                                        <li>Central Keep: 5x5 fortified main
+                                            building with high ceiling</li>
+                                        <li>Watchtowers: Four corner towers with
+                                            defensive positions</li>
+                                        <li>Defensive Walls: Connecting
+                                            battlements (partially ruined)</li>
+                                        <li>Armory Chamber: Weapon and armor
+                                            storage facility</li>
+                                        <li>Military Architecture: Designed for
+                                            defense and strategic control</li>
+                                    </ul>
+                                </div>
+
+                                <div class="feature-card">
+                                    <h4>NPCs & Trading</h4>
+                                    <ul>
+                                        <li><strong>Weaponsmith
+                                                Villager:</strong> Weapons and
+                                            combat equipment</li>
+                                        <li><strong>Armorer Villager:</strong>
+                                            Protective gear and military
+                                            supplies</li>
+                                    </ul>
+
+                                    <h4>Loot</h4>
+                                    <ul>
+                                        <li><strong>Weapon Cache:</strong>
+                                            Military equipment and combat
+                                            supplies</li>
+                                        <li><strong>Strategic
+                                                Materials:</strong> Items for
+                                            warfare and defense</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <p><strong>Common Biomes:</strong> Mountains, Taiga,
+                                Desert, Badlands</p>
+                        </div>
+                    </section>
+
+                    <section id="gameplay">
+                        <h2>🎮 Gameplay Tips</h2>
+
+                        <div class="features-grid">
+                            <div class="feature-card">
+                                <h4>Exploration Strategy</h4>
+                                <ol>
+                                    <li><strong>Go Far:</strong> Travel at least
+                                        1000 blocks from spawn before
+                                        searching</li>
+                                    <li><strong>Search Systematically:</strong>
+                                        Explore underground thoroughly in
+                                        promising areas</li>
+                                    <li><strong>Look for Patterns:</strong>
+                                        Unusual underground spaces might
+                                        indicate nearby ruins</li>
+                                    <li><strong>Be Patient:</strong> Ruins are
+                                        extremely rare - persistence is key</li>
+                                </ol>
+                            </div>
+
+                            <div class="feature-card">
+                                <h4>Preparation</h4>
+                                <ul>
+                                    <li><strong>Mining Gear:</strong> Bring
+                                        pickaxes, torches, and food for extended
+                                        underground exploration</li>
+                                    <li><strong>Trading Materials:</strong>
+                                        Carry emeralds and tradeable items for
+                                        villager interactions</li>
+                                    <li><strong>Storage Space:</strong> Bring
+                                        extra inventory space for loot
+                                        collection</li>
+                                    <li><strong>Safety Equipment:</strong> Armor
+                                        and weapons for underground hazards</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="discovery-tips">
+                            <h4>💰 Villager Trading</h4>
+                            <ul>
+                                <li><strong>Unique Professions:</strong> Each
+                                    ruin type has specific villager
+                                    professions</li>
+                                <li><strong>Renewable Trading:</strong>
+                                    Villagers restock regularly like normal
+                                    villagers</li>
+                                <li><strong>Underground Commerce:</strong> Trade
+                                    in atmospheric underground settings</li>
+                                <li><strong>Specialized Goods:</strong> Access
+                                    to profession-specific items and
+                                    materials</li>
+                            </ul>
+                        </div>
+                    </section>
+
+                    <section id="configuration">
+                        <h2>⚙️ Configuration</h2>
+
+                        <div class="config-section">
+                            <p>Server administrators can adjust Ancient Ruins
+                                generation in <code>config.yml</code>:</p>
+
+                            <div class="config-code">
+                                structures:
+                                # Ancient ruins (buried underground structures
+                                with villagers)
+                                ancient-ruins-chance: 0.0005 # Extremely rare -
+                                about 1 in 2000 chunks (0.05%)
+                                ancient-ruins-min-distance: 1000.0 # Minimum
+                                distance from spawn before ruins can generate
+                            </div>
+
+                            <h3>Configuration Options</h3>
+                            <ul>
+                                <li><strong><code>ancient-ruins-chance</code>:</strong>
+                                    Probability of generation per chunk
+                                    (default: 0.0005)</li>
+                                <li><strong><code>ancient-ruins-min-distance</code>:</strong>
+                                    Minimum distance from spawn in blocks
+                                    (default: 1000.0)</li>
+                            </ul>
+
+                            <h3>Adjustment Guidelines</h3>
+                            <ul>
+                                <li><strong>Increase Chance:</strong> Values up
+                                    to 0.002 (0.2%) for more frequent
+                                    discoveries</li>
+                                <li><strong>Decrease Distance:</strong> Minimum
+                                    500 blocks recommended to maintain
+                                    exploration value</li>
+                                <li><strong>Server Performance:</strong> Higher
+                                    generation rates may impact performance</li>
+                            </ul>
+                        </div>
+                    </section>
+
+                    <section id="rewards">
+                        <h2>🏆 Rewards</h2>
+
+                        <div class="rewards-grid">
+                            <div class="reward-card">
+                                <h4>Trading Opportunities</h4>
+                                <ul>
+                                    <li><strong>Unique NPCs:</strong> Access to
+                                        specific villager professions
+                                        underground</li>
+                                    <li><strong>Renewable Resources:</strong>
+                                        Ongoing trading relationships in
+                                        discovered ruins</li>
+                                    <li><strong>Specialized Items:</strong>
+                                        Profession-specific goods not easily
+                                        obtainable elsewhere</li>
+                                </ul>
+                            </div>
+
+                            <div class="reward-card">
+                                <h4>Treasure & Loot</h4>
+                                <ul>
+                                    <li><strong>Ancient Artifacts:</strong> Rare
+                                        blocks and valuable materials</li>
+                                    <li><strong>Storage Containers:</strong>
+                                        Multiple chests with diverse loot</li>
+                                    <li><strong>Atmospheric Value:</strong>
+                                        Unique underground bases and
+                                        hideouts</li>
+                                </ul>
+                            </div>
+
+                            <div class="reward-card">
+                                <h4>Exploration Achievement</h4>
+                                <ul>
+                                    <li><strong>Discovery Satisfaction:</strong>
+                                        Extremely rare finds provide significant
+                                        achievement feeling</li>
+                                    <li><strong>Underground
+                                            Civilization:</strong> Experience
+                                        ancient cultures through architectural
+                                        design</li>
+                                    <li><strong>Hidden Secrets:</strong> Uncover
+                                        the mysteries of the Far Lands' past
+                                        inhabitants</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="success-box">
+                        <h2>🎯 Summary</h2>
+                        <p><em>The Ancient Ruins system adds depth to FarLanders
+                                exploration by rewarding dedicated adventurers
+                                with unique underground discoveries that combine
+                                NPCs, trading, loot, and atmospheric
+                                world-building in rare, buried structures
+                                throughout the Far Lands.</em></p>
+                        <p><strong>Ready to start your underground
+                                expedition?</strong> Remember: patience and
+                            persistence are key to discovering these legendary
+                            buried civilizations!</p>
+                    </div>
+                </div>
+            </main>
+
+            <footer>
+                <p>&copy; 2025 FarLanders Plugin - Ancient Ruins exploration
+                    guide</p>
+                <p><em>May your pickaxe lead you to forgotten
+                        treasures!</em></p>
+            </footer>
+        </div>
+    </body>
+</html>

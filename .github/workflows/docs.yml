@@ -117,7 +117,7 @@ jobs:
               <div class="container">
                   <div class="header">
                       <h1>FarLanders Documentation</h1>
-                      <p class="version">Version <span class="badge">1.0.2</span></p>
+                      <p class="version">Version <span class="badge">1.1.1</span></p>
                       <p>Enhanced Minecraft World Generation & Adventure Plugin</p>
                   </div>
                   

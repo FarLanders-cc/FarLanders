@@ -36,9 +36,14 @@ public class StructureGenerator {
         }
     }
 
+    private final AncientRuinsGenerator ancientRuinsGenerator = new AncientRuinsGenerator();
+
     public void generateStructures(ChunkData chunk, int cx, int cz, int worldX, int worldZ, int topY,
             BiomeStyle biome) {
         Random random = new Random(hashCoords(worldX, worldZ) ^ 0xC0FFEE);
+
+        // Try to generate ancient ruins first (very rare)
+        ancientRuinsGenerator.tryGenerateRuins(chunk, cx, cz, worldX, worldZ, topY, biome.name().toLowerCase());
 
         if (random.nextDouble() < GenerationConfig.getLegendaryStructureChance()) {
             placeLegendaryStructure(chunk, cx, topY + 1, cz, random);
@@ -51,8 +56,8 @@ public class StructureGenerator {
         switch (biome) {
             case PLAINS -> buildPlainsStructure(chunk, cx, topY + 1, cz, random);
             case DESERT -> buildDesertStructure(chunk, cx, topY + 1, cz, random);
-            case TAIGA -> buildTaigaStructure(chunk, cx, topY + 1, cz, random);
-            case SWAMP -> buildSwampStructure(chunk, cx, topY + 1, cz, random);
+            case TAIGA -> buildTaigaStructure(chunk, cx, topY + 1, cz);
+            case SWAMP -> buildSwampStructure(chunk, cx, topY + 1, cz);
             case JUNGLE -> buildJungleStructure(chunk, cx, topY + 1, cz, random);
         }
     }
@@ -69,18 +74,17 @@ public class StructureGenerator {
         }
     }
 
-    private void buildTaigaStructure(ChunkData chunk, int x, int y, int z, Random random) {
+    private void buildTaigaStructure(ChunkData chunk, int x, int y, int z) {
         // Natural stone foundation instead of artificial planks
         layOutFoundation(chunk, x, y, z, 3, Material.COBBLESTONE);
         chunk.setBlock(x + 1, y + 1, z + 1, Material.BARREL);
     }
 
-    private void buildSwampStructure(ChunkData chunk, int x, int y, int z, Random random) {
+    private void buildSwampStructure(ChunkData chunk, int x, int y, int z) {
         // Natural mud/stone foundation instead of artificial planks
         layOutFoundation(chunk, x - 1, y, z - 1, 3, Material.MUD);
         chunk.setBlock(x, y + 1, z, Material.CAULDRON);
-        if (random.nextBoolean())
-            chunk.setBlock(x, y + 2, z, Material.BROWN_MUSHROOM_BLOCK);
+        chunk.setBlock(x, y + 2, z, Material.BROWN_MUSHROOM_BLOCK);
     }
 
     private void buildJungleStructure(ChunkData chunk, int x, int y, int z, Random random) {

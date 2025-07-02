@@ -773,6 +773,17 @@ public final class GenerationConfig {
         return config.getBoolean("structures.biome-specific-structures", true);
     }
 
+    // Ancient Ruins configuration
+    public static double getAncientRuinsChance() {
+        checkInitialized();
+        return config.getDouble("structures.ancient-ruins-chance", 0.0005);
+    }
+
+    public static double getAncientRuinsMinDistance() {
+        checkInitialized();
+        return config.getDouble("structures.ancient-ruins-min-distance", 1000.0);
+    }
+
     // =================================
     // NOISE SEEDS
     // =================================
