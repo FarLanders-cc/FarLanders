@@ -103,9 +103,45 @@
             color: #155724;
             margin-top: 0;
         }
-    </style>
+
+        .table-of-contents {
+            background: #e9ecef;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .table-of-contents h2 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        .table-of-contents nav ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .table-of-contents nav ul li {
+            margin: 0.5rem 0;
+        }
+
+        .table-of-contents nav ul li a {
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        .table-of-contents nav ul li a:hover {
+            text-decoration: underline;
+        }
+        </style>
     </head>
     <body>
+        <!-- Logo Home Button -->
+        <a href="index.html" class="logo-home-btn" title="Return to Home">
+            <img src="logo.png" alt="FarLanders Logo" />
+        </a>
+
         <div class="container">
             <header>
                 <div class="nav-header">
@@ -134,10 +170,78 @@
                             chunks</div>
                     </div>
 
+                    <div class="table-of-contents">
+                        <h2>📋 Table of Contents</h2>
+                        <nav>
+                            <ul>
+                                <li><a href="#discovery">🗺️ Discovery</a>
+                                    <ul>
+                                        <li><a href="#rarity-location">Rarity &
+                                                Location</a></li>
+                                        <li><a href="#finding-ruins">Finding
+                                                Ruins</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="#ruin-types">🏗️ Ruin Types</a>
+                                    <ul>
+                                        <li><a href="#temple-ruins">🛐 Temple
+                                                Ruins</a></li>
+                                        <li><a href="#library-ruins">📚 Library
+                                                Ruins</a></li>
+                                        <li><a href="#marketplace-ruins">🏪
+                                                Marketplace Ruins</a></li>
+                                        <li><a href="#fortress-ruins">⚔️
+                                                Fortress Ruins</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="#exploration-guide">⛏️ Exploration
+                                        Guide</a>
+                                    <ul>
+                                        <li><a
+                                                href="#preparation">Preparation</a></li>
+                                        <li><a
+                                                href="#excavation">Excavation</a></li>
+                                        <li><a href="#safety">Safety</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="#trading-guide">💰 Trading
+                                        Guide</a>
+                                    <ul>
+                                        <li><a href="#npc-types">NPC
+                                                Types</a></li>
+                                        <li><a href="#trade-routes">Trade
+                                                Routes</a></li>
+                                        <li><a href="#economy">Economy</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="#loot-reference">📦 Loot
+                                        Reference</a>
+                                    <ul>
+                                        <li><a href="#common-loot">Common
+                                                Loot</a></li>
+                                        <li><a href="#rare-loot">Rare
+                                                Loot</a></li>
+                                        <li><a href="#unique-loot">Unique
+                                                Loot</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="#technical-details">⚙️ Technical
+                                        Details</a>
+                                    <ul>
+                                        <li><a
+                                                href="#generation">Generation</a></li>
+                                        <li><a
+                                                href="#configuration">Configuration</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+
                     <section id="discovery">
                         <h2>🗺️ Discovery</h2>
 
-                        <h3>Rarity & Location</h3>
+                        <h3 id="rarity-location">Rarity & Location</h3>
                         <ul>
                             <li><strong>Extremely Rare:</strong> Only 0.05%
                                 chance per chunk (approximately 1 in 2000
@@ -151,7 +255,7 @@
                         </ul>
 
                         <div class="discovery-tips">
-                            <h4>🔍 Finding Ruins</h4>
+                            <h4 id="finding-ruins">🔍 Finding Ruins</h4>
                             <ul>
                                 <li><strong>Surface Signs:</strong> Look for
                                     unusual terrain patterns or slight
@@ -169,10 +273,10 @@
                     </section>
 
                     <section id="ruin-types">
-                        <h2>🏗️ Ruin Types</h2>
+                        <h2 id="ruin-types">🏗️ Ruin Types</h2>
 
                         <div class="ruin-type">
-                            <h3>🛐 Temple Ruins</h3>
+                            <h3 id="temple-ruins">🛐 Temple Ruins</h3>
                             <p><em>Religious and ceremonial structures with
                                     spiritual themes.</em></p>
 
@@ -220,7 +324,7 @@
                         </div>
 
                         <div class="ruin-type">
-                            <h3>📚 Library Ruins</h3>
+                            <h3 id="library-ruins">📚 Library Ruins</h3>
                             <p><em>Centers of ancient knowledge and magical
                                     learning.</em></p>
 
@@ -269,7 +373,7 @@
                         </div>
 
                         <div class="ruin-type">
-                            <h3>🏪 Marketplace Ruins</h3>
+                            <h3 id="marketplace-ruins">🏪 Marketplace Ruins</h3>
                             <p><em>Ancient trading posts and commercial
                                     centers.</em></p>
 
@@ -327,7 +431,7 @@
                         </div>
 
                         <div class="ruin-type">
-                            <h3>⚔️ Fortress Ruins</h3>
+                            <h3 id="fortress-ruins">⚔️ Fortress Ruins</h3>
                             <p><em>Military outposts and defensive
                                     structures.</em></p>
 
@@ -433,12 +537,14 @@
                         </div>
                     </section>
 
-                    <section id="configuration">
-                        <h2>⚙️ Configuration</h2>
+                    <section id="technical-details">
+                        <h2>⚙️ Technical Details</h2>
 
-                        <div class="config-section">
-                            <p>Server administrators can adjust Ancient Ruins
-                                generation in <code>config.yml</code>:</p>
+                        <section id="generation">
+                            <h3>Structure Generation</h3>
+                            <p>Ancient Ruins structures are generated
+                                underground based on the following
+                                parameters:</p>
 
                             <div class="config-code">
                                 structures:
@@ -471,7 +577,56 @@
                                 <li><strong>Server Performance:</strong> Higher
                                     generation rates may impact performance</li>
                             </ul>
-                        </div>
+                        </section>
+
+                        <section id="configuration">
+                            <h3>⚙️ Configuration</h3>
+
+                            <div class="config-section">
+                                <p>Server administrators can adjust Ancient
+                                    Ruins
+                                    generation in <code>config.yml</code>:</p>
+
+                                <div class="config-code">
+                                    structures:
+                                    # Ancient ruins (buried underground
+                                    structures
+                                    with villagers)
+                                    ancient-ruins-chance: 0.0005 # Extremely
+                                    rare -
+                                    about 1 in 2000 chunks (0.05%)
+                                    ancient-ruins-min-distance: 1000.0 # Minimum
+                                    distance from spawn before ruins can
+                                    generate
+                                </div>
+
+                                <h3>Configuration Options</h3>
+                                <ul>
+                                    <li><strong><code>ancient-ruins-chance</code>:</strong>
+                                        Probability of generation per chunk
+                                        (default: 0.0005)</li>
+                                    <li><strong><code>ancient-ruins-min-distance</code>:</strong>
+                                        Minimum distance from spawn in blocks
+                                        (default: 1000.0)</li>
+                                </ul>
+
+                                <h3>Adjustment Guidelines</h3>
+                                <ul>
+                                    <li><strong>Increase Chance:</strong> Values
+                                        up
+                                        to 0.002 (0.2%) for more frequent
+                                        discoveries</li>
+                                    <li><strong>Decrease Distance:</strong>
+                                        Minimum
+                                        500 blocks recommended to maintain
+                                        exploration value</li>
+                                    <li><strong>Server Performance:</strong>
+                                        Higher
+                                        generation rates may impact
+                                        performance</li>
+                                </ul>
+                            </div>
+                        </section>
                     </section>
 
                     <section id="rewards">

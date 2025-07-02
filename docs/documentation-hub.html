@@ -8,6 +8,11 @@
         <link rel="icon" type="image/png" href="logo.png">
     </head>
     <body>
+        <!-- Logo Home Button -->
+        <a href="index.html" class="logo-home-btn" title="Return to Home">
+            <img src="logo.png" alt="FarLanders Logo" />
+        </a>
+
         <div class="container">
             <div class="nav-header">
                 <h1>FarLanders Documentation</h1>
@@ -34,7 +39,47 @@
                             Ready</span></p>
                 </div>
 
-                <h2>Documentation Index</h2>
+                <div class="table-of-contents">
+                    <h2>📋 Documentation Navigator</h2>
+                    <nav>
+                        <ul>
+                            <li><a href="#documentation-index">📖 Documentation
+                                    Index</a>
+                                <ul>
+                                    <li><a href="#main-docs">Main
+                                            Documentation</a></li>
+                                    <li><a href="#spawn-management">Spawn
+                                            Management</a></li>
+                                    <li><a href="#persistent-storage">Persistent
+                                            Storage</a></li>
+                                    <li><a href="#changelog">Changelog</a></li>
+                                    <li><a href="#roadmap">Implementation
+                                            Roadmap</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#technical-guides">⚙️ Technical
+                                    Guides</a>
+                                <ul>
+                                    <li><a
+                                            href="#generation-architecture">Generation
+                                            Architecture</a></li>
+                                    <li><a
+                                            href="#resource-distribution">Resource
+                                            Distribution</a></li>
+                                    <li><a href="#ancient-ruins">Ancient Ruins
+                                            Guide</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#quick-start">🚀 Quick Start</a></li>
+                            <li><a href="#key-features">✨ Key Features</a></li>
+                            <li><a href="#external-links">🔗 External
+                                    Links</a></li>
+                            <li><a href="#contributing">🤝 Contributing</a></li>
+                        </ul>
+                    </nav>
+                </div>
+
+                <h2 id="documentation-index">Documentation Index</h2>
 
                 <div class="feature-box">
                     <h3><a href="plugin-overview.html">Main
@@ -186,7 +231,7 @@
                     </ul>
                 </div>
 
-                <h2>Quick Start</h2>
+                <h2 id="quick-start">Quick Start</h2>
                 <div class="command-box">
                     <div class="command"># Build the plugin</div>
                     ./gradlew build
@@ -203,7 +248,7 @@
                     /farlanders spawn setfarlands # Set spawn to Far Lands
                 </div>
 
-                <h2>Key Features</h2>
+                <h2 id="key-features">Key Features</h2>
                 <div class="success-box">
                     <ul>
                         <li><strong>Enhanced World Generation</strong> -
@@ -250,7 +295,7 @@
                     </ul>
                 </div>
 
-                <h2>Contributing</h2>
+                <h2 id="contributing">Contributing</h2>
                 <p>FarLanders is an open source project welcoming contributions.
                     Whether you're interested in:</p>
                 <ul>

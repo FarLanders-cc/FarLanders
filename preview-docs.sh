@@ -88,22 +88,55 @@ cat > public/index.html << 'EOF'
     <link rel="icon" type="image/png" href="./favicon.png">
     <link rel="shortcut icon" type="image/png" href="./favicon.png">
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; margin: 40px; line-height: 1.6; }
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Jersey+20:wght@400&display=swap');
+        
+        :root {
+            --heading-font: 'Orbitron', 'Courier New', monospace;
+            --body-font: 'Jersey 20', 'Monaco', 'Consolas', monospace;
+        }
+        
+        body { 
+            font-family: var(--body-font); 
+            margin: 40px; 
+            line-height: 1.6; 
+            letter-spacing: 0.5px;
+        }
         .container { max-width: 800px; margin: 0 auto; }
         .nav-card { background: #f8f9fa; padding: 20px; margin: 15px 0; border-radius: 8px; border: 1px solid #e9ecef; }
-        .nav-card h3 { margin-top: 0; color: #495057; }
-        .nav-card a { color: #007bff; text-decoration: none; font-weight: 500; }
+        .nav-card h3 { 
+            margin-top: 0; 
+            color: #495057; 
+            font-family: var(--heading-font);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .nav-card a { color: #52357B; text-decoration: none; font-weight: 700; }
         .nav-card a:hover { text-decoration: underline; }
-        .badge { background: #28a745; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; }
-        .preview-badge { background: #ffc107; color: #212529; padding: 4px 8px; border-radius: 4px; font-size: 12px; }
+        .badge { background: #648DB3; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-family: var(--heading-font); font-weight: 700; }
+        .preview-badge { background: #5459AC; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-family: var(--heading-font); font-weight: 700; }
         .header { text-align: center; margin-bottom: 40px; }
-        .version { color: #6c757d; }
-        .alert { background: #fff3cd; border: 1px solid #ffeaa7; color: #856404; padding: 12px; border-radius: 6px; margin-bottom: 20px; }
-        .main-docs { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; }
-        .main-docs a { color: white; font-weight: 600; }
-        .main-docs h3 { color: white; }
+        .header h1 {
+            font-family: var(--heading-font);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #52357B;
+        }
+        .version { color: #5459AC; }
+        .alert { background: #B2D8CE; border: 1px solid #648DB3; color: #52357B; padding: 12px; border-radius: 6px; margin-bottom: 20px; }
+        .main-docs { background: linear-gradient(135deg, #52357B 0%, #5459AC 100%); color: white; border: none; }
+        .main-docs a { color: white; font-weight: 700; font-family: var(--heading-font); }
+        .main-docs h3 { color: white; font-family: var(--heading-font); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
         .main-docs p { color: rgba(255, 255, 255, 0.9); }
-        .section-divider { border-top: 2px solid #e9ecef; margin: 30px 0; padding-top: 20px; }
+        .section-divider { border-top: 2px solid #B2D8CE; margin: 30px 0; padding-top: 20px; }
+        h2 { 
+            font-family: var(--heading-font);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #52357B;
+        }
     </style>
 </head>
 <body>
