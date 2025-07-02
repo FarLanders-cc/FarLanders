@@ -1,4 +1,4 @@
-# FarLanders
+# FarLanders <img src="logo.png" alt="logo" width="32" />
 
 ```yml
 ▗▄▄▄▖ ▗▄▖ ▗▄▄▖ ▗▖    ▗▄▖ ▗▖  ▗▖▗▄▄▄ ▗▄▄▄▖▗▄▄▖  ▗▄▄▖
@@ -10,10 +10,11 @@
 - farlanders.cc
 ```
 
-FarLanders is the primary plugin for a Minecraft server that has a unique world generation feature, allowing players to explore the Far Lands.
+FarLanders is the primary plugin for a Minecraft server that features **enhanced world generation** for exploring the legendary Far Lands. Experience progressively more distorted terrain as you journey to the world's edge and discover the unique landscape that awaits.
 
 ---
 
+- [World Generation Overview](#-world-generation-overview)
 - [World Generation](#world-generation)
 - [Usage](#usage)
 - [World Generation Tests](#world-generation-tests)
@@ -22,6 +23,26 @@ FarLanders is the primary plugin for a Minecraft server that has a unique world 
 
 | [CONTRIBUTING](CONTRIBUTING.md) | [LICENSE](LICENSE) | [CODE_OF_CONDUCT](CODE_OF_CONDUCT.md) |
 | ------------------------------- | ------------------ | ------------------------------------- |
+
+## 🌟 **World Generation Overview**
+
+Experience **enhanced terrain generation** where distance from spawn determines terrain complexity and distortion:
+
+- **📍 0-100k blocks**: Normal terrain with standard generation
+- **🏗️ 100k-1M blocks**: Subtle terrain variations and unique structures appear
+- **⚡ 1M-12.5M blocks**: Advanced generation with floating islands and terrain distortions
+- **🌀 12.5M+ blocks**: The true Far Lands - chaotic, unique terrain generation
+
+### **Enhanced Generation Features**
+
+Discover advanced world generation including:
+
+- **Custom terrain generation** with increasing complexity
+- **Unique biome variants** as you approach the Far Lands
+- **Advanced structure generation** throughout the journey
+- **Progressive terrain distortion** leading to the Far Lands
+
+---
 
 ## World Generation
 
@@ -50,7 +71,19 @@ The world generation is based on the Far Lands concept, which is a phenomenon in
 
 > - **It's actually just a log of images**
 
+---
+
 ## Features
+
+### **� World Generation & Exploration**
+
+- **Enhanced Terrain Generation**: Advanced landscapes with proper biome transitions
+- **Progressive Complexity**: Terrain becomes more complex and distorted with distance
+- **Unique Far Lands**: Experience classic "chaotic" Far Lands distortion at extreme distances (12.5M+ blocks)
+- **Advanced Structures**: Discover unique formations and landmarks throughout your journey
+- **Distance-Based Features**: Unlock new terrain types and generation patterns as you explore
+
+### **🌍 World Generation**
 
 - **Beautiful Terrain Generation**: Realistic landscapes with proper biome transitions
 - **Enhanced FarLands**: Classic "staticy" FarLands distortion at extreme distances (12.5M+ blocks)
@@ -64,6 +97,8 @@ The world generation is based on the Far Lands concept, which is a phenomenon in
 - **Rich Agriculture**: Biome-specific farms, crops, and agricultural infrastructure
 - **Enhanced Mob Spawning**: Specialized habitats and environments for passive mobs
   > [Generation Architecture](GENERATION_ARCHITECTURE.md)
+
+---
 
 ## Commands
 
@@ -94,6 +129,8 @@ Generates the FarLands world using the enhanced generation system.
 - `farlanders.tp` - Required for teleport commands (default: op)
 - `farlanders.generate` - Required for world generation (default: op)
 
+---
+
 ## Tab Completion
 
 The FarLanders plugin includes comprehensive tab completion for all commands:
@@ -120,6 +157,8 @@ The FarLanders plugin includes comprehensive tab completion for all commands:
 - Recognizes when you're using `farlands` vs regular teleport
 - Suggests appropriate options based on command position
 - Filters suggestions based on what you've already typed
+
+---
 
 ## 🌍 Enhanced World Generation Features
 

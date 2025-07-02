@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>FarLands Generation Architecture</title>
+        <link rel="stylesheet" href="style.css">
+        <link rel="icon" type="image/png" href="logo.png">
+    </head>
+    <body>
+        <div class="container">
+            <div class="nav-header">
+                <h1>Generation Architecture</h1>
+                <p>Technical Overview of World Generation Systems</p>
+                <div class="nav-links">
+                    <a href="plugin-overview.html">Home</a>
+                    <a href="spawn-management.html">Spawn Management</a>
+                    <a href="changelog.html">Changelog</a>
+                    <a href="roadmap.html">Roadmap</a>
+                    <a href="architecture.html" class="current">Architecture</a>
+                </div>
+            </div>
+
+            <div class="content">
+                <div class="feature-box">
+                    <h2>🌍 Overview</h2>
+                    <p>This enhanced FarLands generation system creates a
+                        beautiful yet chaotic world that captures the essence of
+                        Minecraft's original FarLands bug while providing rich
+                        gameplay content.</p>
+                </div>
+
+                <h2>🔧 Core Components</h2>
+
+                <h3>1. FarLandsGenerator (Main Controller)</h3>
+                <div class="feature-box">
+                    <ul>
+                        <li><strong>Distance-based Effects</strong>: Uses actual
+                            distance from spawn to determine FarLands
+                            intensity</li>
+                        <li><strong>Layered Generation</strong>: Separates
+                            terrain, water, vegetation, and structures into
+                            distinct phases</li>
+                        <li><strong>Realistic Transitions</strong>: Gradual
+                            transition from normal terrain to chaotic
+                            FarLands</li>
+                    </ul>
+                </div>
+
+                <h3>2. Enhanced DensityFunction</h3>
+                <div class="feature-box">
+                    <ul>
+                        <li><strong>Multi-octave Noise</strong>: Uses multiple
+                            noise layers for realistic terrain shapes</li>
+                        <li><strong>Advanced Cave Systems</strong>: Creates
+                            interconnected cave networks with varying sizes</li>
+                        <li><strong>FarLands Distortion</strong>: Simulates
+                            coordinate overflow with spikes, walls, and glitchy
+                            formations</li>
+                        <li><strong>Height-aware Generation</strong>: Different
+                            density patterns at different elevations</li>
+                    </ul>
+                </div>
+
+                <h3>3. Improved BiomeProvider</h3>
+                <div class="feature-box">
+                    <ul>
+                        <li><strong>Climate-based Selection</strong>: Uses
+                            temperature, humidity, and weirdness for realistic
+                            biomes</li>
+                        <li><strong>FarLands Biomes</strong>: Special chaotic
+                            biomes in FarLands regions</li>
+                        <li><strong>Smooth Transitions</strong>: Better biome
+                            boundaries and transitions</li>
+                    </ul>
+                </div>
+
+                <h3>4. Enhanced TerrainHandler</h3>
+                <div class="feature-box">
+                    <ul>
+                        <li><strong>Realistic Ore Distribution</strong>: Proper
+                            ore placement at appropriate depths</li>
+                        <li><strong>Biome-appropriate Materials</strong>:
+                            Surface blocks match their biomes</li>
+                        <li><strong>Varied Surface Heights</strong>: Different
+                            elevations for different biomes</li>
+                    </ul>
+                </div>
+
+                <h3>5. Enhanced Terrain Elevation (v1.1)</h3>
+                <div class="success-box">
+                    <ul>
+                        <li><strong>Improved Height Distribution</strong>:
+                            Adjusted terrain generation to ensure most land is
+                            above sea level</li>
+                        <li><strong>Better Surface Variation</strong>: Enhanced
+                            hills, valleys, and elevation changes for more
+                            interesting landscapes</li>
+                        <li><strong>Reduced Water Coverage</strong>:
+                            Significantly reduced underwater terrain
+                            generation</li>
+                        <li><strong>Balanced Cave Systems</strong>: Maintained
+                            proper cave generation while keeping surface terrain
+                            elevated</li>
+                    </ul>
+                </div>
+
+                <h2>🌟 Enhanced Features</h2>
+
+                <h3>⛅ Sky Islands System</h3>
+                <div class="feature-box">
+                    <ul>
+                        <li><strong>Location</strong>: Y 200-280 altitude
+                            range</li>
+                        <li><strong>Generation</strong>: Rare floating
+                            landmasses using 3D noise</li>
+                        <li><strong>Materials</strong>: Contain rare ores
+                            including Netherite, Ancient Debris, Diamonds</li>
+                        <li><strong>Rarity</strong>: Approximately 1 per 512x512
+                            block area</li>
+                    </ul>
+                </div>
+
+                <h3>🌾 Agriculture System</h3>
+                <div class="feature-box">
+                    <ul>
+                        <li><strong>Biome Integration</strong>: Farms generated
+                            based on local climate and terrain</li>
+                        <li><strong>Infrastructure</strong>: Includes
+                            irrigation, fencing, storage, and pathways</li>
+                        <li><strong>Crop Variety</strong>: Different crops for
+                            different biomes (wheat, vegetables, fruits,
+                            etc.)</li>
+                        <li><strong>Sustainability</strong>: Features like
+                            composters and water management</li>
+                    </ul>
+                </div>
+
+                <h3>🐄 Enhanced Mob Spawning</h3>
+                <div class="feature-box">
+                    <ul>
+                        <li><strong>Habitat Creation</strong>: Generates
+                            suitable environments for passive mobs</li>
+                        <li><strong>Biome-Specific</strong>: Each biome gets
+                            appropriate animal habitats</li>
+                        <li><strong>Infrastructure</strong>: Includes water
+                            sources, shelter, and feeding areas</li>
+                        <li><strong>Variety</strong>: Supports horses, cows,
+                            sheep, wolves, foxes, parrots, and more</li>
+                    </ul>
+                </div>
+
+                <h3>🏗️ Advanced Biome Architecture</h3>
+                <div class="feature-box">
+                    <ul>
+                        <li><strong>Agricultural Biomes</strong>: Flower Forest,
+                            Meadow for enhanced farming</li>
+                        <li><strong>Smooth Transitions</strong>: Better blending
+                            between biome boundaries</li>
+                        <li><strong>Specialized Structures</strong>:
+                            Biome-appropriate buildings and formations</li>
+                    </ul>
+                </div>
+
+                <h2>✨ Key Features</h2>
+
+                <h3>Beautiful Terrain</h3>
+                <div class="feature-box">
+                    <ul>
+                        <li><strong>Realistic Landscapes</strong>: Hills,
+                            valleys, and varied elevation</li>
+                        <li><strong>Rich Cave Systems</strong>: Multiple cave
+                            types from small tunnels to large caverns</li>
+                        <li><strong>Proper Ore Distribution</strong>: Diamonds
+                            deep, coal higher, realistic ratios</li>
+                    </ul>
+                </div>
+
+                <h3>Chaotic FarLands</h3>
+                <div class="feature-box">
+                    <ul>
+                        <li><strong>Coordinate Overflow Simulation</strong>:
+                            Recreates the classic FarLands distortion</li>
+                        <li><strong>Spiky Formations</strong>: Sharp terrain
+                            spikes characteristic of FarLands</li>
+                        <li><strong>Wall Formations</strong>: Vertical sheets of
+                            terrain</li>
+                        <li><strong>Glitchy Terrain</strong>: Random "corrupt"
+                            terrain formations</li>
+                    </ul>
+                </div>
+
+                <h3>Rich Biomes</h3>
+                <div class="feature-box">
+                    <ul>
+                        <li><strong>Climate Zones</strong>: Cold, temperate,
+                            warm, and lush regions</li>
+                        <li><strong>Special FarLands Biomes</strong>: Crimson
+                            forests, soul sand valleys, etc.</li>
+                        <li><strong>Appropriate Vegetation</strong>: Trees and
+                            plants that match their biomes</li>
+                    </ul>
+                </div>
+
+                <h3>Enhanced Resources</h3>
+                <div class="feature-box">
+                    <ul>
+                        <li><strong>Realistic Ore Generation</strong>: Proper
+                            distribution and rarity</li>
+                        <li><strong>Biome-specific Blocks</strong>: Sand in
+                            deserts, snow in cold biomes</li>
+                        <li><strong>Underground Variety</strong>: Different
+                            stone types and formations</li>
+                    </ul>
+                </div>
+
+                <h2>⚡ Generation Flow</h2>
+                <div class="command-box">
+                    1. Calculate Distance → Determine how far from spawn
+                    (FarLands intensity)
+                    2. Select Biome → Use climate-based selection for realistic
+                    biomes
+                    3. Generate Terrain → Multi-layer noise creates realistic
+                    landscapes
+                    4. Apply Distortion → In FarLands, add chaotic distortions
+                    5. Place Materials → Appropriate blocks for depth and biome
+                    6. Add Water → Fill underwater areas to sea level
+                    7. Add Vegetation → Trees and plants appropriate for biomes
+                    8. Add Structures → Rare structures scattered throughout
+                </div>
+
+                <h2>⚙️ Configuration Constants</h2>
+
+                <h3>FarLands Settings</h3>
+                <div class="feature-box">
+                    <ul>
+                        <li><strong>FARLANDS_THRESHOLD</strong>: 12,550,820
+                            blocks (classic distance)</li>
+                        <li><strong>MAX_HEIGHT</strong>: 320 blocks (modern
+                            Minecraft height)</li>
+                        <li><strong>SEA_LEVEL</strong>: 64 blocks</li>
+                    </ul>
+                </div>
+
+                <h3>Noise Scales</h3>
+                <div class="feature-box">
+                    <ul>
+                        <li><strong>BASE_SCALE</strong>: 0.005 (main terrain
+                            frequency)</li>
+                        <li>Various seeds for different noise layers</li>
+                    </ul>
+                </div>
+
+                <h3>Terrain Elevation Settings</h3>
+                <div class="feature-box">
+                    <ul>
+                        <li><strong>TERRAIN_HEIGHT_BOOST</strong>: 0.3 (extra
+                            density to keep land above sea level)</li>
+                        <li><strong>SURFACE_ELEVATION_FACTOR</strong>: 1.2
+                            (amplify surface variation for hills/valleys)</li>
+                    </ul>
+                </div>
+
+                <h2>🎯 Benefits</h2>
+                <div class="success-box">
+                    <ol>
+                        <li><strong>Authentic FarLands Feel</strong>: Captures
+                            the chaotic nature of original FarLands</li>
+                        <li><strong>Rich Exploration</strong>: Abundant
+                            resources and varied terrain</li>
+                        <li><strong>Smooth Progression</strong>: Gradual
+                            transition from normal to chaotic</li>
+                        <li><strong>Modern Features</strong>: Uses current
+                            Minecraft blocks and biomes</li>
+                        <li><strong>Performance Optimized</strong>: Efficient
+                            noise generation and caching</li>
+                    </ol>
+                </div>
+
+                <h2>🎮 Usage</h2>
+                <p>The enhanced system automatically detects player distance
+                    from spawn and applies appropriate generation. Players will
+                    experience:</p>
+
+                <div class="feature-box">
+                    <ul>
+                        <li><strong>Normal Terrain</strong> (0-12M blocks):
+                            Beautiful, realistic landscapes</li>
+                        <li><strong>Transition Zone</strong> (10M-12.5M blocks):
+                            Increasingly chaotic terrain</li>
+                        <li><strong>FarLands Proper</strong> (12.5M+ blocks):
+                            Full chaotic distortion with unique biomes</li>
+                    </ul>
+                </div>
+
+                <div class="success-box">
+                    <p><strong>🎯 Result:</strong> This creates a compelling
+                        reason to explore extreme distances while maintaining
+                        the iconic FarLands experience.</p>
+                </div>
+            </div>
+
+            <div class="footer">
+                <p>&copy; 2025 FarLanders Project | farlanders.cc | Open
+                    Source</p>
+            </div>
+        </div>
+    </body>
+</html>

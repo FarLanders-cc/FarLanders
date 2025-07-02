@@ -3,12 +3,10 @@ package cc.farlanders.generate.terrain;
 import org.bukkit.Material;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
+import cc.farlanders.generate.config.GenerationConfig;
 import cc.farlanders.noise.OpenSimplex2;
 
 public class TerrainHandler {
-
-    private static final int SEA_LEVEL = 64;
-    private static final long NOISE_SEED = 12345L;
 
     private static final String DESERT = "desert";
     private static final String BADLANDS = "badlands";
@@ -35,6 +33,9 @@ public class TerrainHandler {
         public final int worldZ;
         public final double density;
         public final String biome;
+        public final double chaosIntensity;
+        public final boolean inTunnel;
+        public final boolean hasOvergrowth;
 
         public BlockContext(int cx, int cz, int worldX, int y, int worldZ, double density, String biome) {
             this.cx = cx;
@@ -44,12 +45,71 @@ public class TerrainHandler {
             this.worldZ = worldZ;
             this.density = density;
             this.biome = biome;
+
+            // Calculate chaotic properties
+            this.chaosIntensity = calculateChaosIntensity(worldX, y, worldZ);
+            this.inTunnel = isInTunnelSystem(worldX, y, worldZ);
+            this.hasOvergrowth = shouldHaveOvergrowth(worldX, y, worldZ);
+        }
+
+        private double calculateChaosIntensity(int x, int y, int z) {
+            // Create tornado-like spiral distortion
+            double distance = Math.sqrt(x * x + z * z);
+            double spiralEffect = OpenSimplex2.noise3_ImproveXY(GenerationConfig.getTornadoSeed(),
+                    x * GenerationConfig.getDistortionSpiralScale(),
+                    y * GenerationConfig.getDistortionYScale(),
+                    z * GenerationConfig.getDistortionSpiralScale()) * GenerationConfig.getTornadoSpiralFactor();
+
+            // Add chaotic distortion that gets stronger with distance
+            double chaos = OpenSimplex2.noise3_Fallback(GenerationConfig.getDistortionSeed(),
+                    (x + spiralEffect * distance) * GenerationConfig.getDistortionCoordScale(),
+                    y * GenerationConfig.getDistortionYScale(),
+                    (z + spiralEffect * distance) * GenerationConfig.getDistortionCoordScale());
+
+            return Math.abs(chaos) * GenerationConfig.getChaosIntensity();
+        }
+
+        private boolean isInTunnelSystem(int x, int y, int z) {
+            // Create interconnected tunnel networks
+            double tunnelNoise1 = OpenSimplex2.noise3_ImproveXY(GenerationConfig.getTunnelSeed(),
+                    x * GenerationConfig.getTunnelScalePrimary(),
+                    y * (GenerationConfig.getTunnelScalePrimary() * 0.75),
+                    z * GenerationConfig.getTunnelScalePrimary());
+            double tunnelNoise2 = OpenSimplex2.noise3_ImproveXY(GenerationConfig.getTunnelSeed() + 1000,
+                    x * GenerationConfig.getTunnelScaleSecondary(),
+                    y * (GenerationConfig.getTunnelScaleSecondary() * 0.71),
+                    z * GenerationConfig.getTunnelScaleSecondary());
+            double tunnelNoise3 = OpenSimplex2.noise3_ImproveXY(GenerationConfig.getTunnelSeed() + 2000,
+                    x * GenerationConfig.getTunnelScaleTertiary(),
+                    y * (GenerationConfig.getTunnelScaleTertiary() * 1.5),
+                    z * GenerationConfig.getTunnelScaleTertiary());
+
+            // Combine tunnel noises for complex tunnel networks
+            double combinedTunnel = (tunnelNoise1 + tunnelNoise2 * 0.7 + tunnelNoise3 * 1.2) / 2.9;
+
+            return Math.abs(combinedTunnel) < GenerationConfig.getTunnelThreshold();
+        }
+
+        private boolean shouldHaveOvergrowth(int x, int y, int z) {
+            double overgrowthNoise = OpenSimplex2.noise3_ImproveXY(GenerationConfig.getOvergrowthSeed(),
+                    x * GenerationConfig.getOvergrowthScale(),
+                    y * GenerationConfig.getOvergrowthYScale(),
+                    z * GenerationConfig.getOvergrowthScale());
+            return overgrowthNoise > GenerationConfig.getOvergrowthDensityThreshold();
         }
     }
 
     public void handleSkyIslandBlock(ChunkData chunk, BlockContext context) {
-        if (context.density > 0.5) {
-            Material mat = getSkyIslandMaterial(context.worldX, context.y, context.worldZ, context.biome);
+        // Sky islands are affected by chaos but maintain their floating nature
+        if (context.inTunnel) {
+            // Even sky islands can have tunnels through them
+            chunk.setBlock(context.cx, context.y, context.cz, Material.AIR);
+            return;
+        }
+
+        if (context.density > 0.5 - (context.chaosIntensity * 0.2)) {
+            Material mat = getChaoticSkyIslandMaterial(context.worldX, context.y, context.worldZ, context.biome,
+                    context);
             chunk.setBlock(context.cx, context.y, context.cz, mat);
         } else {
             chunk.setBlock(context.cx, context.y, context.cz, Material.AIR);
@@ -57,10 +117,20 @@ public class TerrainHandler {
     }
 
     public void handleSurfaceOrUndergroundBlock(ChunkData chunk, BlockContext context) {
-        if (context.density > 0.3 && isSolidEnvironment(context)) {
-            Material blockType = getSurfaceMaterial(context.worldX, context.y, context.worldZ, context.biome);
+        // Handle tunnel systems first
+        if (context.inTunnel) {
+            handleTunnelBlock(chunk, context);
+            return;
+        }
+
+        // Apply chaotic distortion to density threshold
+        double chaoticThreshold = 0.3 + (context.chaosIntensity * 0.3);
+
+        if (context.density > chaoticThreshold && isSolidEnvironment(context)) {
+            Material blockType = getChaoticSurfaceMaterial(context.worldX, context.y, context.worldZ, context.biome,
+                    context);
             chunk.setBlock(context.cx, context.y, context.cz, blockType);
-        } else if (context.y < SEA_LEVEL) {
+        } else if (context.y < GenerationConfig.getSeaLevel()) {
             chunk.setBlock(context.cx, context.y, context.cz, Material.WATER);
         } else {
             chunk.setBlock(context.cx, context.y, context.cz, Material.AIR);
@@ -68,34 +138,344 @@ public class TerrainHandler {
     }
 
     public void handleSolidBlock(ChunkData chunk, BlockContext context) {
-        Material blockType = getSurfaceMaterial(context.worldX, context.y, context.worldZ, context.biome);
+        // Even solid blocks can be affected by tunnels
+        if (context.inTunnel) {
+            handleTunnelBlock(chunk, context);
+            return;
+        }
+
+        Material blockType = getChaoticSurfaceMaterial(context.worldX, context.y, context.worldZ, context.biome,
+                context);
         chunk.setBlock(context.cx, context.y, context.cz, blockType);
     }
 
     public void handleAirBlock(ChunkData chunk, BlockContext context) {
-        chunk.setBlock(context.cx, context.y, context.cz, Material.AIR);
+        // Add overgrowth in air spaces near solid blocks
+        if (context.hasOvergrowth && isNearSolid(chunk, context.cx, context.y, context.cz)) {
+            Material overgrowthMaterial = getOvergrowthMaterial(context.worldX, context.y, context.worldZ,
+                    context.biome);
+            chunk.setBlock(context.cx, context.y, context.cz, overgrowthMaterial);
+        } else {
+            chunk.setBlock(context.cx, context.y, context.cz, Material.AIR);
+        }
     }
 
-    public void placeWater(ChunkData chunk, int cx, int y, int cz) {
-        chunk.setBlock(cx, y, cz, Material.WATER);
+    private void handleTunnelBlock(ChunkData chunk, BlockContext context) {
+        // Tunnels can have different contents based on depth and chaos
+        if (context.y < GenerationConfig.getTunnelDeepFluidThreshold()) {
+            // Deep tunnels might have lava or water
+            double fluidNoise = OpenSimplex2.noise3_ImproveXY(GenerationConfig.getTunnelSeed() + 5000,
+                    context.worldX * 0.05, context.y * 0.03, context.worldZ * 0.05);
+            if (fluidNoise > GenerationConfig.getTunnelLavaChance()) {
+                chunk.setBlock(context.cx, context.y, context.cz, Material.LAVA);
+            } else if (fluidNoise > GenerationConfig.getTunnelWaterChance()) {
+                chunk.setBlock(context.cx, context.y, context.cz, Material.WATER);
+            } else {
+                chunk.setBlock(context.cx, context.y, context.cz, Material.AIR);
+            }
+        } else if (context.hasOvergrowth) {
+            // Surface tunnels might have overgrowth
+            Material overgrowthMaterial = getOvergrowthMaterial(context.worldX, context.y, context.worldZ,
+                    context.biome);
+            chunk.setBlock(context.cx, context.y, context.cz, overgrowthMaterial);
+        } else {
+            chunk.setBlock(context.cx, context.y, context.cz, Material.AIR);
+        }
     }
 
-    public int findTopY(ChunkData chunk, int cx, int cz) {
-        for (int y = 255; y >= 0; y--) {
-            if (!chunk.getBlockData(cx, y, cz).getMaterial().isAir()) {
-                return y;
+    private boolean isNearSolid(ChunkData chunk, int cx, int y, int cz) {
+        // Check if there's a solid block nearby (within chunk bounds)
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dy = -1; dy <= 1; dy++) {
+                for (int dz = -1; dz <= 1; dz++) {
+                    int checkX = cx + dx;
+                    int checkY = y + dy;
+                    int checkZ = cz + dz;
+
+                    if (checkX >= 0 && checkX < 16 && checkY >= 0 && checkY < 320 &&
+                            checkZ >= 0 && checkZ < 16) {
+                        if (!chunk.getBlockData(checkX, checkY, checkZ).getMaterial().isAir()) {
+                            return true;
+                        }
+                    }
+                }
             }
         }
-        return 0;
+        return false;
     }
 
-    public void generateWaterPocketIfNeeded(ChunkData chunk, int cx, int cz, int worldX, int worldZ) {
-        // Generate water pockets in underground areas
-        if (chunk.getBlockData(cx, SEA_LEVEL - 1, cz).getMaterial() == Material.STONE) {
-            for (int y = SEA_LEVEL - 1; y >= SEA_LEVEL - 5; y--) {
-                chunk.setBlock(cx, y, cz, Material.WATER);
+    private Material getOvergrowthMaterial(int x, int y, int z, String biome) {
+        double overgrowthType = OpenSimplex2.noise3_ImproveXY(GenerationConfig.getOvergrowthSeed() + 1000,
+                x * GenerationConfig.getOvergrowthTypeScale(),
+                y * (GenerationConfig.getOvergrowthTypeScale() * 0.5),
+                z * GenerationConfig.getOvergrowthTypeScale());
+
+        // Biome-specific overgrowth
+        return switch (biome.toLowerCase()) {
+            case "jungle", "bamboo_jungle" -> {
+                if (overgrowthType > 0.6)
+                    yield getMaterialOrFallback("JUNGLE_LEAVES", Material.OAK_LEAVES);
+                if (overgrowthType > 0.3)
+                    yield getMaterialOrFallback("VINE", Material.OAK_LEAVES);
+                yield getMaterialOrFallback("MOSS_BLOCK", Material.GRASS_BLOCK);
+            }
+            case "forest", "dark_forest" -> {
+                if (overgrowthType > 0.5)
+                    yield Material.OAK_LEAVES;
+                if (overgrowthType > 0.2)
+                    yield getMaterialOrFallback("AZALEA_LEAVES", Material.OAK_LEAVES);
+                yield getMaterialOrFallback("MOSS_CARPET", Material.FERN);
+            }
+            case "swamp", "mangrove_swamp" -> {
+                if (overgrowthType > 0.4)
+                    yield getMaterialOrFallback("MANGROVE_LEAVES", Material.OAK_LEAVES);
+                if (overgrowthType > 0.1)
+                    yield getMaterialOrFallback("HANGING_ROOTS", Material.VINE);
+                yield getMaterialOrFallback("MUD", Material.DIRT);
+            }
+            case MUSHROOM_FIELDS -> {
+                if (overgrowthType > 0.5)
+                    yield Material.RED_MUSHROOM_BLOCK;
+                if (overgrowthType > 0.2)
+                    yield Material.BROWN_MUSHROOM_BLOCK;
+                yield Material.MYCELIUM;
+            }
+            default -> {
+                if (overgrowthType > 0.6)
+                    yield Material.FERN;
+                if (overgrowthType > 0.3)
+                    yield getMaterialOrFallback("FLOWERING_AZALEA_LEAVES", Material.OAK_LEAVES);
+                yield getMaterialOrFallback("MOSS_BLOCK", Material.GRASS_BLOCK);
+            }
+        };
+    }
+
+    private Material getChaoticSkyIslandMaterial(int x, int y, int z, String biome, BlockContext context) {
+        // Sky islands have chaos-affected rare materials
+        double noise = noise3D(x, y, z);
+        double chaosBonus = context.chaosIntensity * 0.3;
+        double rareOreNoise = OpenSimplex2.noise3_ImproveXY(GenerationConfig.getOreSeed() + 1000, x * 0.03, y * 0.03,
+                z * 0.03) + chaosBonus;
+
+        // Chaos increases rare ore chances significantly
+        if (rareOreNoise > 0.85 - chaosBonus) {
+            return getMaterialOrFallback("NETHERITE_BLOCK", Material.DIAMOND_BLOCK);
+        }
+        if (rareOreNoise > 0.8 - chaosBonus) {
+            return getMaterialOrFallback("ANCIENT_DEBRIS", Material.DIAMOND_ORE);
+        }
+        if (rareOreNoise > 0.75 - chaosBonus) {
+            return Material.DIAMOND_ORE;
+        }
+        if (rareOreNoise > 0.7 - chaosBonus) {
+            return Material.EMERALD_ORE;
+        }
+        if (rareOreNoise > 0.65 - chaosBonus) {
+            return Material.LAPIS_ORE;
+        }
+        if (rareOreNoise > 0.6 - chaosBonus) {
+            return Material.GOLD_ORE;
+        }
+
+        // Chaotic sky island base materials
+        if (y > 260) {
+            if (noise > 0.6)
+                return getMaterialOrFallback("CRYING_OBSIDIAN", Material.OBSIDIAN);
+            if (noise > 0.4)
+                return getMaterialOrFallback("WARPED_NYLIUM", Material.END_STONE);
+            return getMaterialOrFallback("DRIPSTONE_BLOCK", Material.COBBLESTONE);
+        } else if (y > 240) {
+            if (noise > 0.5)
+                return getMaterialOrFallback("TWISTED_DEEPSLATE", Material.DEEPSLATE);
+            return getMaterialOrFallback("TUFF", Material.STONE);
+        } else {
+            if (noise > 0.7)
+                return getMaterialOrFallback("CRYING_OBSIDIAN", Material.OBSIDIAN);
+            return getMaterialOrFallback("BLACKSTONE", Material.COBBLESTONE);
+        }
+    }
+
+    private Material getChaoticSurfaceMaterial(int x, int y, int z, String biome, BlockContext context) {
+        // Apply chaos to material selection
+        double chaosOffset = context.chaosIntensity * 0.5;
+        double adjustedY = y + (chaosOffset * GenerationConfig.getDistortionYOffsetMultiplier()); // Chaos can shift
+                                                                                                  // material layers
+
+        if (adjustedY < 5)
+            return Material.BEDROCK;
+        if (adjustedY < 15)
+            return getChaoticDeepMaterial(x, (int) adjustedY, z, context);
+        if (adjustedY < 40)
+            return getChaoticOreOrStone(x, (int) adjustedY, z, context);
+        if (adjustedY < 60)
+            return getChaoticTransitionMaterial(x, (int) adjustedY, z, biome, context);
+
+        // Surface materials with chaos
+        if (y == getSurfaceLevel(x, z, biome)) {
+            return getChaoticBiomeTopBlock(biome, context);
+        }
+        if (y < getSurfaceLevel(x, z, biome) + 3) {
+            return getChaoticBiomeSubsurfaceBlock(biome, context);
+        }
+
+        return getChaoticStoneVariant(x, y, z, biome, context);
+    }
+
+    private Material getChaoticDeepMaterial(int x, int y, int z, BlockContext context) {
+        double noise = noise3D(x, y, z);
+        double chaosBonus = context.chaosIntensity * GenerationConfig.getChaosDeepOreBonus(); // Chaos dramatically
+                                                                                              // increases ore chances
+
+        // Much higher ore concentrations due to chaos
+        if (noise > 0.8 - chaosBonus)
+            return getMaterialOrFallback("DEEPSLATE_DIAMOND_ORE", Material.DIAMOND_ORE);
+        if (noise > 0.75 - chaosBonus)
+            return getMaterialOrFallback("DEEPSLATE_GOLD_ORE", Material.GOLD_ORE);
+        if (noise > 0.7 - chaosBonus)
+            return getMaterialOrFallback("DEEPSLATE_IRON_ORE", Material.IRON_ORE);
+        if (noise > 0.65 - chaosBonus)
+            return getMaterialOrFallback("DEEPSLATE_COPPER_ORE", Material.STONE);
+        if (noise > 0.6 - chaosBonus)
+            return getMaterialOrFallback("DEEPSLATE_COAL_ORE", Material.COAL_ORE);
+        if (noise > 0.55 - chaosBonus)
+            return getMaterialOrFallback("DEEPSLATE_REDSTONE_ORE", Material.REDSTONE_ORE);
+
+        // Chaos can create rare deep materials
+        if (context.chaosIntensity > 1.0 && noise > 0.5) {
+            return getMaterialOrFallback("SCULK", Material.DEEPSLATE);
+        }
+
+        Material deepStoneVariant = getDeepStoneVariantClump(x, y, z);
+        if (deepStoneVariant != null)
+            return deepStoneVariant;
+
+        return getMaterialOrFallback("DEEPSLATE", Material.STONE);
+    }
+
+    private Material getChaoticOreOrStone(int x, int y, int z, BlockContext context) {
+        double noise = noise3D(x, y, z);
+        double chaosBonus = context.chaosIntensity * GenerationConfig.getChaosTransitionOreBonus();
+
+        if (noise > 0.75 - chaosBonus)
+            return Material.IRON_ORE;
+        if (noise > 0.7 - chaosBonus)
+            return getMaterialOrFallback("COPPER_ORE", Material.STONE);
+        if (noise > 0.65 - chaosBonus)
+            return Material.COAL_ORE;
+        if (noise > 0.6 - chaosBonus)
+            return Material.REDSTONE_ORE;
+
+        // Chaos creates material mixing
+        if (context.chaosIntensity > GenerationConfig.getMaterialMixingThreshold()) {
+            double mixNoise = OpenSimplex2.noise3_ImproveXY(GenerationConfig.getDistortionSeed(), x * 0.1, y * 0.1,
+                    z * 0.1);
+            if (mixNoise > 0.6)
+                return getMaterialOrFallback("TUFF", Material.ANDESITE);
+            if (mixNoise > 0.3)
+                return getMaterialOrFallback("CALCITE", Material.DIORITE);
+        }
+
+        return Material.STONE;
+    }
+
+    private Material getChaoticTransitionMaterial(int x, int y, int z, String biome, BlockContext context) {
+        double noise = noise3D(x, y, z);
+        double chaosBonus = context.chaosIntensity * GenerationConfig.getChaosTransitionOreBonus();
+
+        if (noise > 0.7 - chaosBonus)
+            return Material.IRON_ORE;
+        if (noise > 0.65 - chaosBonus)
+            return getMaterialOrFallback("COPPER_ORE", Material.STONE);
+        if (noise > 0.6 - chaosBonus)
+            return Material.COAL_ORE;
+
+        // Chaos mixes biome materials
+        if (context.chaosIntensity > GenerationConfig.getBiomeMixingThreshold()) {
+            Material chaoticMaterial = getChaoticBiomeMix(x, y, z, biome);
+            if (chaoticMaterial != null)
+                return chaoticMaterial;
+        }
+
+        return switch (biome.toLowerCase()) {
+            case DESERT, BADLANDS -> Material.SANDSTONE;
+            case "mountains", "stony_peaks" -> Material.ANDESITE;
+            case "dripstone_caves" -> Material.COBBLESTONE;
+            default -> Material.STONE;
+        };
+    }
+
+    private Material getChaoticBiomeMix(int x, int y, int z, String biome) {
+        double mixNoise = OpenSimplex2.noise3_ImproveXY(GenerationConfig.getDistortionSeed() + 3000, x * 0.08, y * 0.05,
+                z * 0.08);
+
+        // Chaos mixes materials from different biomes
+        if (mixNoise > 0.7) {
+            return switch (biome.toLowerCase()) {
+                case DESERT -> getMaterialOrFallback("RED_SANDSTONE", Material.SANDSTONE);
+                case "forest" -> getMaterialOrFallback("MOSSY_COBBLESTONE", Material.COBBLESTONE);
+                case "swamp" -> getMaterialOrFallback("MUD", Material.DIRT);
+                case "mountains" -> getMaterialOrFallback("GRANITE", Material.STONE);
+                default -> null;
+            };
+        }
+        return null;
+    }
+
+    private Material getChaoticBiomeTopBlock(String biome, BlockContext context) {
+        Material baseMaterial = getBiomeTopBlock(biome);
+
+        // Chaos can corrupt surface blocks
+        if (context.chaosIntensity > GenerationConfig.getSurfaceCorruptionThreshold()) {
+            double corruptionNoise = OpenSimplex2.noise3_ImproveXY(GenerationConfig.getDistortionSeed() + 4000,
+                    context.worldX * GenerationConfig.getCorruptionScale(),
+                    context.y * (GenerationConfig.getCorruptionScale() * 0.5),
+                    context.worldZ * GenerationConfig.getCorruptionScale());
+            if (corruptionNoise > 0.6) {
+                return switch (biome.toLowerCase()) {
+                    case "plains", "forest" -> getMaterialOrFallback("PODZOL", Material.DIRT);
+                    case DESERT -> getMaterialOrFallback("RED_SAND", Material.SAND);
+                    case "swamp" -> getMaterialOrFallback("MUD", Material.DIRT);
+                    default -> getMaterialOrFallback("COARSE_DIRT", baseMaterial);
+                };
             }
         }
+
+        return baseMaterial;
+    }
+
+    private Material getChaoticBiomeSubsurfaceBlock(String biome, BlockContext context) {
+        Material baseMaterial = getBiomeSubsurfaceBlock(biome);
+
+        // Chaos can create material layers
+        if (context.chaosIntensity > 0.8) {
+            double layerNoise = OpenSimplex2.noise3_ImproveXY(GenerationConfig.getDistortionSeed() + 5000,
+                    context.worldX * 0.15, context.y * 0.1, context.worldZ * 0.15);
+            if (layerNoise > 0.5) {
+                return getMaterialOrFallback("PACKED_MUD", baseMaterial);
+            }
+        }
+
+        return baseMaterial;
+    }
+
+    private Material getChaoticStoneVariant(int x, int y, int z, String biome, BlockContext context) {
+        // Chaos creates wild stone variations
+        if (context.chaosIntensity > GenerationConfig.getStoneVariantThreshold()) {
+            double variantNoise = OpenSimplex2.noise3_ImproveXY(GenerationConfig.getDistortionSeed() + 6000,
+                    x * GenerationConfig.getVariantScale(),
+                    y * (GenerationConfig.getVariantScale() * 0.67),
+                    z * GenerationConfig.getVariantScale());
+            if (variantNoise > 0.7)
+                return getMaterialOrFallback("TUFF", Material.STONE);
+            if (variantNoise > 0.4)
+                return Material.ANDESITE;
+            if (variantNoise > 0.1)
+                return Material.DIORITE;
+            if (variantNoise > -0.2)
+                return Material.GRANITE;
+        }
+
+        return Material.STONE;
     }
 
     private boolean isSolidEnvironment(BlockContext context) {
@@ -119,7 +499,8 @@ public class TerrainHandler {
     private Material getSkyIslandMaterial(int x, int y, int z, String biome) {
         // Sky islands have rare and valuable materials
         double noise = noise3D(x, y, z);
-        double rareOreNoise = OpenSimplex2.noise3_ImproveXY(NOISE_SEED + 1000, x * 0.03, y * 0.03, z * 0.03);
+        double rareOreNoise = OpenSimplex2.noise3_ImproveXY(GenerationConfig.getOreSeed() + 1000, x * 0.03, y * 0.03,
+                z * 0.03);
 
         // Sky islands contain much rarer and more valuable ores
         if (rareOreNoise > 0.9) {
@@ -228,8 +609,8 @@ public class TerrainHandler {
 
     private int getSurfaceLevel(int x, int z, String biome) {
         // Vary surface level slightly based on biome and position
-        double surfaceNoise = noise3D(x, SEA_LEVEL, z) * 3;
-        int baseLevel = SEA_LEVEL;
+        double surfaceNoise = noise3D(x, GenerationConfig.getSeaLevel(), z) * 3;
+        int baseLevel = GenerationConfig.getSeaLevel();
 
         return switch (biome.toLowerCase()) {
             case "mountains", "jagged_peaks", "stony_peaks" -> baseLevel + 20 + (int) surfaceNoise;
@@ -294,7 +675,7 @@ public class TerrainHandler {
     }
 
     private double noise3D(int x, int y, int z) {
-        return OpenSimplex2.noise3_ImproveXY(NOISE_SEED, x * 0.05, y * 0.05, z * 0.05);
+        return OpenSimplex2.noise3_ImproveXY(GenerationConfig.getTerrainSeed(), x * 0.05, y * 0.05, z * 0.05);
     }
 
     /**
@@ -302,8 +683,10 @@ public class TerrainHandler {
      */
     private Material getStoneVariantClump(int x, int y, int z, String biome) {
         // Use larger scale noise to create clumps rather than scattered variants
-        double clumpNoise = OpenSimplex2.noise3_ImproveXY(NOISE_SEED + 2000, x * 0.008, y * 0.008, z * 0.008);
-        double varietyNoise = OpenSimplex2.noise3_ImproveXY(NOISE_SEED + 3000, x * 0.012, y * 0.012, z * 0.012);
+        double clumpNoise = OpenSimplex2.noise3_ImproveXY(GenerationConfig.getTerrainSeed() + 2000, x * 0.008,
+                y * 0.008, z * 0.008);
+        double varietyNoise = OpenSimplex2.noise3_ImproveXY(GenerationConfig.getTerrainSeed() + 3000, x * 0.012,
+                y * 0.012, z * 0.012);
 
         // Define stone variant zones based on noise values
         if (clumpNoise > 0.4) {
@@ -366,7 +749,8 @@ public class TerrainHandler {
      */
     private Material getDeepStoneVariantClump(int x, int y, int z) {
         // Use different noise for deep stone variants (use 1.15.2 compatible materials)
-        double deepClumpNoise = OpenSimplex2.noise3_ImproveXY(NOISE_SEED + 4000, x * 0.01, y * 0.01, z * 0.01);
+        double deepClumpNoise = OpenSimplex2.noise3_ImproveXY(GenerationConfig.getTerrainSeed() + 4000, x * 0.01,
+                y * 0.01, z * 0.01);
 
         if (deepClumpNoise > 0.6) {
             return Material.COBBLESTONE;
@@ -381,5 +765,12 @@ public class TerrainHandler {
         }
 
         return null; // Use default stone
+    }
+
+    /**
+     * Places water at the specified position
+     */
+    public void placeWater(ChunkData chunk, int cx, int y, int cz) {
+        chunk.setBlock(cx, y, cz, Material.WATER);
     }
 }

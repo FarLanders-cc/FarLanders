@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>FarLanders Documentation Hub</title>
+        <link rel="stylesheet" href="style.css">
+        <link rel="icon" type="image/png" href="logo.png">
+    </head>
+    <body>
+        <div class="container">
+            <div class="nav-header">
+                <h1>FarLanders Documentation</h1>
+                <p>Complete Documentation Hub</p>
+                <div class="nav-links">
+                    <a href="plugin-overview.html" class="current">Home</a>
+                    <a href="spawn-management.html">Spawn Management</a>
+                    <a href="changelog.html">Changelog</a>
+                    <a href="roadmap.html">Roadmap</a>
+                    <a href="architecture.html">Architecture</a>
+                </div>
+            </div>
+
+            <div class="content">
+                <div class="success-box">
+                    <h2>Welcome to FarLanders</h2>
+                    <p>Enhanced Minecraft World Generation & Exploration
+                        Plugin</p>
+                    <p><strong>Latest Version:</strong> <span
+                            class="status-badge status-new">v1.0.2</span> |
+                        <strong>Status:</strong> <span
+                            class="status-badge status-complete">Production
+                            Ready</span></p>
+                </div>
+
+                <h2>Documentation Index</h2>
+
+                <div class="feature-box">
+                    <h3><a href="plugin-overview.html">Main
+                            Documentation</a></h3>
+                    <p>Complete overview of FarLanders plugin features,
+                        commands, and world generation capabilities. Start here
+                        for a comprehensive understanding of what FarLanders
+                        offers.</p>
+                    <ul>
+                        <li>Adventure overview and world generation</li>
+                        <li>Commands and tab completion</li>
+                        <li>Enhanced features (Sky Islands, Agriculture, Mob
+                            Spawning)</li>
+                        <li>Installation and usage instructions</li>
+                    </ul>
+                </div>
+
+                <div class="feature-box">
+                    <h3><a href="spawn-management.html">Spawn
+                            Management</a></h3>
+                    <p>Advanced spawn control and configuration system for
+                        managing player spawning and world behavior.</p>
+                    <ul>
+                        <li>Flexible spawn location configuration</li>
+                        <li>World-specific spawn settings</li>
+                        <li>Far Lands spawn integration</li>
+                        <li>Administrative spawn commands</li>
+                    </ul>
+                </div>
+
+                <div class="feature-box">
+                    <h3><a href="spawn-management.html">Spawn Management
+                            System</a></h3>
+                    <p>Administrative tools for controlling where players spawn,
+                        including the ability to set the Far Lands as the
+                        default spawn point.</p>
+                    <ul>
+                        <li>Spawn management commands</li>
+                        <li>Far Lands spawn configuration</li>
+                        <li>World integration features</li>
+                        <li>Technical implementation details</li>
+                    </ul>
+                </div>
+
+                <div class="feature-box">
+                    <h3><a href="persistent-storage.html">Persistent Storage
+                            System</a></h3>
+                    <p>Complete documentation of the JSON-based persistent file
+                        storage system that ensures player progress survives
+                        server restarts and crashes.</p>
+                    <ul>
+                        <li>JSON-based file storage architecture</li>
+                        <li>Asynchronous operations and performance
+                            optimization</li>
+                        <li>Data migration and recovery procedures</li>
+                        <li>Developer API and troubleshooting guide</li>
+                    </ul>
+                </div>
+
+                <div class="feature-box">
+                    <h3><a href="changelog.html">Changelog</a></h3>
+                    <p>Version history and detailed documentation of all
+                        changes, additions, and improvements across all
+                        releases.</p>
+                    <ul>
+                        <li>v1.1.0 - Major Update: Story System Removal</li>
+                        <li>v1.0.2 - Enhanced World Generation & Spawn
+                            Management</li>
+                        <li>v1.0.1 - Version compatibility fixes</li>
+                        <li>v1.0.0 - Initial release</li>
+                    </ul>
+                </div>
+
+                <div class="feature-box">
+                    <h3><a href="roadmap.html">Implementation Roadmap</a></h3>
+                    <p>Development timeline showing completed features and
+                        planned future enhancements focused on world
+                        generation.</p>
+                    <ul>
+                        <li>Phase 1 (Complete) - Foundation world generation
+                            system</li>
+                        <li>Phase 2 (Planned) - Enhanced terrain features and
+                            generation effects</li>
+                        <li>Phase 3 (Long-term) - Advanced Far Lands generation
+                            with unique biomes</li>
+                    </ul>
+                </div>
+
+                <div class="feature-box">
+                    <h3><a href="architecture.html">Generation
+                            Architecture</a></h3>
+                    <p>Technical overview of the world generation system,
+                        including core components, enhanced features, and
+                        implementation details.</p>
+                    <ul>
+                        <li>Core generation components</li>
+                        <li>Enhanced features (Sky Islands, Agriculture,
+                            etc.)</li>
+                        <li>Configuration and technical specifications</li>
+                        <li>Generation flow and performance considerations</li>
+                    </ul>
+                </div>
+
+                <h2>Quick Start</h2>
+                <div class="command-box">
+                    <div class="command"># Build the plugin</div>
+                    ./gradlew build
+
+                    <div class="command"># The plugin JAR will be in:</div>
+                    build/libs/FarLanders-1.0.2.jar
+
+                    <div class="command"># Install to server and restart</div>
+                    # Copy JAR to plugins/ folder
+
+                    <div class="command"># Basic commands</div>
+                    /farlanders tp farlands # Teleport to Far Lands
+                    /farlanders generate # Generate Far Lands world
+                    /farlanders spawn setfarlands # Set spawn to Far Lands
+                </div>
+
+                <h2>Key Features</h2>
+                <div class="success-box">
+                    <ul>
+                        <li><strong>Enhanced World Generation</strong> -
+                            Beautiful terrain with Far Lands distortion</li>
+                        <li><strong>Progressive Terrain Complexity</strong> -
+                            Terrain becomes more unique as you explore
+                            further</li>
+                        <li><strong>Sky Islands</strong> - Rare floating islands
+                            with valuable resources</li>
+                        <li><strong>Rich Agriculture</strong> - Biome-specific
+                            farms and agricultural infrastructure</li>
+                        <li><strong>Enhanced Mob Spawning</strong> - Realistic
+                            animal habitats and environments</li>
+                        <li><strong>Advanced Spawn Management</strong> -
+                            Flexible
+                            spawn control and Far Lands integration</li>
+                        <li><strong>Admin Commands</strong> - Full
+                            administrative control over generation and spawn
+                            systems</li>
+                    </ul>
+                </div>
+
+                <h2>External Links</h2>
+                <div class="feature-box">
+                    <ul>
+                        <li><strong>Website:</strong> <a
+                                href="https://farlanders.cc">farlanders.cc</a></li>
+                        <li><strong>Source Code:</strong> Open Source
+                            Project</li>
+                        <li><strong>Minecraft Compatibility:</strong> 1.15.2+
+                            (Tested on 1.15.2)</li>
+                        <li><strong>Noise Library:</strong> <a
+                                href="https://github.com/KdotJPG/OpenSimplex2">OpenSimplex2</a></li>
+                    </ul>
+                </div>
+
+                <div class="warning-box">
+                    <strong>System Requirements:</strong>
+                    <ul>
+                        <li>Minecraft Server 1.15.2 or higher</li>
+                        <li>Java 8+ (Java 17+ recommended)</li>
+                        <li>Bukkit/Spigot/Paper server software</li>
+                        <li>Sufficient storage for large world generation</li>
+                    </ul>
+                </div>
+
+                <h2>Contributing</h2>
+                <p>FarLanders is an open source project welcoming contributions.
+                    Whether you're interested in:</p>
+                <ul>
+                    <li><strong>Bug Reports</strong> - Help us identify and fix
+                        issues</li>
+                    <li><strong>Feature Suggestions</strong> - Propose new ideas
+                        and enhancements</li>
+                    <li><strong>Documentation</strong> - Improve or expand
+                        documentation</li>
+                    <li><strong>Code Contributions</strong> - Submit pull
+                        requests for new features</li>
+                </ul>
+
+                <div class="success-box">
+                    <h2>Ready to Explore?</h2>
+                    <p>FarLanders transforms Minecraft world generation with
+                        enhanced terrain and unique Far Lands exploration. Start
+                        with the <a
+                            href="plugin-overview.html">main
+                            documentation</a> to learn about all features, or
+                        check out the <a
+                            href="spawn-management.html">spawn management</a> to
+                        see the advanced configuration options.</p>
+                    <p><strong>The Far Lands await your
+                            exploration!</strong></p>
+                </div>
+            </div>
+
+            <div class="footer">
+                <p>&copy; 2025 FarLanders Project | <a
+                        href="https://farlanders.cc">farlanders.cc</a> | Open
+                    Source</p>
+            </div>
+        </div>
+    </body>
+</html>

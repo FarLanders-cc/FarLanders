@@ -10,7 +10,7 @@ plugins {
 }
 
 group = 'cc.farlanders'
-version = '1.0.1'
+version = '1.1.0'
 
 repositories {
     mavenCentral()
@@ -60,6 +60,7 @@ dependencies {
     // Paper API dependency peer
     // runtimeOnly('io.papermc.paper:paper-api:1.21.5-R0.1-SNAPSHOT')
     // Uncomment the following line if you want to use Purpur API instead of Paper
+    
     // If using JUnit Jupiter
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'

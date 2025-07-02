@@ -47,6 +47,33 @@ cp build/libs/*.jar public/download/ 2>/dev/null || echo "⚠️  JAR files not 
 cp CHANGELOG.md public/ 2>/dev/null || echo "⚠️  CHANGELOG.md not found, skipping..."
 cp README.md public/ 2>/dev/null || echo "📝 README.md not found, that's okay"
 
+# Copy HTML documentation from docs/ folder
+echo "📖 Copying HTML documentation..."
+if [ -d "docs" ]; then
+    # Copy all HTML files and assets from docs/ to public/
+    cp docs/*.html public/ 2>/dev/null || echo "⚠️  HTML docs not found, skipping..."
+    cp docs/*.css public/ 2>/dev/null || echo "⚠️  CSS files not found, skipping..."
+    cp docs/*.png public/ 2>/dev/null || echo "⚠️  PNG files not found, skipping..."
+    cp docs/*.jpg public/ 2>/dev/null || echo "⚠️  JPG files not found, skipping..."
+    cp docs/*.gif public/ 2>/dev/null || echo "⚠️  GIF files not found, skipping..."
+    echo "✅ HTML documentation copied successfully"
+else
+    echo "⚠️  docs/ folder not found, skipping HTML documentation..."
+fi
+
+# Copy favicon
+echo "🎨 Adding favicon..."
+# Try to copy from docs first (our new logo), then fallback to root
+if [ -f "docs/logo.png" ]; then
+    cp docs/logo.png public/favicon.png
+    echo "✅ Favicon copied from docs/logo.png"
+elif [ -f "logo.png" ]; then
+    cp logo.png public/favicon.png
+    echo "✅ Favicon copied from logo.png"
+else
+    echo "⚠️  logo.png not found, skipping favicon..."
+fi
+
 # Create index.html (same as GitHub Actions)
 echo "🏠 Creating index page..."
 cat > public/index.html << 'EOF'
@@ -56,6 +83,8 @@ cat > public/index.html << 'EOF'
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FarLanders Documentation - Local Preview</title>
+    <link rel="icon" type="image/png" href="./favicon.png">
+    <link rel="shortcut icon" type="image/png" href="./favicon.png">
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; margin: 40px; line-height: 1.6; }
         .container { max-width: 800px; margin: 0 auto; }
@@ -68,18 +97,45 @@ cat > public/index.html << 'EOF'
         .header { text-align: center; margin-bottom: 40px; }
         .version { color: #6c757d; }
         .alert { background: #fff3cd; border: 1px solid #ffeaa7; color: #856404; padding: 12px; border-radius: 6px; margin-bottom: 20px; }
+        .main-docs { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; }
+        .main-docs a { color: white; }
+        .section-divider { border-top: 2px solid #e9ecef; margin: 30px 0; padding-top: 20px; }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="alert">
-            <strong>📍 Local Preview Mode</strong> - This is a local preview of your documentation site.
+        <div class="header">
+            <h1>FarLanders Documentation</h1>
+            <p class="version">Version <span class="badge">1.0.2</span>
+            <p>Enhanced Minecraft World Generation & Adventure Plugin</p>
         </div>
         
-        <div class="header">
-            <h1>🏔️ FarLanders Documentation</h1>
-            <p class="version">Version <span class="badge">1.0.1</span> <span class="preview-badge">LOCAL PREVIEW</span></p>
-            <p>Minecraft plugin for enhanced world generation</p>
+        <div class="nav-card main-docs">
+            <h3>📖 Main Documentation</h3>
+            <p>Complete user guide, features, and plugin documentation</p>
+            <a href="./documentation-hub.html">Browse Documentation Hub →</a>
+        </div>
+        
+        <div class="nav-card">
+            <h3>🏠 Plugin Overview</h3>
+            <p>Feature overview, commands, and getting started guide</p>
+            <a href="./plugin-overview.html">Plugin Documentation →</a>
+        </div>
+        
+        <div class="nav-card">
+            <h3>📜 Story Design</h3>
+            <p>Epic adventure storyline and progression system</p>
+            <a href="./story-design.html">Story Documentation →</a>
+        </div>
+        
+        <div class="nav-card">
+            <h3>🚀 Implementation Roadmap</h3>
+            <p>Development timeline and planned features</p>
+            <a href="./roadmap.html">View Roadmap →</a>
+        </div>
+
+        <div class="section-divider">
+            <h2>Developer Resources</h2>
         </div>
         
         <div class="nav-card">
@@ -109,7 +165,7 @@ cat > public/index.html << 'EOF'
         <div class="nav-card">
             <h3>📝 Changelog</h3>
             <p>Version history and release notes</p>
-            <a href="./CHANGELOG.md">View Changelog →</a>
+            <a href="./changelog.html">View Changelog →</a>
         </div>
         
         <div class="nav-card">

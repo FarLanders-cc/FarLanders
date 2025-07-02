@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>FarLanders Spawn Management System</title>
+        <link rel="stylesheet" href="style.css">
+        <link rel="icon" type="image/png" href="logo.png">
+    </head>
+    <body>
+        <div class="container">
+            <div class="nav-header">
+                <h1>Spawn Management System</h1>
+                <p>Control where players spawn in your FarLands world</p>
+                <div class="nav-links">
+                    <a href="plugin-overview.html">Home</a>
+                    <a href="spawn-management.html" class="current">Spawn
+                        Management</a>
+                    <a href="changelog.html">Changelog</a>
+                    <a href="roadmap.html">Roadmap</a>
+                    <a href="architecture.html">Architecture</a>
+                </div>
+            </div>
+
+            <div class="content">
+                <div class="feature-box">
+                    <p>The FarLanders plugin now includes comprehensive spawn
+                        management functionality that allows administrators to
+                        control where new players spawn in the world.</p>
+                </div>
+
+                <h2>⚡ Commands</h2>
+                <div class="warning-box">
+                    <strong>Permission Required:</strong> All spawn management
+                    commands require the <code>farlanders.admin.spawn</code>
+                    permission.
+                </div>
+
+                <h3>/farlanders spawn set</h3>
+                <div class="feature-box">
+                    <p>Sets the world spawn point to your current location.</p>
+                    <ul>
+                        <li><strong>Usage</strong>: <code>/farlanders spawn
+                                set</code></li>
+                        <li><strong>Permission</strong>:
+                            <code>farlanders.admin.spawn</code></li>
+                        <li><strong>Requirements</strong>: Must be executed by a
+                            player (not console)</li>
+                    </ul>
+                </div>
+
+                <h3>/farlanders spawn reset [world]</h3>
+                <div class="feature-box">
+                    <p>Resets the world spawn to the default location (0,
+                        highest block, 0).</p>
+                    <ul>
+                        <li><strong>Usage</strong>: <code>/farlanders spawn
+                                reset [world]</code></li>
+                        <li><strong>Permission</strong>:
+                            <code>farlanders.admin.spawn</code></li>
+                        <li><strong>Parameters</strong>:
+                            <ul>
+                                <li><code>world</code> (optional): Target world
+                                    name. If not specified, uses current world
+                                    for players or "world" for console.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <h3>/farlanders spawn info [world]</h3>
+                <div class="feature-box">
+                    <p>Displays information about the current spawn point.</p>
+                    <ul>
+                        <li><strong>Usage</strong>: <code>/farlanders spawn info
+                                [world]</code></li>
+                        <li><strong>Permission</strong>:
+                            <code>farlanders.admin.spawn</code></li>
+                        <li><strong>Parameters</strong>:
+                            <ul>
+                                <li><code>world</code> (optional): Target world
+                                    name. If not specified, uses current world
+                                    for players or "world" for console.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <h3>🌀 /farlanders spawn setfarlands [world]</h3>
+                <div class="success-box">
+                    <p><strong>Sets the world spawn to a Far Lands location
+                            (12.55 million blocks from origin).</strong></p>
+                    <ul>
+                        <li><strong>Usage</strong>: <code>/farlanders spawn
+                                setfarlands [world]</code></li>
+                        <li><strong>Permission</strong>:
+                            <code>farlanders.admin.spawn</code></li>
+                        <li><strong>Parameters</strong>:
+                            <ul>
+                                <li><code>world</code> (optional): Target world
+                                    name. If not specified, uses current world
+                                    for players or "world" for console.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Coordinates</strong>: Sets spawn to
+                            approximately X: 12,550,000, Z: 100</li>
+                        <li><strong>Safety</strong>: Automatically calculates
+                            safe Y coordinate based on terrain</li>
+                    </ul>
+                </div>
+
+                <h2>Making Far Lands the Default Spawn</h2>
+                <p>To make the Far Lands the default spawn point for new
+                    players:</p>
+
+                <div class="feature-box">
+                    <h3>1. Basic Setup:</h3>
+                    <div class="command-box">
+                        /farlanders spawn setfarlands
+                    </div>
+                    <p>This sets the current world's spawn to the Far Lands.</p>
+                </div>
+
+                <div class="feature-box">
+                    <h3>2. Specific World:</h3>
+                    <div class="command-box">
+                        /farlanders spawn setfarlands world_name
+                    </div>
+                    <p>This sets a specific world's spawn to the Far Lands.</p>
+                </div>
+
+                <div class="feature-box">
+                    <h3>3. Verify Setup:</h3>
+                    <div class="command-box">
+                        /farlanders spawn info
+                    </div>
+                    <p>This confirms the spawn has been set correctly.</p>
+                </div>
+
+                <h2>🌍 Far Lands Spawn Benefits</h2>
+                <div class="success-box">
+                    <p>When players spawn in the Far Lands (at distances >
+                        12,000,000 blocks from origin):</p>
+                    <ul>
+                        <li><strong>Unique Experience</strong>: Players start
+                            their adventure in the mysterious and chaotic Far
+                            Lands terrain</li>
+                        <li><strong>Instant Access</strong>: No need to travel
+                            millions of blocks to reach the Far Lands</li>
+                        <li><strong>Exploration Focus</strong>: Server
+                            experience focused on exploration and world
+                            generation features</li>
+                        <li><strong>Community Spawning</strong>: All new players
+                            start in the same fascinating region</li>
+                    </ul>
+                </div>
+
+                <h2>🔧 Technical Details</h2>
+
+                <h3>Far Lands Coordinates</h3>
+                <div class="feature-box">
+                    <ul>
+                        <li><strong>X Coordinate</strong>: 12,550,000 (safely
+                            within Far Lands territory)</li>
+                        <li><strong>Z Coordinate</strong>: 100 (reasonable
+                            starting position)</li>
+                        <li><strong>Y Coordinate</strong>: Automatically
+                            calculated based on terrain height</li>
+                        <li><strong>Safety Checks</strong>: Y coordinate is
+                            bounded between 10 and 200 for safe spawning</li>
+                    </ul>
+                </div>
+
+                <h3>Distance Calculation</h3>
+                <div class="feature-box">
+                    <p>Distance calculations for spawn management:</p>
+                    <ul>
+                        <li><strong>Standard Spawn</strong>: Distance calculated
+                            from world spawn (typically 0,0)</li>
+                        <li><strong>Far Lands Spawn</strong>: Distance
+                            calculated from Far Lands spawn point (12.55M blocks
+                            from origin)</li>
+                        <li><strong>World Generation</strong>: Far Lands terrain
+                            effects begin at configured threshold</li>
+                    </ul>
+                </div>
+
+                <h3>Performance Considerations</h3>
+                <div class="feature-box">
+                    <ul>
+                        <li><strong>Y-Coordinate Lookup</strong>: The system
+                            queries the highest block at the spawn location</li>
+                        <li><strong>Chunk Loading</strong>: Setting Far Lands
+                            spawn may require chunk generation</li>
+                        <li><strong>World Access</strong>: Commands work across
+                            different worlds as specified</li>
+                    </ul>
+                </div>
+
+                <h2>📋 Example Usage</h2>
+
+                <h3>Setting Up Far Lands as Default</h3>
+                <div class="command-box">
+                    <div class="command"># Set current world spawn to Far
+                        Lands</div>
+                    /farlanders spawn setfarlands
+
+                    <div class="command"># Verify the setting</div>
+                    /farlanders spawn info
+                    # Output: X: 12550000, Y: (calculated), Z: 100, Distance
+                    from origin: 12550000 blocks
+                </div>
+
+                <h3>Reverting to Normal Spawn</h3>
+                <div class="command-box">
+                    <div class="command"># Reset to default spawn</div>
+                    /farlanders spawn reset
+
+                    <div class="command"># Or set to a specific location</div>
+                    /farlanders spawn set
+                </div>
+
+                <h2>🔐 Permissions</h2>
+                <p>Add these permissions to your permission system:</p>
+
+                <div class="command-box">
+                    permissions:
+                    farlanders.admin.spawn:
+                    description: Grants access to spawn management commands
+                    default: op
+                </div>
+
+                <div class="success-box">
+                    <strong>🎯 Unique Server Experience:</strong> This feature
+                    provides server administrators with powerful tools to create
+                    unique server experiences where players can start their
+                    adventure directly in the mysterious Far Lands!
+                </div>
+            </div>
+
+            <div class="footer">
+                <p>&copy; 2025 FarLanders Project | farlanders.cc | Open
+                    Source</p>
+            </div>
+        </div>
+    </body>
+</html>

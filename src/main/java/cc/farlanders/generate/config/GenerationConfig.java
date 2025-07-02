@@ -9,6 +9,11 @@ import org.bukkit.plugin.Plugin;
  */
 public final class GenerationConfig {
 
+    // Private constructor to prevent instantiation
+    private GenerationConfig() {
+        throw new UnsupportedOperationException("Utility class cannot be instantiated");
+    }
+
     private static FileConfiguration config;
     private static boolean initialized = false;
 
@@ -883,6 +888,182 @@ public final class GenerationConfig {
         return getSkyIslandSeed() + config.getLong("seeds.sky-variation", 11000L);
     }
     // =================================
+    // CHAOTIC TERRAIN SETTINGS
+    // =================================
+
+    // Main chaos settings
+    public static double getChaosIntensity() {
+        checkInitialized();
+        return config.getDouble("chaotic-terrain.chaos-intensity", 1.5);
+    }
+
+    public static double getTornadoSpiralFactor() {
+        checkInitialized();
+        return config.getDouble("chaotic-terrain.tornado-spiral-factor", 0.1);
+    }
+
+    // Chaos noise seeds
+    public static long getTornadoSeed() {
+        checkInitialized();
+        return getTerrainSeed() + config.getLong("chaotic-terrain.tornado-seed-offset", 41876L);
+    }
+
+    public static long getTunnelSeed() {
+        checkInitialized();
+        return getTerrainSeed() + config.getLong("chaotic-terrain.tunnel-seed-offset", 86420L);
+    }
+
+    public static long getDistortionSeed() {
+        checkInitialized();
+        return getTerrainSeed() + config.getLong("chaotic-terrain.distortion-seed-offset", 1357L);
+    }
+
+    public static long getOvergrowthSeed() {
+        checkInitialized();
+        return getTerrainSeed() + config.getLong("chaotic-terrain.overgrowth-seed-offset", 2468L);
+    }
+
+    // Tunnel system configuration
+    public static double getTunnelThreshold() {
+        checkInitialized();
+        return config.getDouble("chaotic-terrain.tunnels.threshold", 0.3);
+    }
+
+    public static double getTunnelScalePrimary() {
+        checkInitialized();
+        return config.getDouble("chaotic-terrain.tunnels.scale-primary", 0.02);
+    }
+
+    public static double getTunnelScaleSecondary() {
+        checkInitialized();
+        return config.getDouble("chaotic-terrain.tunnels.scale-secondary", 0.035);
+    }
+
+    public static double getTunnelScaleTertiary() {
+        checkInitialized();
+        return config.getDouble("chaotic-terrain.tunnels.scale-tertiary", 0.008);
+    }
+
+    public static int getTunnelDeepFluidThreshold() {
+        checkInitialized();
+        return config.getInt("chaotic-terrain.tunnels.deep-fluid-threshold", 30);
+    }
+
+    public static double getTunnelLavaChance() {
+        checkInitialized();
+        return config.getDouble("chaotic-terrain.tunnels.lava-chance", 0.6);
+    }
+
+    public static double getTunnelWaterChance() {
+        checkInitialized();
+        return config.getDouble("chaotic-terrain.tunnels.water-chance", 0.3);
+    }
+
+    public static int getTunnelOvergrowthSurfaceY() {
+        checkInitialized();
+        return config.getInt("chaotic-terrain.tunnels.overgrowth-surface-y", 60);
+    }
+
+    // Chaos distortion effects
+    public static double getDistortionCoordScale() {
+        checkInitialized();
+        return config.getDouble("chaotic-terrain.distortion.coord-scale", 0.005);
+    }
+
+    public static double getDistortionSpiralScale() {
+        checkInitialized();
+        return config.getDouble("chaotic-terrain.distortion.spiral-scale", 0.01);
+    }
+
+    public static double getDistortionYScale() {
+        checkInitialized();
+        return config.getDouble("chaotic-terrain.distortion.y-scale", 0.01);
+    }
+
+    public static double getDistortionYOffsetMultiplier() {
+        checkInitialized();
+        return config.getDouble("chaotic-terrain.distortion.y-offset-multiplier", 20.0);
+    }
+
+    // Overgrowth generation
+    public static double getOvergrowthDensityThreshold() {
+        checkInitialized();
+        return config.getDouble("chaotic-terrain.overgrowth.density-threshold", 0.4);
+    }
+
+    public static double getOvergrowthScale() {
+        checkInitialized();
+        return config.getDouble("chaotic-terrain.overgrowth.scale", 0.03);
+    }
+
+    public static double getOvergrowthTypeScale() {
+        checkInitialized();
+        return config.getDouble("chaotic-terrain.overgrowth.type-scale", 0.1);
+    }
+
+    public static double getOvergrowthYScale() {
+        checkInitialized();
+        return config.getDouble("chaotic-terrain.overgrowth.y-scale", 0.02);
+    }
+
+    // Chaos ore bonuses
+    public static double getChaosDeepOreBonus() {
+        checkInitialized();
+        return config.getDouble("chaotic-terrain.chaos-ore-bonuses.deep-ore-bonus", 0.4);
+    }
+
+    public static double getChaosSurfaceOreBonus() {
+        checkInitialized();
+        return config.getDouble("chaotic-terrain.chaos-ore-bonuses.surface-ore-bonus", 0.35);
+    }
+
+    public static double getChaosTransitionOreBonus() {
+        checkInitialized();
+        return config.getDouble("chaotic-terrain.chaos-ore-bonuses.transition-ore-bonus", 0.3);
+    }
+
+    public static double getChaosSkyIslandOreBonus() {
+        checkInitialized();
+        return config.getDouble("chaotic-terrain.chaos-ore-bonuses.sky-island-ore-bonus", 0.3);
+    }
+
+    // Material corruption and mixing
+    public static double getSurfaceCorruptionThreshold() {
+        checkInitialized();
+        return config.getDouble("chaotic-terrain.corruption.surface-corruption-threshold", 1.2);
+    }
+
+    public static double getMaterialMixingThreshold() {
+        checkInitialized();
+        return config.getDouble("chaotic-terrain.corruption.material-mixing-threshold", 0.6);
+    }
+
+    public static double getBiomeMixingThreshold() {
+        checkInitialized();
+        return config.getDouble("chaotic-terrain.corruption.biome-mixing-threshold", 0.8);
+    }
+
+    public static double getStoneVariantThreshold() {
+        checkInitialized();
+        return config.getDouble("chaotic-terrain.corruption.stone-variant-threshold", 1.0);
+    }
+
+    public static double getCorruptionScale() {
+        checkInitialized();
+        return config.getDouble("chaotic-terrain.corruption.corruption-scale", 0.1);
+    }
+
+    public static double getLayerScale() {
+        checkInitialized();
+        return config.getDouble("chaotic-terrain.corruption.layer-scale", 0.15);
+    }
+
+    public static double getVariantScale() {
+        checkInitialized();
+        return config.getDouble("chaotic-terrain.corruption.variant-scale", 0.12);
+    }
+
+    // =================================
     // DEBUG SETTINGS
     // =================================
 
@@ -901,7 +1082,15 @@ public final class GenerationConfig {
         return config.getBoolean("debug.performance-monitoring", false);
     }
 
-    private GenerationConfig() {
-        // Utility class - no instantiation
+    // =================================
+    // PLUGIN METADATA
+    // =================================
+
+    /**
+     * Get the plugin version from config
+     */
+    public static String getVersion() {
+        checkInitialized();
+        return config.getString("version", "1.0.0");
     }
 }

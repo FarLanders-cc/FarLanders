@@ -6,7 +6,6 @@ import cc.farlanders.command.CommandHandler;
 import cc.farlanders.command.FarLandersTabCompleter;
 import cc.farlanders.command.cmds.GenerateFarLandsCommand;
 import cc.farlanders.command.cmds.TeleportFarLandsCommand;
-import cc.farlanders.config.ConfigManager;
 import cc.farlanders.generate.config.GenerationConfig;
 
 public final class FarLanders extends JavaPlugin {
@@ -17,8 +16,7 @@ public final class FarLanders extends JavaPlugin {
     public void onEnable() {
         getLogger().info("FarLanders enabled!");
 
-        // Initialize configuration systems
-        ConfigManager.setup(this);
+        // Initialize configuration system
         GenerationConfig.initialize(this);
 
         getLogger().info("Configuration loaded successfully!");
@@ -29,6 +27,7 @@ public final class FarLanders extends JavaPlugin {
             farlandersCommand.setTabCompleter(new FarLandersTabCompleter());
             handler.register(new GenerateFarLandsCommand());
             handler.register(new TeleportFarLandsCommand());
+            handler.register(new cc.farlanders.command.cmds.SpawnAdminCommand());
             getLogger().info("FarLanders commands registered successfully!");
         } else {
             getLogger().severe("Failed to register 'farlanders' command: command not found in plugin.yml!");

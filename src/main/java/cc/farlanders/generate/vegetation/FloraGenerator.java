@@ -104,8 +104,8 @@ public class FloraGenerator {
         int rootDepth = 1 + random.nextInt(2);
         Material rootMat = switch (biome.toLowerCase()) {
             case BIOME_SWAMP, "mangrove swamp" -> Material.MANGROVE_ROOTS;
-            case "taiga" -> Material.SPRUCE_LOG;
-            case "jungle" -> Material.JUNGLE_LOG;
+            case BIOME_TAIGA -> Material.SPRUCE_LOG;
+            case BIOME_JUNGLE -> Material.JUNGLE_LOG;
             default -> Material.DIRT;
         };
         for (int dy = 1; dy <= rootDepth; dy++) {

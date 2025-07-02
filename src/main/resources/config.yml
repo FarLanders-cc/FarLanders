@@ -84,6 +84,69 @@ farlands:
   glitch-threshold: 0.9 # Threshold for glitch effects
   glitch-intensity: 0.8 # Intensity of glitch effects
 
+# =================================
+# CHAOTIC TERRAIN SETTINGS
+# =================================
+
+# Chaotic terrain creates tornado-like distortions and tunnel systems
+# These settings control the intensity and frequency of chaotic effects
+chaotic-terrain:
+  # Main chaos settings
+  chaos-intensity: 1.5 # Overall intensity of chaotic effects (0.0 = no chaos, 2.0 = extreme chaos)
+  tornado-spiral-factor: 0.1 # How much the tornado spiral affects terrain (0.0 = no spiral, 0.5 = strong spiral)
+
+  # Noise seeds for different chaotic effects
+  tornado-seed-offset: 41876 # Seed offset for tornado spiral noise
+  tunnel-seed-offset: 86420 # Seed offset for tunnel generation
+  distortion-seed-offset: 1357 # Seed offset for general chaos distortion
+  overgrowth-seed-offset: 2468 # Seed offset for overgrowth generation
+
+  # Tunnel system configuration
+  tunnels:
+    threshold: 0.3 # Threshold for tunnel generation (lower = more tunnels)
+    scale-primary: 0.02 # Primary noise scale for tunnel networks
+    scale-secondary: 0.035 # Secondary noise scale for tunnel variation
+    scale-tertiary: 0.008 # Large-scale noise for tunnel connectivity
+
+    # Tunnel content settings
+    deep-fluid-threshold: 30 # Y level below which tunnels may contain lava/water
+    lava-chance: 0.6 # Noise threshold for lava in deep tunnels
+    water-chance: 0.3 # Noise threshold for water in deep tunnels
+    overgrowth-surface-y: 60 # Y level above which surface tunnels can have overgrowth
+
+  # Chaos distortion effects
+  distortion:
+    coord-scale: 0.005 # Scale for chaos distortion noise
+    spiral-scale: 0.01 # Scale for tornado spiral calculations
+    y-scale: 0.01 # Y-axis scale for chaos calculations
+    y-offset-multiplier: 20 # How much chaos can shift material layers vertically
+
+  # Overgrowth generation
+  overgrowth:
+    density-threshold: 0.4 # Threshold for overgrowth generation
+    scale: 0.03 # Noise scale for overgrowth placement
+    type-scale: 0.1 # Noise scale for overgrowth type selection
+    y-scale: 0.02 # Y-axis scale for overgrowth noise
+
+  # Chaos ore bonuses (chaos increases ore spawn rates)
+  chaos-ore-bonuses:
+    deep-ore-bonus: 0.4 # Bonus to deep ore generation from chaos
+    surface-ore-bonus: 0.35 # Bonus to surface ore generation from chaos
+    transition-ore-bonus: 0.3 # Bonus to transition zone ore generation from chaos
+    sky-island-ore-bonus: 0.3 # Bonus to sky island ore generation from chaos
+
+  # Material corruption and mixing
+  corruption:
+    surface-corruption-threshold: 1.2 # Chaos level needed for surface corruption
+    material-mixing-threshold: 0.6 # Chaos level needed for material mixing
+    biome-mixing-threshold: 0.8 # Chaos level needed for cross-biome material mixing
+    stone-variant-threshold: 1.0 # Chaos level needed for wild stone variations
+
+    # Corruption noise scales
+    corruption-scale: 0.1 # Scale for surface corruption noise
+    layer-scale: 0.15 # Scale for material layer mixing
+    variant-scale: 0.12 # Scale for stone variant noise
+
 # Cave Generation
 caves:
   density-multiplier: 0.4 # Overall cave density

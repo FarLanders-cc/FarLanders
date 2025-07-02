@@ -1,7 +1,7 @@
 name: FarLanders
 author: MJ Anglin
 main: cc.farlanders.plugin.FarLanders
-version: 1.0.1
+version: 1.1.0
 api-version: 1.21
 website: https://farlanders.cc
 api: 1.0.1
@@ -29,6 +29,10 @@ permissions:
 
   farlanders.admin:
     description: Grants access to administrative commands
+    default: op
+
+  farlanders.admin.spawn:
+    description: Grants access to spawn management commands
     default: op
 
   farlanders.bypass:

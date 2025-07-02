@@ -45,6 +45,10 @@ fi
 cp CHANGELOG.md public/ 2>/dev/null || echo "⚠️  CHANGELOG.md not found"
 cp README.md public/ 2>/dev/null || echo "📝 README.md not found"
 
+# Copy favicon
+echo "🎨 Adding favicon..."
+cp logo.png public/favicon.png 2>/dev/null || echo "⚠️  logo.png not found, skipping favicon..."
+
 # Create index.html
 echo "🏠 Creating index page..."
 cat > public/index.html << 'EOF'
@@ -54,6 +58,8 @@ cat > public/index.html << 'EOF'
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FarLanders Documentation - Quick Preview</title>
+    <link rel="icon" type="image/png" href="./favicon.png">
+    <link rel="shortcut icon" type="image/png" href="./favicon.png">
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; margin: 40px; line-height: 1.6; }
         .container { max-width: 800px; margin: 0 auto; }
@@ -70,13 +76,10 @@ cat > public/index.html << 'EOF'
 </head>
 <body>
     <div class="container">
-        <div class="alert">
-            <strong>⚡ Quick Preview Mode</strong> - This is a quick preview without test reports. Use <code>./preview-docs.sh</code> for full preview.
-        </div>
         
         <div class="header">
             <h1>🏔️ FarLanders Documentation</h1>
-            <p class="version">Version <span class="badge">1.0.1</span> <span class="preview-badge">QUICK PREVIEW</span></p>
+            <p class="version">Version <span class="badge">1.0.1</span>
             <p>Minecraft plugin for enhanced world generation</p>
         </div>
         
@@ -101,7 +104,7 @@ cat > public/index.html << 'EOF'
         <div class="nav-card">
             <h3>📝 Changelog</h3>
             <p>Version history and release notes</p>
-            <a href="./CHANGELOG.md">View Changelog →</a>
+            <a href="./changelog.html">View Changelog →</a>
         </div>
         
         <div class="nav-card">

@@ -12,6 +12,11 @@ import org.bukkit.command.TabCompleter;
 
 public class FarLandersTabCompleter implements TabCompleter {
 
+    private static final String RESET_SUBCOMMAND = "reset";
+    private static final String INFO_SUBCOMMAND = "info";
+    private static final String SET_SUBCOMMAND = "set";
+    private static final String SETFARLANDS_SUBCOMMAND = "setfarlands";
+
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         List<String> completions = new ArrayList<>();
@@ -26,6 +31,7 @@ public class FarLandersTabCompleter implements TabCompleter {
             switch (subcommand) {
                 case "tp", "teleport" -> completions.addAll(getTeleportCompletions(args));
                 case "generate" -> completions.addAll(getGenerateCompletions(args));
+                case "spawn" -> completions.addAll(getSpawnCompletions(args));
                 default -> {
                     /* No additional completions */ }
             }
@@ -49,6 +55,9 @@ public class FarLandersTabCompleter implements TabCompleter {
         if (sender.hasPermission("farlanders.generate")) {
             subcommands.add("generate");
         }
+        if (sender.hasPermission("farlanders.admin.spawn")) {
+            subcommands.add("spawn");
+        }
 
         return subcommands;
     }
@@ -56,26 +65,10 @@ public class FarLandersTabCompleter implements TabCompleter {
     private List<String> getTeleportCompletions(String[] args) {
         List<String> completions = new ArrayList<>();
 
-        switch (args.length) {
-            case 2 -> {
-                // Second argument for tp: "farlands" or world names
-                completions.add("farlands");
-                completions.addAll(getWorldNames());
-            }
-            // case 3 when !"farlands".equalsIgnoreCase(args[1]) -> {
-            //     // Third argument for regular tp: X coordinate (suggest some common values)
-            //     completions.addAll(Arrays.asList("0", "100", "1000", "~"));
-            // }
-            // case 4 when !"farlands".equalsIgnoreCase(args[1]) -> {
-            //     // Fourth argument for regular tp: Y coordinate
-            //     completions.addAll(Arrays.asList("64", "80", "100", "~"));
-            // }
-            // case 5 when !"farlands".equalsIgnoreCase(args[1]) -> {
-            //     // Fifth argument for regular tp: Z coordinate
-            //     completions.addAll(Arrays.asList("0", "100", "1000", "~"));
-            // }
-            default -> {
-                /* No more completions */ }
+        if (args.length == 2) {
+            // Second argument for tp: "farlands" or world names
+            completions.add("farlands");
+            completions.addAll(getWorldNames());
         }
 
         return completions;
@@ -97,5 +90,24 @@ public class FarLandersTabCompleter implements TabCompleter {
         return Bukkit.getWorlds().stream()
                 .map(World::getName)
                 .toList();
+    }
+
+    private List<String> getSpawnCompletions(String[] args) {
+        List<String> completions = new ArrayList<>();
+
+        if (args.length == 2) {
+            // Second argument for spawn: subcommands
+            completions
+                    .addAll(Arrays.asList(SET_SUBCOMMAND, RESET_SUBCOMMAND, INFO_SUBCOMMAND, SETFARLANDS_SUBCOMMAND));
+        } else if (args.length == 3) {
+            // Third argument for spawn: world names (for reset, info, setfarlands)
+            String subcommand = args[1].toLowerCase();
+            if (RESET_SUBCOMMAND.equals(subcommand) || INFO_SUBCOMMAND.equals(subcommand)
+                    || SETFARLANDS_SUBCOMMAND.equals(subcommand)) {
+                completions.addAll(getWorldNames());
+            }
+        }
+
+        return completions;
     }
 }
