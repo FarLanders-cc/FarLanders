@@ -540,8 +540,10 @@ h6[id] {
     top: 20px;
     left: 20px;
     z-index: 1000;
-    width: 60px;
-    height: 60px;
+    width: 60px !important;
+    height: 60px !important;
+    max-width: 60px !important;
+    max-height: 60px !important;
     border-radius: 50%;
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     box-shadow: 0 4px 20px rgba(42, 42, 42, 0.3);
@@ -566,11 +568,14 @@ h6[id] {
 }
 
 .logo-home-btn img {
-    width: 40px;
-    height: 40px;
+    width: 40px !important;
+    height: 40px !important;
+    max-width: 40px !important;
+    max-height: 40px !important;
     border-radius: 50%;
     transition: all 0.3s ease;
     filter: brightness(1.1);
+    object-fit: cover;
 }
 
 .logo-home-btn:hover img {
