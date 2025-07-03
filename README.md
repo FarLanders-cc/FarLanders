@@ -124,35 +124,6 @@ Generates the FarLands world using the enhanced generation system.
 
 ---
 
-## Tab Completion
-
-The FarLanders plugin includes comprehensive tab completion for all commands:
-
-### **Auto-completion Features:**
-
-- **Subcommands**: Press `Tab` after `/farlanders` to see available commands (`tp`, `generate`)
-- **World Names**: Automatically suggests available world names
-- **Directions**: Complete direction names for FarLands teleportation
-- **Coordinates**: Suggests common coordinate values for manual teleportation
-- **Permission-based**: Only shows commands you have permission to use
-
-### **Tab Completion Examples:**
-
-```
-/farlanders [TAB]          → tp, generate
-/farlanders tp [TAB]       → farlands, world_name, world_nether
-/farlanders tp farlands [TAB] → (teleports to FarLands world)
-/farlanders tp world [TAB] → 0, 100, 1000, ~
-```
-
-### **Smart Context Awareness:**
-
-- Recognizes when you're using `farlands` vs regular teleport
-- Suggests appropriate options based on command position
-- Filters suggestions based on what you've already typed
-
----
-
 ## 🌍 Enhanced World Generation Features
 
 ### **Floating Sky Islands** ⛅
