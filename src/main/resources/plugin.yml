@@ -3,7 +3,7 @@ author: MJ Anglin
 main: cc.farlanders.plugin.FarLanders
 version: 1.1.1
 api-version: 1.21
-website: https://farlanders.cc
+website: https://www.farlanders.cc
 api: 1.0.1
 
 commands:
