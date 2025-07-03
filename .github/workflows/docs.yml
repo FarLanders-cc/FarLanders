@@ -60,136 +60,31 @@ jobs:
           mkdir -p public/download
 
           # Copy generated documentation
-          cp -r build/docs/javadoc/* public/api/
-          cp -r build/reports/jacoco/test/html/* public/coverage/
-          cp -r build/reports/tests/test/* public/tests/
-          cp build/libs/*.jar public/download/
-          cp CHANGELOG.md public/
+          cp -r build/docs/javadoc/* public/api/ 2>/dev/null || echo "Javadoc not found"
+          cp -r build/reports/jacoco/test/html/* public/coverage/ 2>/dev/null || echo "Coverage report not found"
+          cp -r build/reports/tests/test/* public/tests/ 2>/dev/null || echo "Test reports not found"
+          cp build/libs/*.jar public/download/ 2>/dev/null || echo "JAR file not found"
+          cp CHANGELOG.md public/ 2>/dev/null || echo "CHANGELOG.md not found"
           cp README.md public/ 2>/dev/null || echo "README.md not found"
 
-          # Copy HTML documentation from docs/ folder
+          # Copy all documentation from docs/ folder (this preserves your custom documentation)
           if [ -d "docs" ]; then
-            cp docs/*.html public/ 2>/dev/null || echo "HTML docs not found"
-            cp docs/*.css public/ 2>/dev/null || echo "CSS files not found"
-            cp docs/*.png public/ 2>/dev/null || echo "PNG files not found"
-            cp docs/*.jpg public/ 2>/dev/null || echo "JPG files not found"
-            cp docs/*.gif public/ 2>/dev/null || echo "GIF files not found"
-            echo "HTML documentation copied successfully"
+            cp -r docs/* public/ 2>/dev/null || echo "Docs folder content not found"
+            echo "Documentation copied successfully from docs/ folder"
           else
-            echo "docs/ folder not found, skipping HTML documentation"
+            echo "docs/ folder not found"
           fi
 
-          # Copy favicon (prefer docs version)
+          # Ensure favicon exists
           if [ -f "docs/logo.png" ]; then
             cp docs/logo.png public/favicon.png
           elif [ -f "logo.png" ]; then
             cp logo.png public/favicon.png
-          else
-            echo "logo.png not found"
           fi
 
-          # Create index.html
-          cat > public/index.html << 'EOF'
-          <!DOCTYPE html>
-          <html lang="en">
-          <head>
-              <meta charset="UTF-8">
-              <meta name="viewport" content="width=device-width, initial-scale=1.0">
-              <title>FarLanders Documentation</title>
-              <link rel="icon" type="image/png" href="./favicon.png">
-              <link rel="shortcut icon" type="image/png" href="./favicon.png">
-              <style>
-                  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; margin: 40px; line-height: 1.6; }
-                  .container { max-width: 800px; margin: 0 auto; }
-                  .nav-card { background: #f8f9fa; padding: 20px; margin: 15px 0; border-radius: 8px; border: 1px solid #e9ecef; }
-                  .nav-card h3 { margin-top: 0; color: #495057; }
-                  .nav-card a { color: #007bff; text-decoration: none; font-weight: 500; }
-                  .nav-card a:hover { text-decoration: underline; }
-                  .badge { background: #28a745; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; }
-                  .header { text-align: center; margin-bottom: 40px; }
-                  .version { color: #6c757d; }
-                  .main-docs { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; }
-                  .main-docs a { color: white; }
-                  .section-divider { border-top: 2px solid #e9ecef; margin: 30px 0; padding-top: 20px; }
-              </style>
-          </head>
-          <body>
-              <div class="container">
-                  <div class="header">
-                      <h1>FarLanders Documentation</h1>
-                      <p class="version">Version <span class="badge">1.1.1</span></p>
-                      <p>Enhanced Minecraft World Generation & Adventure Plugin</p>
-                  </div>
-                  
-                  <div class="nav-card main-docs">
-                      <h3>📖 Main Documentation</h3>
-                      <p>Complete user guide, features, and plugin documentation</p>
-                      <a href="./documentation-hub.html">Browse Documentation Hub →</a>
-                  </div>
-                  
-                  <div class="nav-card">
-                      <h3>🏠 Plugin Overview</h3>
-                      <p>Feature overview, commands, and getting started guide</p>
-                      <a href="./plugin-overview.html">Plugin Documentation →</a>
-                  </div>
-                  
-                  <div class="nav-card">
-                      <h3>📜 Story Design</h3>
-                      <p>Epic adventure storyline and progression system</p>
-                      <a href="./story-design.html">Story Documentation →</a>
-                  </div>
-                  
-                  <div class="nav-card">
-                      <h3>🚀 Implementation Roadmap</h3>
-                      <p>Development timeline and planned features</p>
-                      <a href="./roadmap.html">View Roadmap →</a>
-                  </div>
-
-                  <div class="section-divider">
-                      <h2>Developer Resources</h2>
-                  </div>
-                  
-                  <div class="nav-card">
-                      <h3>📚 API Documentation</h3>
-                      <p>Complete Javadoc API reference for developers</p>
-                      <a href="./api/">Browse API Documentation →</a>
-                  </div>
-                  
-                  <div class="nav-card">
-                      <h3>🧪 Test Results</h3>
-                      <p>Latest test execution results and reports</p>
-                      <a href="./tests/">View Test Results →</a>
-                  </div>
-                  
-                  <div class="nav-card">
-                      <h3>📊 Code Coverage</h3>
-                      <p>Test coverage analysis and metrics</p>
-                      <a href="./coverage/">View Coverage Report →</a>
-                  </div>
-                  
-                  <div class="nav-card">
-                      <h3>📥 Downloads</h3>
-                      <p>Latest plugin JAR file for server installation</p>
-                      <a href="./download/">Download Plugin →</a>
-                  </div>
-                  
-                  <div class="nav-card">
-                      <h3>📝 Changelog</h3>
-                      <p>Version history and release notes</p>
-                      <a href="./CHANGELOG.md">View Changelog →</a>
-                  </div>
-                  
-                  <div class="nav-card">
-                      <h3>🔗 Links</h3>
-                      <p>
-                          <a href="https://github.com/YourOrganization/FarLanders">GitHub Repository</a> •
-                          <a href="https://farlanders.cc">Main Website</a>
-                      </p>
-                  </div>
-              </div>
-          </body>
-          </html>
-          EOF
+          # List what was copied for debugging
+          echo "Public directory contents:"
+          ls -la public/
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -205,7 +100,7 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: test-and-build
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/master'
 
     steps:
       - name: Deploy to GitHub Pages
