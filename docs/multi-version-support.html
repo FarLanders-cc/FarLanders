@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Multi-Version Support - ViaVersion Integration</title>
+        <link rel="stylesheet" href="style.css?v=1.2.0">
+        <link rel="icon" type="image/png" href="logo.png">
+
+        <!-- Open Graph / Social Media Meta Tags -->
+        <meta property="og:type" content="website">
+        <meta property="og:title"
+            content="FarLanders Multi-Version Support - ViaVersion Integration">
+        <meta property="og:description"
+            content="Learn how to set up ViaVersion and ViaRewind with FarLanders for multi-version Minecraft server support.">
+        <meta property="og:image" content="https://farlanders.cc/banner.png">
+        <meta property="og:url"
+            content="https://farlanders.cc/multi-version-support.html">
+        <meta property="og:site_name" content="FarLanders">
+
+        <!-- Twitter Card Meta Tags -->
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title"
+            content="FarLanders Multi-Version Support - ViaVersion Integration">
+        <meta name="twitter:description"
+            content="Learn how to set up ViaVersion and ViaRewind with FarLanders for multi-version Minecraft server support.">
+        <meta name="twitter:image" content="https://farlanders.cc/banner.png">
+    </head>
+    <body>
+        <!-- Logo Home Button -->
+        <a href="index.html" class="logo-home-btn" title="Return to Home"
+            style="position: fixed; top: 20px; left: 20px; z-index: 1000; width: 60px !important; height: 60px !important; max-width: 60px !important; max-height: 60px !important; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; overflow: hidden;">
+            <img src="logo.png" alt="FarLanders Logo"
+                style="width: 40px !important; height: 40px !important; max-width: 40px !important; max-height: 40px !important; border-radius: 50%; object-fit: cover;" />
+        </a>
+
+        <div class="container">
+            <div class="nav-header">
+                <h1>🔄 Multi-Version Support</h1>
+                <p>ViaVersion & ViaRewind Integration Guide</p>
+                <div class="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="documentation-hub.html">Documentation</a>
+                    <a href="plugin-overview.html">Plugin Overview</a>
+                    <a href="architecture.html">Architecture</a>
+                </div>
+            </div>
+
+            <div class="content">
+                <div class="success-box">
+                    <h2>🌟 Multi-Version Compatibility</h2>
+                    <p>FarLanders v1.2.0 now supports multi-version Minecraft
+                        servers through ViaVersion and ViaRewind integration.
+                        Allow players on different Minecraft versions to enjoy
+                        the Far Lands experience together!</p>
+                </div>
+
+                <div class="section">
+                    <h2>📋 What is ViaVersion?</h2>
+                    <div class="info-box">
+                        <p><strong>ViaVersion</strong> allows newer Minecraft
+                            clients to connect to older servers.</p>
+                        <p><strong>ViaRewind</strong> allows older Minecraft
+                            clients to connect to newer servers.</p>
+                        <p><strong>ViaBackwards</strong> provides additional
+                            backward compatibility for ViaVersion.</p>
+                    </div>
+
+                    <h3>🔄 How It Works</h3>
+                    <p>These plugins work by translating packets between
+                        different Minecraft protocol versions in real-time,
+                        allowing cross-version compatibility without changing
+                        your server's core version.</p>
+                </div>
+
+                <div class="section">
+                    <h2>⚙️ Installation Guide</h2>
+
+                    <h3>Step 1: Install ViaVersion Plugins</h3>
+                    <div class="command-box">
+                        <div class="command"># Download the plugins (replace
+                            X.X.X with latest versions)</div>
+                        wget
+                        https://github.com/ViaVersion/ViaVersion/releases/download/4.9.2/ViaVersion-4.9.2.jar
+                        wget
+                        https://github.com/ViaVersion/ViaRewind/releases/download/3.0.3/ViaRewind-3.0.3.jar
+                        wget
+                        https://github.com/ViaVersion/ViaBackwards/releases/download/4.9.2/ViaBackwards-4.9.2.jar
+                    </div>
+
+                    <h3>Step 2: Plugin Installation Order</h3>
+                    <div class="feature-box">
+                        <ol>
+                            <li><strong>ViaVersion</strong> (Core plugin -
+                                install first)</li>
+                            <li><strong>ViaRewind</strong> (For older client
+                                support)</li>
+                            <li><strong>ViaBackwards</strong> (For additional
+                                compatibility)</li>
+                            <li><strong>FarLanders</strong> (Will auto-detect
+                                ViaVersion)</li>
+                        </ol>
+                    </div>
+
+                    <h3>Step 3: Server Restart</h3>
+                    <p>Restart your server after installing all plugins.
+                        FarLanders will automatically detect and integrate with
+                        ViaVersion plugins.</p>
+                </div>
+
+                <div class="section">
+                    <h2>🎯 Supported Version Range</h2>
+                    <div class="warning-box">
+                        <h3>Recommended Setup</h3>
+                        <ul>
+                            <li><strong>Server Version:</strong> 1.21+
+                                (Latest)</li>
+                            <li><strong>Client Support:</strong> 1.8 - 1.21+
+                                (with ViaVersion suite)</li>
+                            <li><strong>FarLanders Core:</strong> Optimized for
+                                1.15.2+</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-grid">
+                        <div class="feature-box">
+                            <h3>📈 Forward Compatibility</h3>
+                            <p><strong>ViaVersion:</strong> Newer clients →
+                                Older server</p>
+                            <p>Example: 1.21 clients on 1.20 server</p>
+                        </div>
+
+                        <div class="feature-box">
+                            <h3>📉 Backward Compatibility</h3>
+                            <p><strong>ViaRewind:</strong> Older clients → Newer
+                                server</p>
+                            <p>Example: 1.8 clients on 1.21 server</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>🛠️ FarLanders Integration Features</h2>
+
+                    <h3>🔍 Automatic Detection</h3>
+                    <div class="success-box">
+                        <p>FarLanders automatically detects ViaVersion plugins
+                            and enables enhanced compatibility features:</p>
+                        <ul>
+                            <li>✅ Version-specific material handling</li>
+                            <li>✅ Protocol-aware world generation</li>
+                            <li>✅ Client version logging and analytics</li>
+                            <li>✅ Optimized packet handling for different
+                                versions</li>
+                        </ul>
+                    </div>
+
+                    <h3>⚡ Enhanced Features</h3>
+                    <div class="feature-grid">
+                        <div class="feature-box">
+                            <h3>🧱 Smart Materials</h3>
+                            <p>Automatically uses appropriate block types based
+                                on client version (e.g., legacy vs. modern
+                                material names).</p>
+                        </div>
+
+                        <div class="feature-box">
+                            <h3>📊 Version Analytics</h3>
+                            <p>Track which Minecraft versions your players are
+                                using for server optimization.</p>
+                        </div>
+
+                        <div class="feature-box">
+                            <h3>🎮 Adaptive UI</h3>
+                            <p>Command interfaces and messages adapt to client
+                                capabilities.</p>
+                        </div>
+
+                        <div class="feature-box">
+                            <h3>🏗️ Generation Compatibility</h3>
+                            <p>World generation optimized for cross-version
+                                compatibility.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>🖥️ Admin Commands</h2>
+                    <div class="command-box">
+                        <div class="command"># Check version compatibility info
+                            (Available to all players)</div>
+                        /farlanders version
+
+                        <div class="command"># Alternative command</div>
+                        /farlanders ver
+
+                        <div class="command"># View detailed ViaVersion
+                            integration status</div>
+                        /farlanders admin versions [player]
+
+                        <div class="command"># Toggle version-specific
+                            features</div>
+                        /farlanders admin compatibility &lt;enable|disable&gt;
+                    </div>
+
+                    <div class="info-box">
+                        <h3>📋 Version Command Output</h3>
+                        <p>The <code>/farlanders version</code> command
+                            shows:</p>
+                        <ul>
+                            <li>Plugin version information</li>
+                            <li>Server Bukkit/Spigot version</li>
+                            <li>ViaVersion and ViaRewind detection status</li>
+                            <li>Your client version (if you're a player)</li>
+                            <li>Compatibility warnings for legacy clients</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>⚙️ Configuration</h2>
+                    <p>Add these options to your <code>config.yml</code>:</p>
+
+                    <div class="command-box">
+                        <div class="command"># Multi-version compatibility
+                            settings</div>
+                        compatibility:
+                        enabled: true
+                        log_player_versions: true
+                        adaptive_materials: true
+                        optimize_for_legacy: false
+
+                        version_support:
+                        minimum_supported: "1.15.2"
+                        warn_unsupported: true
+                        legacy_material_fallback: true
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>🔧 Troubleshooting</h2>
+
+                    <div class="warning-box">
+                        <h3>Common Issues</h3>
+                        <ul>
+                            <li><strong>Plugin not detecting
+                                    ViaVersion:</strong> Ensure ViaVersion loads
+                                before FarLanders</li>
+                            <li><strong>Material errors:</strong> Enable
+                                <code>legacy_material_fallback</code> in
+                                config</li>
+                            <li><strong>World generation issues:</strong> Check
+                                server version compatibility</li>
+                            <li><strong>Performance issues:</strong> Consider
+                                disabling features for very old clients</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-box">
+                        <h3>💡 Performance Tips</h3>
+                        <ul>
+                            <li>Use Paper/Purpur instead of Spigot for better
+                                ViaVersion performance</li>
+                            <li>Limit the version range if you don't need full
+                                compatibility</li>
+                            <li>Monitor server performance with mixed-version
+                                players</li>
+                            <li>Consider separate worlds for different version
+                                groups if needed</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2>📊 Version Matrix</h2>
+                    <table class="compatibility-table">
+                        <thead>
+                            <tr>
+                                <th>Client Version</th>
+                                <th>Server 1.21</th>
+                                <th>FarLanders Support</th>
+                                <th>Required Plugin</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1.21+</td>
+                                <td>✅ Native</td>
+                                <td>✅ Full</td>
+                                <td>None</td>
+                            </tr>
+                            <tr>
+                                <td>1.20.x</td>
+                                <td>✅ ViaVersion</td>
+                                <td>✅ Full</td>
+                                <td>ViaVersion</td>
+                            </tr>
+                            <tr>
+                                <td>1.19.x</td>
+                                <td>✅ ViaVersion</td>
+                                <td>✅ Full</td>
+                                <td>ViaVersion</td>
+                            </tr>
+                            <tr>
+                                <td>1.16-1.18</td>
+                                <td>✅ ViaVersion</td>
+                                <td>✅ Full</td>
+                                <td>ViaVersion</td>
+                            </tr>
+                            <tr>
+                                <td>1.13-1.15</td>
+                                <td>⚠️ ViaVersion + ViaRewind</td>
+                                <td>✅ Good</td>
+                                <td>ViaVersion + ViaRewind</td>
+                            </tr>
+                            <tr>
+                                <td>1.8-1.12</td>
+                                <td>⚠️ ViaRewind</td>
+                                <td>⚠️ Limited</td>
+                                <td>ViaVersion + ViaRewind</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="success-box">
+                    <h2>🎉 Ready for Multi-Version Support!</h2>
+                    <p>With ViaVersion integration, your FarLanders server can
+                        welcome players from almost any Minecraft version. The
+                        plugin automatically handles version differences and
+                        provides the best possible experience for each
+                        client.</p>
+                    <p><strong>Questions?</strong> Join our community or check
+                        the <a href="documentation-hub.html">documentation
+                            hub</a> for more detailed guides!</p>
+                </div>
+            </div>
+
+            <div class="footer">
+                <p>&copy; 2025 FarLanders Project | <a
+                        href="https://farlanders.cc">farlanders.cc</a> |
+                    Multi-Version Minecraft Plugin</p>
+            </div>
+        </div>
+
+        <style>
+            .compatibility-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 1rem 0;
+                background: var(--background-color);
+                border-radius: var(--border-radius);
+                overflow: hidden;
+                box-shadow: var(--shadow);
+            }
+            
+            .compatibility-table th,
+            .compatibility-table td {
+                padding: 12px;
+                text-align: left;
+                border-bottom: 1px solid var(--light-gray);
+            }
+            
+            .compatibility-table th {
+                background: var(--primary-color);
+                color: var(--text-light);
+                font-family: var(--heading-font);
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+            
+            .compatibility-table tbody tr:hover {
+                background: rgba(100, 141, 179, 0.1);
+            }
+            
+            .feature-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 1rem;
+                margin: 1.5rem 0;
+            }
+        </style>
+    </body>
+</html>

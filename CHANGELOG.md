@@ -7,12 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Versions
 
+- [1.2.0](#120---2025-07-03) **Multi-Version Support, ViaVersion Integration**
 - [1.1.1](#111---2025-07-02) **Resource Distribution Overhaul**
 - [1.1.0](#110---2025-07-01) **MAJOR UPDATE**
 - [1.0.0](#100---initial-release)
   - [1.0.1](#101---2025-06-30)
   - [1.0.2](#102---2025-06-30)
   - [1.0.3](#103---2025-07-01)
+
+## [1.2.0] - 2025-07-03
+
+### 🌍 **Multi-Version Support, ViaVersion Integration**
+
+- **Feature**: Full multi-version support via ViaVersion and ViaRewind integration (1.8–1.21.x clients supported)
+- **Feature**: Version-aware material and world generation compatibility
+- **Command**: `/farlanders version` and admin version info
+- **Improvement**: Documentation and UI updates for version compatibility
+
+### Technical
+
+- **Compatibility**: Main codebase now supports all Minecraft versions while maintaining 1.15.2 compatibility in tests
+- **Test Success Rate**: Improved from ~60% to ~95% pass rate (reduced failures from 120+ to <10)
+- **Version Strategy**: All version-specific workarounds are properly isolated in test code only, not in main codebase
+- **Documentation**: Professional documentation site with API reference, test results, coverage reports, and downloads
+- **Automation**: Full CI/CD pipeline with automated testing, building, and deployment to GitHub Pages
 
 ## [1.1.1] - 2025-07-02
 
@@ -423,14 +441,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Added support for custom domain hosting via GitHub Pages and Cloudflare
   - Implemented CNAME configuration for `www.farlanders.cc`
   - Added automated JAR artifact publishing for downloads
-
-### Technical Details
-
-- **Compatibility**: Main codebase now supports all Minecraft versions while maintaining 1.15.2 compatibility in tests
-- **Test Success Rate**: Improved from ~60% to ~95% pass rate (reduced failures from 120+ to <10)
-- **Version Strategy**: All version-specific workarounds are properly isolated in test code only, not in main codebase
-- **Documentation**: Professional documentation site with API reference, test results, coverage reports, and downloads
-- **Automation**: Full CI/CD pipeline with automated testing, building, and deployment to GitHub Pages
 
 ## [1.0.0] - Initial Release
 

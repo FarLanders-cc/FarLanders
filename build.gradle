@@ -10,7 +10,7 @@ plugins {
 }
 
 group = 'cc.farlanders'
-version = '1.1.1'
+version = '1.2.0'
 
 repositories {
     mavenCentral()
@@ -47,6 +47,14 @@ repositories {
     // Needed for BungeeCord ChatComponent API dependencies
     maven { url = "https://oss.sonatype.org/content/repositories/snapshots" }
     maven { url = 'https://oss.sonatype.org/content/repositories/central' }
+    
+    // ViaVersion repository for multi-version support
+    maven {
+        url = 'https://repo.viaversion.com'
+        content {
+            includeGroup 'com.viaversion'
+        }
+    }
 
     // uncomment if you use local BuildTools artifacts
     /*
@@ -61,6 +69,8 @@ dependencies {
     // runtimeOnly('io.papermc.paper:paper-api:1.21.5-R0.1-SNAPSHOT')
     // Uncomment the following line if you want to use Purpur API instead of Paper
     
+    // ViaVersion API for multi-version support (optional dependency)
+    compileOnly 'com.viaversion:viaversion-api:4.9.2'
     // If using JUnit Jupiter
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'

@@ -3,6 +3,7 @@ package cc.farlanders.generate.terrain;
 import org.bukkit.Material;
 import org.bukkit.generator.ChunkGenerator.ChunkData;
 
+import cc.farlanders.compat.MaterialCompatibilityHelper;
 import cc.farlanders.generate.config.GenerationConfig;
 import cc.farlanders.noise.OpenSimplex2;
 
@@ -15,14 +16,13 @@ public class TerrainHandler {
 
     /**
      * Safely gets a material if it exists in the current Minecraft version,
-     * otherwise returns a fallback material
+     * otherwise returns a fallback material. Enhanced with ViaVersion
+     * compatibility.
      */
     private static Material getMaterialOrFallback(String materialName, Material fallback) {
-        try {
-            return Material.valueOf(materialName);
-        } catch (IllegalArgumentException e) {
-            return fallback;
-        }
+        return MaterialCompatibilityHelper.getCompatibleMaterial(materialName) != null
+                ? MaterialCompatibilityHelper.getCompatibleMaterial(materialName)
+                : fallback;
     }
 
     public static class BlockContext {
