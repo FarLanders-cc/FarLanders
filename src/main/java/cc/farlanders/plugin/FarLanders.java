@@ -1,5 +1,7 @@
 package cc.farlanders.plugin;
 
+import java.util.logging.Level;
+
 import org.bukkit.plugin.java.JavaPlugin;
 
 import cc.farlanders.command.CommandHandler;
@@ -7,6 +9,12 @@ import cc.farlanders.command.FarLandersTabCompleter;
 import cc.farlanders.command.cmds.GenerateFarLandsCommand;
 import cc.farlanders.command.cmds.TeleportFarLandsCommand;
 import cc.farlanders.compat.VersionCompatibilityManager;
+import cc.farlanders.generate.biomes.api.BiomeRegistry;
+import cc.farlanders.generate.biomes.modules.AshenWastesModule;
+import cc.farlanders.generate.biomes.modules.CrystalCavernsModule;
+import cc.farlanders.generate.biomes.modules.FarLandsModule;
+import cc.farlanders.generate.biomes.modules.MysticForestModule;
+import cc.farlanders.generate.biomes.modules.SunkenRuinsModule;
 import cc.farlanders.generate.config.GenerationConfig;
 
 public final class FarLanders extends JavaPlugin {
@@ -41,6 +49,14 @@ public final class FarLanders extends JavaPlugin {
         } else {
             getLogger().info("ViaVersion not found - using native version support only");
         }
+
+        // Register high-level biome modules (refactor registry)
+        BiomeRegistry.register(new FarLandsModule());
+        BiomeRegistry.register(new MysticForestModule());
+        BiomeRegistry.register(new CrystalCavernsModule());
+        BiomeRegistry.register(new SunkenRuinsModule());
+        BiomeRegistry.register(new AshenWastesModule());
+        getLogger().log(Level.INFO, "Biome modules registered: {0}", BiomeRegistry.list().size());
     }
 
     @Override

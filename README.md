@@ -1,185 +1,122 @@
-# FarLanders <img src="logo.png" alt="logo" width="32" />
+# [FarLanders <img src="logo.png" alt="FarLanders Logo" width="32.5" />](https://www.farlanders.cc)
 
-```yml
-▗▄▄▄▖ ▗▄▖ ▗▄▄▖ ▗▖    ▗▄▖ ▗▖  ▗▖▗▄▄▄ ▗▄▄▄▖▗▄▄▖  ▗▄▄▖
-▐▌   ▐▌ ▐▌▐▌ ▐▌▐▌   ▐▌ ▐▌▐▛▚▖▐▌▐▌  █▐▌   ▐▌ ▐▌▐▌
-▐▛▀▀▘▐▛▀▜▌▐▛▀▚▖▐▌   ▐▛▀▜▌▐▌ ▝▜▌▐▌  █▐▛▀▀▘▐▛▀▚▖ ▝▀▚▖
-▐▌   ▐▌ ▐▌▐▌ ▐▌▐▙▄▄▖▐▌ ▐▌▐▌  ▐▌▐▙▄▄▀▐▙▄▄▖▐▌ ▐▌▗▄▄▞▘
+> [`farlanders.cc`](https://www.farlanders.cc)
 
-- # Open source project
-- farlanders.cc
-```
+FarLanders is an open-source Minecraft server plugin that provides advanced, distance-driven world generation inspired by the legendary Far Lands.
 
-FarLanders is the primary plugin for a Minecraft server that features **enhanced world generation** for exploring the legendary Far Lands. Experience progressively more distorted terrain as you journey to the world's edge and discover the unique landscape that awaits.
+This repository contains the generator code, preview tooling, utilities, and tests.
 
----
+Quick links
 
-- [World Generation Overview](#-world-generation-overview)
-- [Usage](#usage)
-- [World Generation Tests](#world-generation-tests)
+- [World Generation Overview](#world-generation-overview)
+- [Usage (build & test)](#usage)
 - [Features](#features)
 - [Commands](#commands)
 
-| [CONTRIBUTING](CONTRIBUTING.md) | [LICENSE](LICENSE) | [CODE_OF_CONDUCT](CODE_OF_CONDUCT.md) |
-| ------------------------------- | ------------------ | ------------------------------------- |
+---
 
-## 🌟 **World Generation Overview**
+## World Generation Overview
 
-Experience **enhanced terrain generation** where distance from spawn determines terrain complexity and distortion:
+Terrain complexity scales with distance from spawn. The generator progressively unlocks new rules and biomes as players travel outward:
 
-- **📍 0-100k blocks**: Normal terrain with standard generation
-- **🏗️ 100k-1M blocks**: Subtle terrain variations and unique structures appear
-- **⚡ 1M-12.5M blocks**: Advanced generation with floating islands and terrain distortions
-- **🌀 12.5M+ blocks**: The true Far Lands - chaotic, unique terrain generation
+- 0–100k blocks — familiar terrain with subtle enhancements
+- 100k–1M blocks — unique structures and biome variants begin to appear
+- 1M–12.5M blocks — advanced distortions, floating islands, and rare resources
+- 12.5M+ blocks — the Far Lands: chaotic, highly-distorted terrain and unique biomes
 
-### **Enhanced Generation Features**
+##### Key ideas:
 
-Discover advanced world generation including:
-
-- **Custom terrain generation** with increasing complexity
-- **Unique biome variants** as you approach the Far Lands
-- **Advanced structure generation** throughout the journey
-- **Progressive terrain distortion** leading to the Far Lands
+- Per-biome presets control vegetation, structure rarity/variants, and terrain multipliers.
+- Generation is deterministic and previewable using the included headless exporters.
+- Resource distribution and structure placement are tuned for exploration balance at scale.
 
 ---
 
 ## Usage
 
-- Build plugin
-  ```java
-  ./gradlew build
-  ```
-- Clean build
-  ```java
-  ./gradlew clean build
-  ```
-- Test
-  ```java
-  ./gradlew test
-  ```
+Build the plugin (Gradle):
 
----
+```bash
+./gradlew clean build
+```
 
-## [World Generation Tests](assets/generation_tests/README.md)
+Run tests:
 
-> - **It's actually just a log of images**
+```bash
+./gradlew test
+```
+
+Headless preview / exporter
+
+The project includes a headless exporter that writes a sample 16×16 chunk to a preview folder.
+
+- Preferred (convenience):
+
+```bash
+make preview-exporter                # uses task defaults
+make preview-exporter OUTPUT_DIR=build/preview/full_chunk
+```
+
+- Direct with Gradle:
+
+```bash
+./gradlew runFullChunkExporter
+./gradlew -PexporterOutput=build/preview/full_chunk runFullChunkExporter
+```
+
+- Run the main class directly from the built JAR:
+
+```bash
+java -cp build/libs/<your-jar>.jar cc.farlanders.tools.FullChunkExporter build/preview/full_chunk
+```
+
+How the exporter picks the output directory
+
+- System property: `-Dfarlanders.export.output=/path/to/out`
+- Gradle project property: `-PexporterOutput=/path/to/out` (Makefile wires this to the exporter)
+- First CLI argument when running the main class directly
+- Default: `build/preview/full_chunk`
+
+Tip: the preview tools are designed to run without a full Minecraft server — see `src/main/java/cc/farlanders/tools/FullChunkExporter.java` and the `tools/` folder for details.
 
 ---
 
 ## Features
 
-### **� World Generation & Exploration**
-
-- **Enhanced Terrain Generation**: Advanced landscapes with proper biome transitions
-- **Progressive Complexity**: Terrain becomes more complex and distorted with distance
-- **Unique Far Lands**: Experience classic "chaotic" Far Lands distortion at extreme distances (12.5M+ blocks)
-- **Advanced Structures**: Discover unique formations and landmarks throughout your journey
-- **Distance-Based Features**: Unlock new terrain types and generation patterns as you explore
-
-### **🌍 World Generation**
-
-- **Beautiful Terrain Generation**: Realistic landscapes with proper biome transitions
-- **Enhanced FarLands**: Classic "staticy" FarLands distortion at extreme distances (12.5M+ blocks)
-- **Rich Cave Systems**: Multi-scale interconnected cave networks with natural formations
-- **Proper Resource Distribution**: Realistic ore placement and biome-appropriate materials
-- **Elevated Terrain**: Optimized land generation to ensure most terrain stays above sea level
-- **Chaotic Biomes**: Special FarLands biomes with unique characteristics
-- **Advanced Vegetation**: Biome-appropriate trees, plants, and surface features
-- **Rare Structures**: Scattered structures and legendary formations for exploration
-- **Floating Sky Islands**: Rare high-altitude islands containing valuable rare ores
-- **Rich Agriculture**: Biome-specific farms, crops, and agricultural infrastructure
-- **Enhanced Mob Spawning**: Specialized habitats and environments for passive mobs
-  > [Generation Architecture](GENERATION_ARCHITECTURE.md)
+- Distance-driven progressive generation (biome progression and terrain distortion)
+- Biome presets: per-biome parameters for terrain, vegetation, structures, and resource bonuses
+- Advanced structure placement with variant selection and rarity tuning
+- Flora & vegetation generation that respects biome presets (density, types, water bias)
+- Rich cave systems and floating sky-island support with rare resources
+- Headless preview and full-chunk exporter for offline inspection
+- Backwards compatibility helpers for Minecraft material versions
 
 ---
 
 ## Commands
 
-### `/farlanders tp farlands`
+These commands are provided by the plugin to manage FarLands worlds and teleportation.
 
-Teleports you to the dedicated FarLands world. This command automatically finds and teleports you to an existing FarLands world.
+- `/farlanders tp farlands` — Teleport to the dedicated FarLands world (finds or prompts to create it).
+- `/farlanders tp [world] <x> <y> <z>` — Teleport to coordinates in a named world.
+- `/farlanders generate` — Generate the FarLands world using the enhanced generator.
 
-**Usage:**
+Permissions:
 
-- `/farlanders tp farlands` - Teleport to the FarLands world
-
-**Notes:**
-
-- The command will find any world generated with the FarLands generator
-- If no FarLands world exists, it will prompt you to create one using `/farlanders generate`
-- You'll be teleported to a safe location in the FarLands world
-
-### `/farlanders tp [world] <x> <y> <z>`
-
-General teleport command for specific coordinates.
-
-### `/farlanders generate`
-
-Generates the FarLands world using the enhanced generation system.
-
-**Permissions:**
-
-- `farlanders.tp` - Required for teleport commands (default: op)
-- `farlanders.generate` - Required for world generation (default: op)
+- `farlanders.tp` — required for teleport commands (default: op)
+- `farlanders.generate` — required to run generation (default: op)
 
 ---
 
-## 🌍 Enhanced World Generation Features
+## Development & Contributing
 
-### **Floating Sky Islands** ⛅
+We welcome contributions. A few pointers:
 
-- **Location**: High altitude (Y 200-280)
-- **Rarity**: Very rare - approximately 1 every 512x512 blocks
-- **Special Materials**:
-  - **Netherite Blocks** (Extremely rare)
-  - **Ancient Debris** (Very rare)
-  - **Diamond Ore** (Rare)
-  - **Emerald Ore** (Rare)
-  - **Gold, Lapis, and other valuable ores**
-- **Structure**: Multi-layered islands with ethereal materials at top (End Stone, Calcite) and solid foundations (Obsidian, Blackstone)
+- Run `./gradlew test` frequently to keep changes safe.
+- The generation preview tools are useful for validating terrain changes without starting a server.
 
-### **Enhanced Mob Spawning** 🐄🐎🐺
+If you plan to change generation algorithms, add small unit tests and a preview run that demonstrates the delta.
 
-- **Biome-Specific Environments**: Each biome generates suitable habitats for passive mobs
-- **Grazing Areas**: Open spaces with grass for cows, sheep, and horses
-- **Water Sources**: Ponds and streams for animal hydration
-- **Forest Clearings**: Open areas in forests for wolves and foxes
-- **Desert Oases**: Rare water sources in deserts for camels
-- **Specialized Habitats**:
-  - Wolf dens in taiga
-  - Parrot perches in jungle
-  - Lily pad areas for frogs in swamps
-  - Mooshroom grazing areas in mushroom fields
+---
 
-### **Rich Agriculture System** 🌾🍅🌽
-
-- **Biome-Appropriate Farms**: Different crop types based on local climate
-- **Plains**: Large wheat fields, vegetable gardens, and scarecrows
-- **Forest**: Berry farms, mushroom cultivation, and fruit orchards
-- **Desert**: Oasis farms with irrigation and cactus plantations
-- **Savanna**: Acacia tree farms and managed grasslands
-- **Taiga**: Protected greenhouses for cold-climate growing
-- **Jungle**: Cocoa plantations, bamboo farms, and melon patches
-- **Swamp**: Rice paddies and kelp farms
-- **Infrastructure**:
-  - Fencing around farms
-  - Irrigation systems
-  - Storage chests and composters
-  - Farm paths and walkways
-
-### **Enhanced Biome Architecture** 🏗️
-
-- **Flower Forest**: More diverse vegetation and agricultural potential
-- **Meadow**: Ideal grazing areas for livestock
-- **Improved Transitions**: Smoother blending between different biomes
-- **Specialized Structures**: Biome-specific buildings and formations
-
-### **Ancient Buried Ruins** ⛪
-
-- **Location**: Deep underground, 10-25 blocks below the surface
-- **Rarity**: Extremely rare - only appears far from spawn (1000+ blocks)
-- **Structures**:
-  - **Temple Ruins**: Religious structures with clerical villagers and ceremonial chambers
-  - **Library Ruins**: Knowledge centers with librarian villagers and enchanted books
-  - **Marketplace Ruins**: Trading posts with merchant villagers and storage areas
-  - **Fortress Ruins**: Military outposts with weaponsmith villagers and armories
+Enjoy exploring the Far Lands — and feel free to open issues or PRs with improvements.

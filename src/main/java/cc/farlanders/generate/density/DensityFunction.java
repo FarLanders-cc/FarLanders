@@ -10,8 +10,17 @@ public class DensityFunction {
     }
 
     public double getCombinedDensity(int x, int y, int z, boolean farlands, double farlandsIntensity) {
+        return getCombinedDensity(x, y, z, farlands, farlandsIntensity, 1.0);
+    }
+
+    /**
+     * Extended variant which accepts a terrain height multiplier to allow per-biome
+     * terrain shaping (1.0 = default).
+     */
+    public double getCombinedDensity(int x, int y, int z, boolean farlands, double farlandsIntensity,
+            double terrainHeightMultiplier) {
         // Base terrain shape using proper 3D noise
-        double terrainDensity = getTerrainDensity(x, y, z, farlands, farlandsIntensity);
+        double terrainDensity = getTerrainDensity(x, y, z, farlands, farlandsIntensity, terrainHeightMultiplier);
 
         // Add caves and overhangs
         double caveDensity = getCaveDensity(x, y, z, farlandsIntensity);
@@ -34,7 +43,8 @@ public class DensityFunction {
         return getCombinedDensity(x, y, z, farlands, farlands ? 1.0 : 0.0);
     }
 
-    private double getTerrainDensity(int x, int y, int z, boolean farlands, double farlandsIntensity) {
+    private double getTerrainDensity(int x, int y, int z, boolean farlands, double farlandsIntensity,
+            double terrainHeightMultiplier) {
         double baseScale = GenerationConfig.getBaseTerrainScale();
         double scale = farlands ? baseScale * (1 + farlandsIntensity * GenerationConfig.getTerrainScaleMultiplier())
                 : baseScale;
@@ -63,7 +73,9 @@ public class DensityFunction {
         // Boost terrain height to ensure more land above sea level
         double heightBoost = y < GenerationConfig.getSurfaceLevel() ? GenerationConfig.getTerrainHeightBoost() : 0.0;
 
-        return (combinedNoise + surfaceVariation) * heightFactor + (heightFactor - 0.2) + heightBoost;
+        // Apply the per-biome terrain height multiplier to the terrain contribution
+        return ((combinedNoise + surfaceVariation) * heightFactor + (heightFactor - 0.2) + heightBoost)
+                * Math.max(0.0, terrainHeightMultiplier);
     }
 
     private double getHeightFactor(int y) {

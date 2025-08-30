@@ -56,7 +56,8 @@ class StructureGeneratorSpacingTest extends BaseTest {
 
                 structureGenerator.generateStructures(
                         testChunk, 8, 8, x, z, 64,
-                        StructureGenerator.BiomeStyle.PLAINS);
+                        StructureGenerator.BiomeStyle.PLAINS,
+                        cc.farlanders.generate.biomes.api.BiomePreset.builder().build());
 
                 if (wasAnyBlockSet(testChunk)) {
                     structureCount.incrementAndGet();
@@ -89,7 +90,8 @@ class StructureGeneratorSpacingTest extends BaseTest {
 
                 structureGenerator.generateStructures(
                         testChunk, 8, 8, x, z, 64,
-                        StructureGenerator.BiomeStyle.PLAINS);
+                        StructureGenerator.BiomeStyle.PLAINS,
+                        cc.farlanders.generate.biomes.api.BiomePreset.builder().build());
 
                 // Check if legendary structure was generated (harder to detect due to mocking)
                 // We'll use the generation config to verify the chance is reduced
@@ -111,7 +113,8 @@ class StructureGeneratorSpacingTest extends BaseTest {
             // Test taiga structure generation
             structureGenerator.generateStructures(
                     mockChunk, 8, 8, 100, 100, 64,
-                    StructureGenerator.BiomeStyle.TAIGA);
+                    StructureGenerator.BiomeStyle.TAIGA,
+                    cc.farlanders.generate.biomes.api.BiomePreset.builder().build());
 
             // Should not use artificial planks - test passes if no exception is thrown
             // Note: Due to mocking limitations, we can't easily verify the exact materials
@@ -178,7 +181,8 @@ class StructureGeneratorSpacingTest extends BaseTest {
 
                 structureGenerator.generateStructures(
                         testChunk, 8, 8, x, z, 64,
-                        StructureGenerator.BiomeStyle.PLAINS);
+                        StructureGenerator.BiomeStyle.PLAINS,
+                        cc.farlanders.generate.biomes.api.BiomePreset.builder().build());
 
                 if (wasAnyBlockSet(testChunk)) {
                     generationCount.incrementAndGet();
@@ -207,7 +211,8 @@ class StructureGeneratorSpacingTest extends BaseTest {
                 when(testBlockData.getMaterial()).thenReturn(Material.STONE);
 
                 structureGenerator.generateStructures(
-                        testChunk, 8, 8, i * 16, i * 16, 64, biome);
+                        testChunk, 8, 8, i * 16, i * 16, 64, biome,
+                        cc.farlanders.generate.biomes.api.BiomePreset.builder().build());
 
                 if (wasAnyBlockSet(testChunk)) {
                     totalStructures.incrementAndGet();

@@ -131,17 +131,27 @@ public final class MaterialCompatibilityHelper {
      * @return Compatible ore material
      */
     public static Material getLegacySafeOre(String oreName, boolean isDeepslate, Player player) {
-        if (player != null && VersionCompatibilityManager.isLegacyClient(player)) {
-            // Legacy clients don't have deepslate ores
-            return getSafeMaterial(oreName + "_ORE", Material.STONE);
+        // If a player is provided but ViaVersion isn't available, we can't
+        // reliably detect their client; prefer the non-deepslate ore as a
+        // safe fallback to keep behaviour deterministic in tests and on
+        // servers without ViaVersion.
+        if (player != null) {
+            if (!VersionCompatibilityManager.isViaVersionAvailable()) {
+                return getSafeMaterial(oreName + "_ORE", Material.STONE);
+            }
+
+            if (VersionCompatibilityManager.isLegacyClient(player)) {
+                // Legacy clients don't have deepslate ores
+                return getSafeMaterial(oreName + "_ORE", Material.STONE);
+            }
         }
 
         if (isDeepslate) {
             return getSafeMaterial("DEEPSLATE_" + oreName + "_ORE",
                     getSafeMaterial(oreName + "_ORE", Material.STONE));
-        } else {
-            return getSafeMaterial(oreName + "_ORE", Material.STONE);
         }
+
+        return getSafeMaterial(oreName + "_ORE", Material.STONE);
     }
 
     /**

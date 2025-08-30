@@ -6,6 +6,8 @@ import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.generator.WorldInfo;
 
 import cc.farlanders.generate.biomes.BiomeProvider;
+import cc.farlanders.generate.biomes.adapter.ProviderAdapter;
+import cc.farlanders.generate.biomes.api.BiomeRegistry;
 import cc.farlanders.generate.config.GenerationConfig;
 import cc.farlanders.generate.density.DensityFunction;
 import cc.farlanders.generate.structures.StructureGenerator;
@@ -21,6 +23,10 @@ public class FarLandsGenerator extends ChunkGenerator {
             GenerationConfig.getSeaLevel(),
             GenerationConfig.getFarlandsThreshold(),
             GenerationConfig.getMaxHeight());
+    // Register an adapter that exposes existing provider into the new registry
+    {
+        ProviderAdapter.registerAdapters(biomeProvider);
+    }
     private final StructureGenerator structureGenerator = new StructureGenerator();
 
     @Override
@@ -42,24 +48,33 @@ public class FarLandsGenerator extends ChunkGenerator {
         double farlandsIntensity = Math.clamp((distanceFromOrigin - GenerationConfig.getFarlandsThreshold())
                 / GenerationConfig.getFarlandsIntensityDivisor(), 0.0, 1.0);
 
-        // Get biome for this column
-        String biome = biomeProvider.getBiomeAt(worldX, worldZ);
+        // Get biome for this column (prefer registry selection; fallback to provider)
+        var moduleOpt = BiomeRegistry.selectByWeight(worldX, worldZ);
+        String biome = moduleOpt.map(m -> m.id()).orElseGet(() -> biomeProvider.getBiomeAt(worldX, worldZ));
 
         // Generate terrain column
-        ColumnData data = new ColumnData(cx, cz, worldX, worldZ, farlands, farlandsIntensity, biome);
+        cc.farlanders.generate.biomes.api.BiomeModule module = moduleOpt.orElse(null);
+        ColumnData data = new ColumnData(cx, cz, worldX, worldZ, farlands, farlandsIntensity, biome, module);
         int surfaceHeight = generateTerrainForColumn(chunk, data);
+        // If module exists, allow it to tweak surface height
+        if (module != null) {
+            var ctx = new cc.farlanders.generate.biomes.api.BiomeModule.ColumnGenerationContext();
+            ctx.setSurfaceHeight(surfaceHeight);
+            module.onGenerateColumn(worldX, worldZ, ctx);
+            surfaceHeight = ctx.getSurfaceHeight();
+        }
 
         // Add water if below sea level
         fillWaterToSeaLevel(chunk, cx, cz, surfaceHeight);
 
         // Add vegetation and structures on surface
-        addSurfaceFeatures(chunk, cx, cz, worldX, worldZ, surfaceHeight, biome);
+        addSurfaceFeatures(chunk, data, surfaceHeight);
 
         // Add agriculture features
-        addAgricultureFeatures(chunk, cx, cz, worldX, worldZ, surfaceHeight, biome);
+        addAgricultureFeatures(chunk, cx, worldX, worldZ, surfaceHeight, biome);
 
         // Add mob spawning areas
-        addMobSpawningFeatures(chunk, cx, cz, worldX, worldZ, biome);
+        addMobSpawningFeatures(chunk, cx, worldX, worldZ, biome);
     }
 
     private static class ColumnData {
@@ -70,8 +85,10 @@ public class FarLandsGenerator extends ChunkGenerator {
         final boolean farlands;
         final double intensity;
         final String biome;
+        final cc.farlanders.generate.biomes.api.BiomeModule module;
 
-        ColumnData(int cx, int cz, int worldX, int worldZ, boolean farlands, double intensity, String biome) {
+        ColumnData(int cx, int cz, int worldX, int worldZ, boolean farlands, double intensity, String biome,
+                cc.farlanders.generate.biomes.api.BiomeModule module) {
             this.cx = cx;
             this.cz = cz;
             this.worldX = worldX;
@@ -79,17 +96,33 @@ public class FarLandsGenerator extends ChunkGenerator {
             this.farlands = farlands;
             this.intensity = intensity;
             this.biome = biome;
+            this.module = module;
         }
     }
 
-    private void addSurfaceFeatures(ChunkData chunk, int cx, int cz, int worldX, int worldZ, int surfaceHeight,
-            String biome) {
+    private void addSurfaceFeatures(ChunkData chunk, ColumnData data, int surfaceHeight) {
         if (surfaceHeight > 0) {
-            floraGenerator.generateBiomeTree(chunk, cx, cz, worldX, worldZ, surfaceHeight, biome);
-            floraGenerator.generatePlantsAndGrass(chunk, cx, cz, worldX, worldZ, surfaceHeight, biome);
+            var preset = data.module != null ? data.module.preset() : null;
+            double vegModifier;
+            if (preset != null) {
+                vegModifier = preset.vegetationDensity();
+            } else if (data.module != null) {
+                vegModifier = data.module.vegetationDensity();
+            } else {
+                vegModifier = 1.0;
+            }
 
-            StructureGenerator.BiomeStyle biomeStyle = StructureGenerator.BiomeStyle.fromBiome(biome);
-            structureGenerator.generateStructures(chunk, cx, cz, worldX, worldZ, surfaceHeight, biomeStyle);
+            // Allow flora generator to consult the biome preset (vegetationTypes /
+            // waterBias)
+            floraGenerator.generateBiomeTree(chunk, data.cx, data.cz, data.worldX, data.worldZ, surfaceHeight,
+                    data.biome, preset);
+            // Use seeded/guided flora placement based on biome preset
+            floraGenerator.generatePlantsAndGrassWithDensity(chunk, data.cx, data.cz, data.worldX, data.worldZ,
+                    surfaceHeight, data.biome, vegModifier, preset);
+
+            StructureGenerator.BiomeStyle biomeStyle = StructureGenerator.BiomeStyle.fromBiome(data.biome);
+            structureGenerator.generateStructures(chunk, data.cx, data.cz, data.worldX, data.worldZ, surfaceHeight,
+                    biomeStyle, preset);
         }
     }
 
@@ -97,8 +130,9 @@ public class FarLandsGenerator extends ChunkGenerator {
         int surfaceHeight = 0;
 
         for (int y = 0; y < GenerationConfig.getMaxHeight(); y++) {
+            double terrainMultiplier = data.module != null ? data.module.terrainHeightMultiplier() : 1.0;
             double density = densityFunction.getCombinedDensity(data.worldX, y, data.worldZ, data.farlands,
-                    data.intensity);
+                    data.intensity, terrainMultiplier);
 
             TerrainHandler.BlockContext context = new TerrainHandler.BlockContext(
                     data.cx, data.cz, data.worldX, y, data.worldZ, density, data.biome);
@@ -127,7 +161,7 @@ public class FarLandsGenerator extends ChunkGenerator {
         }
     }
 
-    private void addAgricultureFeatures(ChunkData chunk, int cx, int cz, int worldX, int worldZ, int surfaceHeight,
+    private void addAgricultureFeatures(ChunkData chunk, int cx, int worldX, int worldZ, int surfaceHeight,
             String biome) {
         // Add agriculture features using random chance
         if (new Random(
@@ -138,7 +172,7 @@ public class FarLandsGenerator extends ChunkGenerator {
         }
     }
 
-    private void addMobSpawningFeatures(ChunkData chunk, int cx, int cz, int worldX, int worldZ, String biome) {
+    private void addMobSpawningFeatures(ChunkData chunk, int cx, int worldX, int worldZ, String biome) {
         // Add mob spawning areas using random chance
         if (new Random(worldX * GenerationConfig.getSpawningRandomX() + worldZ * GenerationConfig.getSpawningRandomZ())
                 .nextInt(GenerationConfig.getSpawningFrequency()) == 0) {

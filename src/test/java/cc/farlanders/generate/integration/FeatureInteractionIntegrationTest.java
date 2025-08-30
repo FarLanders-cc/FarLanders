@@ -103,7 +103,8 @@ class FeatureInteractionIntegrationTest {
 
             // Attempt structure generation in each biome
             try {
-                structureGenerator.generateStructures(testChunk, 8, 8, 100, 100, 70, biomeStyles[i]);
+                structureGenerator.generateStructures(testChunk, 8, 8, 100, 100, 70, biomeStyles[i],
+                        cc.farlanders.generate.biomes.api.BiomePreset.builder().build());
                 assertTrue(true, "Structure generation completed for biome: " + testBiomes[i]);
             } catch (IllegalStateException e) {
                 // Expected when GenerationConfig is not initialized in test environment
@@ -140,7 +141,8 @@ class FeatureInteractionIntegrationTest {
                 // in test environment
                 try {
                     structureGenerator.generateStructures(testChunk, 8, 8, x * 16, z * 16, 70,
-                            StructureGenerator.BiomeStyle.PLAINS);
+                            StructureGenerator.BiomeStyle.PLAINS,
+                            cc.farlanders.generate.biomes.api.BiomePreset.builder().build());
                     assertTrue(true, "Structure generation completed for coordinates: " + x + "," + z);
                 } catch (IllegalStateException e) {
                     // Expected when GenerationConfig is not initialized in test environment
@@ -191,7 +193,8 @@ class FeatureInteractionIntegrationTest {
             // Structure generation may fail due to GenerationConfig in test environment
             try {
                 structureGenerator.generateStructures(testChunk, 8, 8, i * 16, i * 16, 70,
-                        StructureGenerator.BiomeStyle.PLAINS);
+                        StructureGenerator.BiomeStyle.PLAINS,
+                        cc.farlanders.generate.biomes.api.BiomePreset.builder().build());
             } catch (IllegalStateException e) {
                 // Expected when GenerationConfig is not initialized - continue the loop
                 String message = e.getMessage();

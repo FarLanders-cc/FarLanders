@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Versions
 
+- [1.5.0](#150---2025-08-29) **Developer Tooling, Documentation, Exporter Improvements**
 - [1.2.0](#120---2025-07-03) **Multi-Version Support, ViaVersion Integration**
 - [1.1.1](#111---2025-07-02) **Resource Distribution Overhaul**
 - [1.1.0](#110---2025-07-01) **MAJOR UPDATE**
@@ -14,6 +15,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - [1.0.1](#101---2025-06-30)
   - [1.0.2](#102---2025-06-30)
   - [1.0.3](#103---2025-07-01)
+
+# [1.5.0] - 2025-08-29
+
+### Added
+
+- Developer tooling: convenient `Makefile` targets for common developer flows (preview, quick-preview, `convert-changelog`, `clean-empty-files`, `preview-exporter`, `docs`, `test`, `build`, `javadoc`).
+- `scripts/convert-changelog.sh` — portable changelog → HTML converter with layered fallbacks (pandoc → python-markdown → pure‑Python) that generates `docs/changelog.html` and produces stable heading ids and anchors.
+- `scripts/clean-empty-files.sh` — a portable, safe finder for zero-byte files (dry-run by default; `--force` to delete) with sensible excludes.
+- Exporter UX: `cc.farlanders.tools.FullChunkExporter` now accepts an explicit output directory via the `farlanders.export.output` system property or the first CLI argument.
+- Gradle integration: the `runFullChunkExporter` JavaExec task can be passed `-PexporterOutput=...` which forwards `-Dfarlanders.export.output=...` to the exporter; the Makefile exposes this as `make preview-exporter OUTPUT_DIR=...`.
+- Documentation: `README.md` Usage section rewritten to document the new Makefile and exporter workflows; `docs/changelog.html` generated from `CHANGELOG.md`.
+
+### Changed
+
+- Docs cleanup: consolidated and simplified local documentation pages and centralized styling to avoid duplicated header/meta fragments.
+- Preview/export flow: Made the exporter runnable from the Makefile/Gradle with explicit output wiring and clearer developer commands.
+- Build scripts: Gradle task wiring improved so project properties propagate to the exporter process as JVM system properties.
+
+### Fixed
+
+- Fixed portability and invocation issues in maintenance scripts (heredoc argument bug in the changelog converter; replaced non-portable `mapfile` usage with a portable `find -print0` loop in the cleanup script).
+- Improved changelog → HTML conversion by adding stable heading ids and anchor links for in-page navigation.
+
+### Technical / Notes
+
+- All maintenance scripts default to safe behaviors (dry-run or fallbacks). The exporter now prefers an explicit output path from a JVM property, then CLI arg, then a repository default.
+- Recommended next steps for CI/automation: add a short Gradle `doFirst` validation block for `runFullChunkExporter` (creates/verifies the output directory and fails early with a clear message) and optionally add a verbose logging flag to the exporter for easier debugging.
 
 ## [1.2.0] - 2025-07-03
 

@@ -15,6 +15,7 @@ public class FloraGenerator {
     private static final String BIOME_DESERT = "desert";
     private static final String BIOME_JUNGLE = "jungle";
     private static final String BIOME_TAIGA = "taiga";
+    private static final String BIOME_MANGROVE_SWAMP = "mangrove swamp";
 
     long hashCoords(int x, int z) {
         return x * 341873128712L + z * 132897987541L;
@@ -39,6 +40,51 @@ public class FloraGenerator {
             case BIOME_TAIGA -> handleTaiga(chunk, cx, cz, topY, chance);
             case "mushroom fields" -> handleMushroomFields(chunk, cx, cz, topY, chance);
             default -> handlePlainsAndCherryGrove(chunk, cx, cz, topY, chance);
+        }
+    }
+
+    /**
+     * Density-aware wrapper which deterministically decides whether to run
+     * the plant/grass generator based on world coordinates and a density
+     * multiplier (0.0-1.0).
+     */
+    public void generatePlantsAndGrassWithDensity(ChunkData chunk, int cx, int cz, int worldX, int worldZ, int topY,
+            String biome, double density) {
+        if (density <= 0.0)
+            return;
+        Random random = new Random(hashCoords(worldX, worldZ) ^ 0xB16B00B5);
+        if (random.nextDouble() < Math.min(1.0, density)) {
+            generatePlantsAndGrass(chunk, cx, cz, worldX, worldZ, topY, biome);
+        }
+    }
+
+    /**
+     * Variant that accepts a BiomePreset and uses vegetationTypes and waterBias
+     * to slightly bias placement.
+     */
+    public void generatePlantsAndGrassWithDensity(ChunkData chunk, int cx, int cz, int worldX, int worldZ, int topY,
+            String biome, double density, cc.farlanders.generate.biomes.api.BiomePreset preset) {
+        if (density <= 0.0)
+            return;
+        // Bias density by waterBias if present
+        double bias = preset != null ? preset.waterBias() : 0.0;
+        double adjusted = Math.min(1.0, Math.max(0.0, density + bias * 0.25));
+        Random random = new Random(hashCoords(worldX, worldZ) ^ 0xB16B00B5);
+        if (random.nextDouble() < adjusted) {
+            // If vegetationTypes are specified, prefer handlers matching those types
+            if (preset != null && !preset.vegetationTypes().isEmpty()) {
+                String choice = preset.vegetationTypes().get(random.nextInt(preset.vegetationTypes().size()));
+                // Map a simple vegetation category to a handler by name
+                switch (choice.toLowerCase()) {
+                    case "grass", "tall_grass" -> handlePlainsAndCherryGrove(chunk, cx, cz, topY, random.nextDouble());
+                    case BIOME_SWAMP -> handleSwamp(chunk, cx, cz, topY, random.nextDouble());
+                    case BIOME_DESERT -> handleDesertAndBadlands(chunk, cx, cz, topY, random.nextDouble());
+                    case BIOME_JUNGLE -> handleJungle(chunk, cx, cz, topY, random.nextDouble());
+                    default -> generatePlantsAndGrass(chunk, cx, cz, worldX, worldZ, topY, biome);
+                }
+            } else {
+                generatePlantsAndGrass(chunk, cx, cz, worldX, worldZ, topY, biome);
+            }
         }
     }
 
@@ -100,10 +146,22 @@ public class FloraGenerator {
         maybeAddGlowCore(chunk, cx, topY + height / 2, cz, random);
     }
 
+    // Preset-aware overload for tree placement; consults vegetationTypes for forced
+    // tree styles
+    public void generateBiomeTree(ChunkData chunk, int cx, int cz, int worldX, int worldZ, int topY, String biome,
+            cc.farlanders.generate.biomes.api.BiomePreset preset) {
+        if (preset != null && !preset.vegetationTypes().isEmpty()) {
+            // If preset explicitly disables trees via a special token, skip
+            if (preset.vegetationTypes().contains("no_trees"))
+                return;
+        }
+        generateBiomeTree(chunk, cx, cz, worldX, worldZ, topY, biome);
+    }
+
     private void placeRoots(ChunkData chunk, int cx, int y, int cz, String biome, Random random) {
         int rootDepth = 1 + random.nextInt(2);
         Material rootMat = switch (biome.toLowerCase()) {
-            case BIOME_SWAMP, "mangrove swamp" -> Material.MANGROVE_ROOTS;
+            case BIOME_SWAMP, BIOME_MANGROVE_SWAMP -> Material.MANGROVE_ROOTS;
             case BIOME_TAIGA -> Material.SPRUCE_LOG;
             case BIOME_JUNGLE -> Material.JUNGLE_LOG;
             default -> Material.DIRT;
@@ -144,7 +202,7 @@ public class FloraGenerator {
 
     private double getFloraChance(String biome) {
         return switch (biome.toLowerCase()) {
-            case "plains", "forest", "dark forest", BIOME_JUNGLE, "savanna", "mangrove swamp" -> 0.2;
+            case "plains", "forest", "dark forest", BIOME_JUNGLE, "savanna", BIOME_MANGROVE_SWAMP -> 0.2;
             case BIOME_SWAMP, BIOME_CHERRY_GROVE, BIOME_TAIGA -> 0.15;
             case "snowy plains", "ice spikes", BIOME_DESERT, "badlands" -> 0.05;
             case "mushroom fields" -> 0.01;
@@ -160,7 +218,7 @@ public class FloraGenerator {
             case "savanna" -> TreeType.ACACIA;
             case BIOME_TAIGA -> TreeType.REDWOOD;
             case BIOME_CHERRY_GROVE -> TreeType.CHERRY;
-            case "mangrove swamp" -> TreeType.MANGROVE;
+            case BIOME_MANGROVE_SWAMP -> TreeType.MANGROVE;
             case BIOME_SWAMP -> TreeType.SWAMP;
             default -> TreeType.TREE;
         };

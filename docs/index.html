@@ -1,295 +1,66 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>FarLanders - Enhanced Minecraft World Generation</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link
-            href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@400;500;600;700&display=swap"
-            rel="stylesheet">
-        <link rel="stylesheet" href="style.css?v=1.2.0">
-        <link rel="icon" type="image/png" href="favicon.png">
-
-        <!-- Open Graph / Social Media Meta Tags -->
-        <meta property="og:type" content="website">
-        <meta property="og:title"
-            content="FarLanders - Enhanced Minecraft World Generation">
-        <meta property="og:description"
-            content="Transform your Minecraft world with enhanced terrain generation, mysterious ancient ruins, and the legendary Far Lands experience. Progressive terrain, sky islands, balanced resources, and advanced controls.">
-        <meta property="og:image" content="https://farlanders.cc/banner.png">
-        <meta property="og:url" content="https://farlanders.cc/">
-        <meta property="og:site_name" content="FarLanders">
-
-        <!-- Twitter Card Meta Tags -->
-        <meta name="twitter:card" content="summary_large_image">
-        <meta name="twitter:title"
-            content="FarLanders - Enhanced Minecraft World Generation">
-        <meta name="twitter:description"
-            content="Transform your Minecraft world with enhanced terrain generation, mysterious ancient ruins, and the legendary Far Lands experience.">
-        <meta name="twitter:image" content="https://farlanders.cc/banner.png">
-
-        <!-- Additional Meta Tags -->
-        <meta name="description"
-            content="FarLanders - Enhanced Minecraft World Generation plugin featuring progressive terrain, ancient ruins, balanced resources, and the authentic Far Lands experience.">
-        <meta name="keywords"
-            content="Minecraft, plugin, world generation, Far Lands, terrain, ancient ruins, Bukkit, Spigot, Paper">
-        <meta name="author" content="FarLanders Project">
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>FarLanders — Documentation</title>
+        <link rel="stylesheet" href="style.css" />
     </head>
     <body>
-        <!-- Logo Home Button -->
-        <a href="index.html" class="logo-home-btn" title="Return to Home"
-            style="position: fixed; top: 20px; left: 20px; z-index: 1000; width: 60px !important; height: 60px !important; max-width: 60px !important; max-height: 60px !important; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; overflow: hidden;">
-            <img src="logo.png" alt="FarLanders Logo"
-                style="width: 40px !important; height: 40px !important; max-width: 40px !important; max-height: 40px !important; border-radius: 50%; object-fit: cover;" />
-        </a>
-
-        <div class="container">
-            <div class="nav-header">
-                <h1>FarLanders</h1>
-                <p>Enhanced Minecraft World Generation & Exploration Plugin</p>
-                <div class="nav-links">
-                    <a href="index.html" class="current">Home</a>
-                    <a href="documentation-hub.html">Documentation</a>
-                    <a href="changelog.html">Changelog</a>
-                    <a href="roadmap.html">Roadmap</a>
-                </div>
+        <header class="top">
+            <a class="logo-link" href="index.html"><img src="logo.png"
+                    alt="FarLanders" class="logo" /></a>
+            <div class="title-wrap">
+                <h1 class="title">FarLanders</h1>
+                <p class="tagline">Progressive Far-Lands style world generation
+                    with per-biome presets and preview tooling.</p>
             </div>
+        </header>
 
-            <div class="content">
-                <div class="success-box">
-                    <h2>Welcome to FarLanders</h2>
-                    <p>Transform your Minecraft world with enhanced terrain
-                        generation, mysterious ancient ruins, and the legendary
-                        Far Lands experience.</p>
-                    <p><strong>Latest Version:</strong> <span
-                            class="status-badge status-enhancement">v1.2.0</span>
-                        | <strong>Status:</strong> <span
-                            class="status-badge status-complete">Production
-                            Ready</span></p>
-                </div>
+        <nav class="nav" aria-label="Primary">
+            <a href="api/">API Reference</a>
+            <a href="coverage/">Test Coverage</a>
+            <a href="changelog.html">Changelog</a>
+        </nav>
 
-                <div class="hero-section">
-                    <h2>🌍 Enhanced World Generation</h2>
-                    <p>Experience Minecraft like never before with procedurally
-                        generated terrain that becomes more chaotic and unique
-                        as you venture into the Far Lands. Every journey offers
-                        new landscapes, resources, and challenges.</p>
-                </div>
+        <main class="main container">
+            <section class="hero">
+                <h2>Server-side world generation for Minecraft</h2>
+                <p>FarLanders provides configurable, modular terrain and
+                    structure generation with tools for previewing chunks
+                    offline and a Java API for integration.</p>
+            </section>
 
-                <div class="feature-grid">
-                    <div class="feature-box">
-                        <h3>🏔️ Progressive Terrain</h3>
-                        <p>Terrain complexity increases with distance, creating
-                            the authentic Far Lands experience with beautiful
-                            chaos.</p>
-                    </div>
-
-                    <div class="feature-box">
-                        <h3>🏝️ Sky Islands</h3>
-                        <p>Discover rare floating islands with valuable
-                            resources and unique generation patterns.</p>
-                    </div>
-
-                    <div class="feature-box">
-                        <h3>🌾 Rich Agriculture</h3>
-                        <p>Biome-specific farms and agricultural infrastructure
-                            make survival both challenging and rewarding.</p>
-                    </div>
-
-                    <div class="feature-box">
-                        <h3>🏛️ Ancient Ruins</h3>
-                        <p>Uncover mysterious underground structures with
-                            villager NPCs, rare loot, and untold secrets.</p>
-                    </div>
-
-                    <div class="feature-box">
-                        <h3>⚖️ Balanced Resources</h3>
-                        <p>Carefully tuned ore and material distribution ensures
-                            fair gameplay without resource clustering.</p>
-                    </div>
-
-                    <div class="feature-box">
-                        <h3>🎮 Advanced Controls</h3>
-                        <p>Comprehensive admin commands and spawn management for
-                            complete server customization.</p>
-                    </div>
-                </div>
-
-                <div class="command-box">
-                    <h3>Quick Start Commands</h3>
-                    <div class="command"># Generate a Far Lands world</div>
-                    /farlanders generate
-
-                    <div class="command"># Teleport to the Far Lands</div>
-                    /farlanders tp farlands
-
-                    <div class="command"># Set spawn point in Far Lands</div>
-                    /farlanders spawn setfarlands
-
-                    <div class="command"># View plugin information</div>
-                    /farlanders info
-                </div>
-
-                <div class="info-grid">
-                    <div class="feature-box">
-                        <h3>📚 Complete Documentation</h3>
-                        <p>Comprehensive guides covering every aspect of
-                            FarLanders.</p>
-                        <a href="documentation-hub.html"
-                            class="btn-primary">View Documentation</a>
-                    </div>
-
-                    <div class="feature-box">
-                        <h3>🗺️ Resource Guide</h3>
-                        <p>Detailed analysis of ore distribution and mining
-                            strategies.</p>
-                        <a href="resource-distribution.html"
-                            class="btn-primary">Resource Guide</a>
-                    </div>
-
-                    <div class="feature-box">
-                        <h3>🏛️ Ancient Ruins Guide</h3>
-                        <p>Discover buried temples, libraries, marketplaces, and
-                            fortresses.</p>
-                        <a href="ancient-ruins.html" class="btn-primary">Explore
-                            Ruins</a>
-                    </div>
-
-                    <div class="feature-box">
-                        <h3>📋 Installation Guide</h3>
-                        <p>Step-by-step setup instructions and system
-                            requirements.</p>
-                        <a href="documentation-hub.html#installation"
-                            class="btn-primary">Get Started</a>
-                    </div>
-                </div>
-
-                <div class="warning-box">
-                    <h3>System Requirements</h3>
+            <section class="cards">
+                <article class="card">
+                    <h3>Quick actions</h3>
                     <ul>
-                        <li><strong>Minecraft Server:</strong> 1.15.2 or
-                            higher</li>
-                        <li><strong>Java:</strong> 8+ (Java 17+
-                            recommended)</li>
-                        <li><strong>Server Software:</strong>
-                            Bukkit/Spigot/Paper</li>
-                        <li><strong>Storage:</strong> Sufficient space for large
-                            world generation</li>
+                        <li>Build, test and generate Javadoc: <code>./gradlew
+                                clean build test javadoc</code></li>
+                        <li>Preview the assembled site locally:
+                            <code>make preview</code></li>
+                        <li>Download plugin JARs from the
+                            <code>public/download/</code> folder after CI
+                            runs</li>
                     </ul>
-                </div>
+                </article>
 
-                <div class="success-box">
-                    <h2>🚀 Ready to Explore?</h2>
-                    <p>Download the latest version from
-                        <code>build/libs/FarLanders-1.2.0.jar</code> after
-                        building, or check out the complete <a
-                            href="documentation-hub.html">documentation hub</a>
-                        to learn about all features and configuration
-                        options.</p>
-                    <p><strong>The Far Lands await your
-                            exploration!</strong></p>
-                </div>
-
-                <div class="changelog-preview">
-                    <h3>Latest Updates (v1.2.0)</h3>
+                <!-- <article class="card">
+                    <h3>More docs</h3>
                     <ul>
-                        <li>🔄 Complete resource distribution overhaul</li>
-                        <li>🏛️ New Ancient Ruins system with four structure
-                            types</li>
-                        <li>⚖️ Balanced ore generation preventing
-                            clustering</li>
-                        <li>📊 Enhanced terrain complexity algorithms</li>
-                        <li>🎮 Improved spawn management system</li>
+                        <li><a href="documentation-hub.html">Guides &amp;
+                                Architecture</a></li>
+                        <li><a href="plugin-overview.html">Plugin
+                                Overview</a></li>
+                        <li><a href="resource-distribution.html">Resource
+                                Distribution</a></li>
                     </ul>
-                    <a href="changelog.html">View Complete Changelog</a>
-                </div>
-            </div>
+                </article> -->
+            </section>
+        </main>
 
-            <div class="footer">
-                <p>&copy; 2025 FarLanders Project | <a
-                        href="https://farlanders.cc">farlanders.cc</a> | Open
-                    Source Minecraft Plugin</p>
-            </div>
-        </div>
-
-        <style>
-            .hero-section {
-                background: linear-gradient(135deg, #2a2a2a 0%, #4a4a4a 100%);
-                color: #ffffff;
-                padding: 2rem;
-                border-radius: 8px;
-                margin: 2rem 0;
-                text-align: center;
-            }
-            
-            .hero-section h2 {
-                color: #ffffff !important;
-                margin-bottom: 1rem;
-            }
-            
-            .hero-section p {
-                color: #ffffff !important;
-                opacity: 0.95;
-            }
-
-            .feature-grid, .info-grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-                gap: 1.5rem;
-                margin: 2rem 0;
-            }
-
-            .btn-primary {
-                display: inline-block;
-                background: #648DB3;
-                color: white !important;
-                padding: 0.5rem 1rem;
-                text-decoration: none;
-                border-radius: 4px;
-                font-weight: 700;
-                font-family: var(--heading-font);
-                text-transform: uppercase;
-                letter-spacing: 1px;
-                margin-top: 1rem;
-                transition: background-color 0.3s;
-            }
-
-            .btn-primary:hover {
-                background: #52357B;
-                color: white !important;
-            }
-
-            .changelog-preview {
-                background: #B2D8CE;
-                padding: 1.5rem;
-                border-radius: 8px;
-                border-left: 4px solid #648DB3;
-                margin: 2rem 0;
-            }
-
-            .changelog-preview h3 {
-                margin-top: 0;
-                color: #52357B;
-            }
-
-            .changelog-preview ul {
-                margin: 1rem 0;
-            }
-
-            .changelog-preview ul li {
-                margin: 0.5rem 0;
-            }
-            
-            /* Content links should be blue, but not buttons */
-            .content a:not(.btn-primary) {
-                color: #1e73be;
-            }
-            
-            .content a:not(.btn-primary):hover {
-                color: #0f4c75;
-            }
-        </style>
+        <footer class="foot">
+            <p>&copy; 2025 FarLanders · Documentation</p>
+        </footer>
     </body>
 </html>

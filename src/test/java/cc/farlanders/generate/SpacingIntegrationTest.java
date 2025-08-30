@@ -77,7 +77,8 @@ class SpacingIntegrationTest {
 
                     // Test structure generation
                     StructureGenerator.BiomeStyle biomeStyle = StructureGenerator.BiomeStyle.fromBiome(biome);
-                    structureGenerator.generateStructures(mockChunk, 8, 8, i * 16, i * 16, 64, biomeStyle);
+                    structureGenerator.generateStructures(mockChunk, 8, 8, i * 16, i * 16, 64, biomeStyle,
+                            cc.farlanders.generate.biomes.api.BiomePreset.builder().build());
                     if (wasAnyBlockSet(mockChunk)) {
                         structureCount.incrementAndGet();
                     }
@@ -185,9 +186,11 @@ class SpacingIntegrationTest {
             MobSpawningManager.generateMobSpawningAreas(mockChunk, 8, 8, "forest");
 
             structureGenerator.generateStructures(mockChunk, 8, 8, 100, 100, 64,
-                    StructureGenerator.BiomeStyle.TAIGA);
+                    StructureGenerator.BiomeStyle.TAIGA,
+                    cc.farlanders.generate.biomes.api.BiomePreset.builder().build());
             structureGenerator.generateStructures(mockChunk, 8, 8, 100, 100, 64,
-                    StructureGenerator.BiomeStyle.SWAMP);
+                    StructureGenerator.BiomeStyle.SWAMP,
+                    cc.farlanders.generate.biomes.api.BiomePreset.builder().build());
 
             // If we reach here, no artificial blocks caused exceptions
             assertTrue(true, "Generation systems work without artificial blocks");

@@ -7,3 +7,6 @@ bin
 
 # Ignore local documentation preview
 public/
+
+# Idea
+.idea/

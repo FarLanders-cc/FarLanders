@@ -39,26 +39,102 @@ public class StructureGenerator {
     private final AncientRuinsGenerator ancientRuinsGenerator = new AncientRuinsGenerator();
 
     public void generateStructures(ChunkData chunk, int cx, int cz, int worldX, int worldZ, int topY,
-            BiomeStyle biome) {
+            BiomeStyle biome, cc.farlanders.generate.biomes.api.BiomePreset preset) {
+        int surfaceY = topY;
+        int buildY = topY + 1;
         Random random = new Random(hashCoords(worldX, worldZ) ^ 0xC0FFEE);
 
         // Try to generate ancient ruins first (very rare)
-        ancientRuinsGenerator.tryGenerateRuins(chunk, cx, cz, worldX, worldZ, topY, biome.name().toLowerCase());
+        ancientRuinsGenerator.tryGenerateRuins(chunk, cx, cz, worldX, worldZ, surfaceY, biome.name().toLowerCase());
 
-        if (random.nextDouble() < GenerationConfig.getLegendaryStructureChance()) {
-            placeLegendaryStructure(chunk, cx, topY + 1, cz, random);
+        // Legendary structures are very rare and short-circuit generation
+        if (tryPlaceLegendary(chunk, cx, cz, buildY, random))
             return;
-        }
 
+        // Basic chance to generate anything at all
         if (random.nextDouble() > GenerationConfig.getBasicStructureChance())
             return;
 
+        // If the preset suggests preferred structure identifiers, try those first
+        if (preset != null && !preset.preferredStructures().isEmpty()) {
+            handlePresetStructures(chunk, cx, cz, buildY, surfaceY, random, preset);
+            return;
+        }
+
+        // Fallback to biome-based generation
+        handleBiomeStructures(chunk, cx, cz, buildY, biome, random);
+    }
+
+    private boolean tryPlaceLegendary(ChunkData chunk, int cx, int cz, int buildY, Random random) {
+        if (random.nextDouble() < GenerationConfig.getLegendaryStructureChance()) {
+            placeLegendaryStructure(chunk, cx, buildY, cz, random);
+            return true;
+        }
+        return false;
+    }
+
+    private void handlePresetStructures(ChunkData chunk, int cx, int cz, int buildY, int surfaceY, Random random,
+            cc.farlanders.generate.biomes.api.BiomePreset preset) {
+        for (String pref : preset.preferredStructures()) {
+            double rarity = preset.structureRarity().getOrDefault(pref, 1.0);
+            double clamped = Math.clamp(rarity, 0.0, 1.0);
+            if (random.nextDouble() > clamped)
+                continue;
+
+            String chosen = chooseStructureVariant(pref, preset, random);
+            handleChosenStructure(chunk, cx, cz, buildY, chosen, random);
+
+            if (!preset.resourceBonuses().isEmpty()) {
+                handleResourceBonuses(chunk, cx, cz, surfaceY, random, preset);
+            }
+        }
+    }
+
+    private String chooseStructureVariant(String pref, cc.farlanders.generate.biomes.api.BiomePreset preset,
+            Random random) {
+        java.util.List<String> variants = preset.structureVariants().getOrDefault(pref, java.util.List.of());
+        if (!variants.isEmpty()) {
+            return variants.get(random.nextInt(variants.size()));
+        }
+        return pref;
+    }
+
+    private void handleChosenStructure(ChunkData chunk, int cx, int cz, int buildY, String chosen, Random random) {
+        switch (chosen.toLowerCase()) {
+            case "pillar", "basic_pillar" -> buildPlainsStructure(chunk, cx, buildY, cz, random);
+            case "desert_tower", "sand_tower" -> buildDesertStructure(chunk, cx, buildY, cz, random);
+            case "jungle_pole", "vine_pole" -> buildJungleStructure(chunk, cx, buildY, cz, random);
+            case "obsidian_spire", "obsidian_monolith" ->
+                placeLegendaryStructure(chunk, cx, buildY, cz, random);
+            case "underwater_altar" -> buildSwampStructure(chunk, cx, buildY, cz);
+            default -> {
+                // Unknown preference falls back to biome style (handled outside)
+            }
+        }
+    }
+
+    private void handleResourceBonuses(ChunkData chunk, int cx, int cz, int surfaceY, Random random,
+            cc.farlanders.generate.biomes.api.BiomePreset preset) {
+        for (var entry : preset.resourceBonuses().entrySet()) {
+            String res = entry.getKey();
+            double mult = entry.getValue();
+            if (mult > 1.0 && random.nextDouble() < (mult - 1.0) * 0.25) {
+                int dx = -1 + random.nextInt(3);
+                int dz = -1 + random.nextInt(3);
+                int by = surfaceY;
+                chunk.setBlock(cx + dx, by, cz + dz,
+                        getMaterialOrFallback(res.toUpperCase(), Material.DIAMOND_ORE));
+            }
+        }
+    }
+
+    private void handleBiomeStructures(ChunkData chunk, int cx, int cz, int buildY, BiomeStyle biome, Random random) {
         switch (biome) {
-            case PLAINS -> buildPlainsStructure(chunk, cx, topY + 1, cz, random);
-            case DESERT -> buildDesertStructure(chunk, cx, topY + 1, cz, random);
-            case TAIGA -> buildTaigaStructure(chunk, cx, topY + 1, cz);
-            case SWAMP -> buildSwampStructure(chunk, cx, topY + 1, cz);
-            case JUNGLE -> buildJungleStructure(chunk, cx, topY + 1, cz, random);
+            case PLAINS -> buildPlainsStructure(chunk, cx, buildY, cz, random);
+            case DESERT -> buildDesertStructure(chunk, cx, buildY, cz, random);
+            case TAIGA -> buildTaigaStructure(chunk, cx, buildY, cz);
+            case SWAMP -> buildSwampStructure(chunk, cx, buildY, cz);
+            case JUNGLE -> buildJungleStructure(chunk, cx, buildY, cz, random);
         }
     }
 
